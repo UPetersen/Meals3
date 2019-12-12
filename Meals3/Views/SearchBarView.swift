@@ -52,21 +52,19 @@ struct SearchBarView: View {
             }
         }
         .padding(.horizontal)
-        .navigationBarHidden(showCancelButton)
+//        .navigationBarHidden(showCancelButton)
     }
 }
 
 
-//struct SearchBarView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SearchBarView()
-//    }
-//}
-//
-//
+struct SearchBarView_Previews: PreviewProvider {
+    static var previews: some View {
+        SearchBarView(searchText: .constant(""))
+    }
+}
 
 
-
+// MARK: - For resgning keyboard on drag gesture
 
 extension UIApplication {
     func endEditing(_ force: Bool) {

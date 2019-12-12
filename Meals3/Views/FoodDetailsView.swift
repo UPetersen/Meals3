@@ -1,0 +1,183 @@
+//
+//  FoodDetailsView.swift
+//  Meals3
+//
+//  Created by Uwe Petersen on 10.11.19.
+//  Copyright © 2019 Uwe Petersen. All rights reserved.
+//
+
+import SwiftUI
+
+//final class Editierbar: ObservableObject {
+//    @Published var isEditierbar: Bool = true
+//}
+//
+
+struct FoodDetailsView: View {
+    
+    @Environment(\.managedObjectContext) var viewContext
+    @ObservedObject var food: Food
+    @State private var editingDisabled = true
+    @State private var showingAddFood = false
+    
+    var nutrientSections = NutrientSectionViewModel.sections()
+    
+    let numberFormatter: NumberFormatter =  {() -> NumberFormatter in
+        let numberFormatter = NumberFormatter()
+        numberFormatter.zeroSymbol = "0"
+        numberFormatter.usesSignificantDigits = true
+        return numberFormatter
+    }()
+    
+    private let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .medium
+        return dateFormatter
+    }()
+
+//    var editingDisabled: Bool = true
+    private let noDate = Date(timeIntervalSince1970: 0)
+    
+    var body: some View {
+                
+        Form {
+            
+            // Section "Grundnährwerte je 100g"
+            Section(header: Text(nutrientSections[0].header)) {
+                ForEach(nutrientSections[0].keys, id: \.self) { (key: String) in
+                    return FoodNumberCellWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: self.numberFormatter)
+                }
+            }
+            
+            // Section "Allgemeine Informationen
+            Section(header: Text("ALLGEMEINE INFORMATIONEN")) {
+                FoodNutritionStringView(text: "Name", value: $food.name)
+                HStack {
+                    Text("Detail")
+                    Spacer()
+                    Text(food.detail?.name ?? "")
+                }
+                HStack {
+                    Text("Gruppe")
+                    Spacer()
+                    Text(food.group?.name ?? "")
+                }
+                HStack {
+                    Text("Untergr.")
+                    Spacer()
+                    Text(food.subGroup?.name ?? "")
+                }
+                HStack {
+                    Text("Zuber.")
+                    Spacer()
+                    Text(food.preparation?.name ?? "")
+                }
+                HStack {
+                    Text("Refer.")
+                    Spacer()
+                    Text(food.referenceWeight?.name ?? "")
+                }
+                HStack {
+                    Text("Quelle")
+                    Spacer()
+                    Text(food.source?.name ?? "")
+                }
+                HStack {
+                    Text("Rezept")
+                    Spacer()
+                    if food.recipe?.dateOfCreation != nil {
+                        Text("ja (\(food.recipe!.dateOfCreation!, formatter: dateFormatter))")
+                    } else {
+                        Text("nein")
+                    }
+                }
+                DatePicker("Erstellt", selection: .constant(food.dateOfCreation ?? noDate)).disabled(editingDisabled)
+                DatePicker("Letzte Änderung", selection: .constant(food.dateOfLastModification ?? noDate)).disabled(true)
+            }
+
+            // Section "Grundnährwerte je 100g"
+            Section(header: Text(nutrientSections[0].header)) {
+                ForEach(nutrientSections[0].keys, id: \.self) { (key: String) in
+                    return FoodNumberCellWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: self.numberFormatter)
+                }
+            }
+
+            // Remaining sections
+            ForEach(nutrientSections.dropFirst(), id: \.self) {nutrientSection in
+                Section(header: Text(nutrientSection.header)) {
+                    ForEach(nutrientSection.keys, id: \.self) { (key: String) in
+                        return FoodNumberCellWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: self.numberFormatter)
+                    }
+                }
+            }
+        }
+        .onDisappear() {
+            if self.viewContext.hasChanges {
+                self.food.dateOfLastModification = Date()
+                try? self.viewContext.save()
+            }
+        }
+        .navigationBarHidden(false)
+        .navigationBarItems(trailing: HStack {
+            Button(self.editingDisabled ? "Edit" : "Done") { self.editingDisabled.toggle() }.padding()
+            Button(action: {
+                print("Plus button was tapped")
+                self.showingAddFood = true
+            }) { Image(systemName: "plus").padding() }
+        }
+        .sheet(isPresented: $showingAddFood, content:{AddFoodView(isPresented: self.$showingAddFood)})
+        )
+            .navigationBarTitle(self.food.name ?? "no name given")
+            .resignKeyboardOnDragGesture()
+    }
+}
+
+struct AddFoodView: View {
+    @Binding var isPresented: Bool
+    var body: some View {
+        Button("Dismiss me") { self.isPresented = false }.padding()
+    }
+}
+
+
+struct FoodDetailsView_Previews: PreviewProvider {
+
+    static var previews: some View {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        let food: Food = {
+            let food = Food(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+            food.name = "leckerer Donut"
+            food.comment = "Ein unnötiger Kommentar"
+            food.totalCarb = 12.0
+            food.totalFat = 23.0
+            food.totalProtein = 14.0
+            food.totalEnergyCals = 200.0
+            food.totalAlcohol = 4.0
+            food.totalWater = 55.0
+            food.totalDietaryFiber = 32.0
+            food.totalOrganicAcids = 0.4
+            food.totalSalt = 0.3
+            food.dateOfLastModification = Date()
+            food.carbGlucose = 12.0
+            
+            return food
+        }()
+                let _: Nutrient? = { // Store a nutrient in core data
+                    let nutrient = Nutrient(context: context)
+                    nutrient.dispUnit = "g"
+                    nutrient.key = "totalEnergyCals"
+                    nutrient.name = "Energie (Teststring)"
+        //            try? context.save()
+                    return nutrient
+                }()
+        
+        return NavigationView {
+             FoodDetailsView(food: food)
+                .environment(\.managedObjectContext, context)
+                .navigationBarTitle(food.name ?? "Lebensmittel")
+        }
+            
+    }
+}

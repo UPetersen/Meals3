@@ -24,11 +24,21 @@
 		C604B2BD236C254C006BFE9E /* HasNutrients.swift in Sources */ = {isa = PBXBuildFile; fileRef = C604B2BC236C254C006BFE9E /* HasNutrients.swift */; };
 		C604B2BF236D7EB8006BFE9E /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C604B2BE236D7EB8006BFE9E /* Meal.swift */; };
 		C604B2C3236DEDD8006BFE9E /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C604B2C2236DEDD8006BFE9E /* HealthKit.framework */; };
+		C607D03323809C51009BA48C /* FoodNutritionStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C607D03223809C50009BA48C /* FoodNutritionStringView.swift */; };
+		C60F510223A166AB009F2CDA /* MealsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60F510123A166AB009F2CDA /* MealsView.swift */; };
+		C619E06A239830E300410D8B /* NutrientSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C619E069239830E300410D8B /* NutrientSectionViewModel.swift */; };
+		C62E84AF237FD99A002424C8 /* FoodNutritionNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62E84AE237FD99A002424C8 /* FoodNutritionNumberView.swift */; };
+		C64F34762393AAA5001C9511 /* FoodNumberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64F34752393AAA5001C9511 /* FoodNumberCell.swift */; };
+		C64F34782393B5C3001C9511 /* FoodNumberCellWithKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64F34772393B5C3001C9511 /* FoodNumberCellWithKey.swift */; };
 		C65768422376B46000D6CB98 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65768412376B46000D6CB98 /* SearchFilter.swift */; };
 		C65768442376B94800D6CB98 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65768432376B94800D6CB98 /* SearchBarView.swift */; };
+		C683C9D72378472700EDCB66 /* FoodDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C683C9D62378472700EDCB66 /* FoodDetailsView.swift */; };
+		C69779C02378097100B3C72C /* MealNutrientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69779BF2378097100B3C72C /* MealNutrientsView.swift */; };
+		C69F58DB23831E3B0014D330 /* FoodDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69F58DA23831E3B0014D330 /* FoodDetails.swift */; };
 		C6AD65F4236B5D750021D5A6 /* Event+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AD65F2236B5D750021D5A6 /* Event+CoreDataClass.swift */; };
 		C6AD65F5236B5D750021D5A6 /* Event+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AD65F3236B5D750021D5A6 /* Event+CoreDataProperties.swift */; };
 		C6AF67D02373542F009331F6 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF67CF2373542F009331F6 /* AppView.swift */; };
+		C6C61F17238EE87F009E2F98 /* NSNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */; };
 		C6F45B84236B65AD00C4FAC3 /* GeoLocation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F45B62236B65AD00C4FAC3 /* GeoLocation+CoreDataClass.swift */; };
 		C6F45B85236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F45B63236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift */; };
 		C6F45B86236B65AD00C4FAC3 /* Group+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F45B64236B65AD00C4FAC3 /* Group+CoreDataClass.swift */; };
@@ -114,11 +124,21 @@
 		C604B2BE236D7EB8006BFE9E /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
 		C604B2C0236DEDD8006BFE9E /* Meals3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Meals3.entitlements; sourceTree = "<group>"; };
 		C604B2C2236DEDD8006BFE9E /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		C607D03223809C50009BA48C /* FoodNutritionStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutritionStringView.swift; sourceTree = "<group>"; };
+		C60F510123A166AB009F2CDA /* MealsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsView.swift; sourceTree = "<group>"; };
+		C619E069239830E300410D8B /* NutrientSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutrientSectionViewModel.swift; sourceTree = "<group>"; };
+		C62E84AE237FD99A002424C8 /* FoodNutritionNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutritionNumberView.swift; sourceTree = "<group>"; };
+		C64F34752393AAA5001C9511 /* FoodNumberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNumberCell.swift; sourceTree = "<group>"; };
+		C64F34772393B5C3001C9511 /* FoodNumberCellWithKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNumberCellWithKey.swift; sourceTree = "<group>"; };
 		C65768412376B46000D6CB98 /* SearchFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
 		C65768432376B94800D6CB98 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		C683C9D62378472700EDCB66 /* FoodDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodDetailsView.swift; sourceTree = "<group>"; };
+		C69779BF2378097100B3C72C /* MealNutrientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealNutrientsView.swift; sourceTree = "<group>"; };
+		C69F58DA23831E3B0014D330 /* FoodDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDetails.swift; sourceTree = "<group>"; };
 		C6AD65F2236B5D750021D5A6 /* Event+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C6AD65F3236B5D750021D5A6 /* Event+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		C6AF67CF2373542F009331F6 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppView.swift; path = Meals3/AppView.swift; sourceTree = "<group>"; };
+		C6AF67CF2373542F009331F6 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNumberTextField.swift; sourceTree = "<group>"; };
 		C6F45B62236B65AD00C4FAC3 /* GeoLocation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GeoLocation+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C6F45B63236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GeoLocation+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C6F45B64236B65AD00C4FAC3 /* Group+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Group+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -226,10 +246,37 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C65D5D22239ECB4B00E7512A /* NotNeededAnyMore */ = {
+			isa = PBXGroup;
+			children = (
+				C62E84AE237FD99A002424C8 /* FoodNutritionNumberView.swift */,
+				C64F34752393AAA5001C9511 /* FoodNumberCell.swift */,
+			);
+			path = NotNeededAnyMore;
+			sourceTree = "<group>";
+		};
+		C66A1C222378413C0032D2A4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */,
+				C65768432376B94800D6CB98 /* SearchBarView.swift */,
+				C6AF67CF2373542F009331F6 /* AppView.swift */,
+				C6FE88C1236B5A3100881ACB /* ContentView.swift */,
+				C60F510123A166AB009F2CDA /* MealsView.swift */,
+				C69779BF2378097100B3C72C /* MealNutrientsView.swift */,
+				C683C9D62378472700EDCB66 /* FoodDetailsView.swift */,
+				C64F34772393B5C3001C9511 /* FoodNumberCellWithKey.swift */,
+				C607D03223809C50009BA48C /* FoodNutritionStringView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C6AD65F6236B60290021D5A6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				C6FE88BF236B5A3100881ACB /* Event.swift */,
+				C69F58DA23831E3B0014D330 /* FoodDetails.swift */,
+				C619E069239830E300410D8B /* NutrientSectionViewModel.swift */,
 				C604B2BE236D7EB8006BFE9E /* Meal.swift */,
 				C604B2BC236C254C006BFE9E /* HasNutrients.swift */,
 				C604B2BA236C24E5006BFE9E /* Result.swift */,
@@ -286,8 +333,6 @@
 		C6FE88AC236B5A3100881ACB = {
 			isa = PBXGroup;
 			children = (
-				C65768432376B94800D6CB98 /* SearchBarView.swift */,
-				C6AF67CF2373542F009331F6 /* AppView.swift */,
 				C6FE88B7236B5A3100881ACB /* Meals3 */,
 				C6FE88D3236B5A3300881ACB /* Meals3Tests */,
 				C6FE88DE236B5A3300881ACB /* Meals3UITests */,
@@ -309,11 +354,12 @@
 		C6FE88B7236B5A3100881ACB /* Meals3 */ = {
 			isa = PBXGroup;
 			children = (
+				C65D5D22239ECB4B00E7512A /* NotNeededAnyMore */,
+				C66A1C222378413C0032D2A4 /* Views */,
 				C604B2C0236DEDD8006BFE9E /* Meals3.entitlements */,
 				C6AD65F6236B60290021D5A6 /* Model */,
 				C6FE88B8236B5A3100881ACB /* AppDelegate.swift */,
 				C6FE88BD236B5A3100881ACB /* SceneDelegate.swift */,
-				C6FE88C1236B5A3100881ACB /* ContentView.swift */,
 				C6FE88C3236B5A3300881ACB /* Assets.xcassets */,
 				C6FE88C8236B5A3300881ACB /* LaunchScreen.storyboard */,
 				C6FE88CB236B5A3300881ACB /* Info.plist */,
@@ -488,6 +534,7 @@
 				C604B2B3236C247A006BFE9E /* FoodExtension.swift in Sources */,
 				C6F45BA1236B65AD00C4FAC3 /* SubGroup+CoreDataProperties.swift in Sources */,
 				C6F45BA4236B65AD00C4FAC3 /* Dealer+CoreDataClass.swift in Sources */,
+				C683C9D72378472700EDCB66 /* FoodDetailsView.swift in Sources */,
 				C6F45B95236B65AD00C4FAC3 /* RecipeIngredient+CoreDataProperties.swift in Sources */,
 				C6AF67D02373542F009331F6 /* AppView.swift in Sources */,
 				C6F45B9C236B65AD00C4FAC3 /* Meal+CoreDataClass.swift in Sources */,
@@ -498,14 +545,18 @@
 				C604B2B6236C247A006BFE9E /* RecipeIngredientExtension.swift in Sources */,
 				C6F45B8D236B65AD00C4FAC3 /* MealIngredient+CoreDataProperties.swift in Sources */,
 				C604B2BD236C254C006BFE9E /* HasNutrients.swift in Sources */,
+				C69F58DB23831E3B0014D330 /* FoodDetails.swift in Sources */,
 				C604B2AD236C247A006BFE9E /* MealIngredientExtension.swift in Sources */,
 				C6FE88C2236B5A3100881ACB /* ContentView.swift in Sources */,
 				C604B2B2236C247A006BFE9E /* EventExtension.swift in Sources */,
 				C6FE88BC236B5A3100881ACB /* Meals3.xcdatamodeld in Sources */,
+				C607D03323809C51009BA48C /* FoodNutritionStringView.swift in Sources */,
 				C6F45B8B236B65AD00C4FAC3 /* Favorite+CoreDataProperties.swift in Sources */,
+				C64F34782393B5C3001C9511 /* FoodNumberCellWithKey.swift in Sources */,
 				C604B2B5236C247A006BFE9E /* RecipeExtension.swift in Sources */,
 				C6FE88B9236B5A3100881ACB /* AppDelegate.swift in Sources */,
 				C6F45B96236B65AD00C4FAC3 /* Nutrient+CoreDataClass.swift in Sources */,
+				C64F34762393AAA5001C9511 /* FoodNumberCell.swift in Sources */,
 				C65768422376B46000D6CB98 /* SearchFilter.swift in Sources */,
 				C6F45B91236B65AD00C4FAC3 /* Source+CoreDataProperties.swift in Sources */,
 				C6F45B88236B65AD00C4FAC3 /* Detail+CoreDataClass.swift in Sources */,
@@ -520,7 +571,10 @@
 				C6F45B85236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift in Sources */,
 				C6F45B89236B65AD00C4FAC3 /* Detail+CoreDataProperties.swift in Sources */,
 				C6F45B9E236B65AD00C4FAC3 /* ServingSize+CoreDataClass.swift in Sources */,
+				C619E06A239830E300410D8B /* NutrientSectionViewModel.swift in Sources */,
 				C6F45B92236B65AD00C4FAC3 /* Brand+CoreDataClass.swift in Sources */,
+				C62E84AF237FD99A002424C8 /* FoodNutritionNumberView.swift in Sources */,
+				C6C61F17238EE87F009E2F98 /* NSNumberTextField.swift in Sources */,
 				C6F45B8C236B65AD00C4FAC3 /* MealIngredient+CoreDataClass.swift in Sources */,
 				C604B2B9236C247A006BFE9E /* SourceExtension.swift in Sources */,
 				C6F45BA2236B65AD00C4FAC3 /* Recipe+CoreDataClass.swift in Sources */,
@@ -533,6 +587,8 @@
 				C604B2AF236C247A006BFE9E /* ReferenceWeightExtension.swift in Sources */,
 				C604B2B7236C247A006BFE9E /* GroupExtension.swift in Sources */,
 				C604B2BB236C24E5006BFE9E /* Result.swift in Sources */,
+				C60F510223A166AB009F2CDA /* MealsView.swift in Sources */,
+				C69779C02378097100B3C72C /* MealNutrientsView.swift in Sources */,
 				C6F45B8E236B65AD00C4FAC3 /* Food+CoreDataClass.swift in Sources */,
 				C6F45B90236B65AD00C4FAC3 /* Source+CoreDataClass.swift in Sources */,
 				C6F45B99236B65AD00C4FAC3 /* Preparation+CoreDataProperties.swift in Sources */,
@@ -640,7 +696,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -694,7 +750,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -714,6 +770,7 @@
 				DEVELOPMENT_TEAM = 26F6YWJYL8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Meals3/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -735,6 +792,7 @@
 				DEVELOPMENT_TEAM = 26F6YWJYL8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Meals3/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
