@@ -13,7 +13,7 @@ import HealthKit
 var dateOfCreationAsString_: String? = nil
 
 
-extension Meal: HasNutrients {
+extension Meal {
     
     public override func awakeFromInsert() {
         
@@ -30,28 +30,6 @@ extension Meal: HasNutrients {
 //        print("\(key)")
 //    }
     
-    
-    // FIXME: hier mit weak und unowned experimentieren, für die $0
-    /// sum of the content of one nutrient (e.g. "totalCarb") in a meal. Thus one has to sum over all (meal) ingredients
-    /// Example: (sum [totalCarb content of each ingredient] / 100)
-    func doubleForKey(_ key: String) -> Double? {        
-//        let quantity = (self.ingredients.allObjects as! [MealIngredient])  // convert NSSet to [AnyObject] (via .allObjects) and then to [MealIngredient]
-//            .filter {$0.food.valueForKeyPath(key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
-//            .map   {($0.food.valueForKeyPath(key) as! NSNumber).doubleValue / 100.0 * $0.amount.doubleValue} // Convert to NSNumber and then Double and multiply with amount of this ingredient
-//            .reduce (0) {$0 + $1}                                          // sum up the doubles of all meal ingredients
-//        return quantity
-        
-        let quantities = (self.ingredients!.allObjects as! [MealIngredient])  // convert NSSet to [AnyObject] (via .allObjects) and then to [MealIngredient]
-            .filter {$0.food?.value(forKeyPath: key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
-            .map   {($0.food?.value(forKeyPath: key) as! NSNumber).doubleValue / 100.0 * ($0.amount?.doubleValue)!} // Convert to NSNumber and then Double and multiply with amount of this ingredient
-        
-        // sum up the values of all meal ingredients or return nil if no ingredients values where availabel (i.e. all foods had no entry for this nutrient)
-        if quantities.isEmpty {
-            return nil
-        } else {
-            return quantities.reduce(0.0, +)
-        }
-    }
     
     func doubleForNutrient(_ nutrient: Nutrient) -> Double? {
         return self.doubleForKey(nutrient.key!)
@@ -118,22 +96,19 @@ extension Meal: HasNutrients {
         return nil
     }
     
-    /// Overall amount of all meal ingredients in gram
-    var amount: NSNumber? {
-        let aDouble:Double = ingredients?.allObjects
-            .filter{$0 is MealIngredient}
-            .map {$0 as! MealIngredient}
-            .map {$0.amount!.doubleValue}
-            .reduce(0.0, +) ?? 0
-        return NSNumber(value: aDouble)
+    /// Returns the newest meal or creates a new meal if non yet exists.
+    /// - Parameter context: managed object context
+    class func newestMeal(managedObjectContext context: NSManagedObjectContext) -> Meal {
+        let newestMeal = Meal.fetchNewestMeal(managedObjectContext: context)
+        if let newestMeal = newestMeal {
+            return newestMeal
+        } else {
+            return Meal(context: context)
+        }
     }
-//    var amount: Double {
-//        return ingredients?.allObjects
-//            .filter{$0 is MealIngredient}
-//            .map {$0 as! MealIngredient}
-//            .map {$0.amount!.doubleValue}
-//            .reduce(0.0, +) ?? 0
-//    }
+    
+
+    
 
     /// Creates a new meal by from the given meal.The new meal will have the same meal ingredients and that is it.
     /// Everything else will be as with a new meal. Since meal ingredients are unique to a meal, the have to be
@@ -164,4 +139,42 @@ extension Meal: HasNutrients {
         }
         return string
     }
+}
+
+extension Meal: HasNutrients {
+    
+    
+        /// Overall amount of all meal ingredients in gram
+        var amount: NSNumber? {
+            let aDouble:Double = ingredients?.allObjects
+                .filter{$0 is MealIngredient}
+                .map {$0 as! MealIngredient}
+                .map {$0.amount!.doubleValue}
+                .reduce(0.0, +) ?? 0
+            return NSNumber(value: aDouble)
+        }
+
+    
+    
+        // FIXME: hier mit weak und unowned experimentieren, für die $0
+        /// sum of the content of one nutrient (e.g. "totalCarb") in a meal. Thus one has to sum over all (meal) ingredients
+        /// Example: (sum [totalCarb content of each ingredient] / 100)
+        func doubleForKey(_ key: String) -> Double? {
+    //        let quantity = (self.ingredients.allObjects as! [MealIngredient])  // convert NSSet to [AnyObject] (via .allObjects) and then to [MealIngredient]
+    //            .filter {$0.food.valueForKeyPath(key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
+    //            .map   {($0.food.valueForKeyPath(key) as! NSNumber).doubleValue / 100.0 * $0.amount.doubleValue} // Convert to NSNumber and then Double and multiply with amount of this ingredient
+    //            .reduce (0) {$0 + $1}                                          // sum up the doubles of all meal ingredients
+    //        return quantity
+            
+            let quantities = (self.ingredients!.allObjects as! [MealIngredient])  // convert NSSet to [AnyObject] (via .allObjects) and then to [MealIngredient]
+                .filter {$0.food?.value(forKeyPath: key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
+                .map   {($0.food?.value(forKeyPath: key) as! NSNumber).doubleValue / 100.0 * ($0.amount?.doubleValue)!} // Convert to NSNumber and then Double and multiply with amount of this ingredient
+            
+            // sum up the values of all meal ingredients or return nil if no ingredients values where availabel (i.e. all foods had no entry for this nutrient)
+            if quantities.isEmpty {
+                return nil
+            } else {
+                return quantities.reduce(0.0, +)
+            }
+        }
 }

@@ -35,7 +35,8 @@ struct ContentView: View {
                 
                 // Search view
                 SearchBarView(searchText: $searchText)
-                
+                .resignKeyboardOnDragGesture()
+
                 MealsView(searchText: $searchText)
                     .navigationBarTitle(Text("Master"))
                     .navigationBarItems(
@@ -57,7 +58,7 @@ struct ContentView: View {
                 Text("Detail view content goes here")
                     .navigationBarTitle(Text("Detail"))
             }.navigationViewStyle(DoubleColumnNavigationViewStyle())
-            .resignKeyboardOnDragGesture()
+//            .resignKeyboardOnDragGesture()
 
             
         }

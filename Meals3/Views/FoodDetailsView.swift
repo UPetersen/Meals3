@@ -16,6 +16,8 @@ import SwiftUI
 struct FoodDetailsView: View {
     
     @Environment(\.managedObjectContext) var viewContext
+    @EnvironmentObject var currentMeal: Meal
+
     @ObservedObject var food: Food
     @State private var editingDisabled = true
     @State private var showingAddFood = false
@@ -112,6 +114,10 @@ struct FoodDetailsView: View {
                 }
             }
         }
+        .onAppear() {
+            print(self.currentMeal.description)
+        }
+
         .onDisappear() {
             if self.viewContext.hasChanges {
                 self.food.dateOfLastModification = Date()
@@ -126,19 +132,14 @@ struct FoodDetailsView: View {
                 self.showingAddFood = true
             }) { Image(systemName: "plus").padding() }
         }
-        .sheet(isPresented: $showingAddFood, content:{AddFoodView(isPresented: self.$showingAddFood)})
+        .sheet(isPresented: $showingAddFood, content:{AddFoodView(food: self.food, meal: self.currentMeal, isPresented: self.$showingAddFood)})
         )
             .navigationBarTitle(self.food.name ?? "no name given")
             .resignKeyboardOnDragGesture()
     }
 }
 
-struct AddFoodView: View {
-    @Binding var isPresented: Bool
-    var body: some View {
-        Button("Dismiss me") { self.isPresented = false }.padding()
-    }
-}
+
 
 
 struct FoodDetailsView_Previews: PreviewProvider {

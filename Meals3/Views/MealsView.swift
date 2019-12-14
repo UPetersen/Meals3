@@ -20,6 +20,7 @@ struct MealsView: View {
     
     @State private var showingDeleteConfirmation = false
     @State private var indicesToDelete: IndexSet? = IndexSet()
+    // Todo: ensure that there always exists a current meal
     
     @Binding var searchText: String
     @FetchRequest var meals: FetchedResults<Meal>
@@ -52,7 +53,7 @@ struct MealsView: View {
                 ) {
                     MealNutrientsView(meal: meal)
                     ForEach(meal.filteredAndSortedMealIngredients()!, id: \.self) { (mealIngredient: MealIngredient) in
-                        NavigationLink(destination: FoodDetailsView(food: mealIngredient.food!)) {
+                        NavigationLink(destination: FoodDetailsView(food: mealIngredient.food!).environmentObject(Meal.newestMeal(managedObjectContext: self.viewContext))) {
                             MealIngredientCellView(mealIngredient: mealIngredient)
                         }
                         //                        NavigationLink(destination: MealDetailView(meal: meal)) {
@@ -80,7 +81,6 @@ struct MealsView: View {
                 },
                          secondaryButton: .cancel())
         }
-        
     }
     
     func move (from source: IndexSet, to destination: Int) {

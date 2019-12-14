@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 import HealthKit
 
-extension Food: HasNutrients {
+extension Food {
     
     override public func awakeFromInsert() {
         
@@ -20,14 +20,6 @@ extension Food: HasNutrients {
         self.dateOfLastModification = Date() as NSDate as Date
     }
     
-    // To comply with HasNutriens protocol. Amount of a Food is 100 g, cause this is everything in this database refers to
-//    var amount: Double {
-//        return 100.0
-//    }
-    var amount: NSNumber? {
-        return NSNumber(value: 100.0) // Changed type to NSNumber? with iOS 11
-    }
-
     class func newFood(inManagedObjectContext context: NSManagedObjectContext) -> Food {
         let newFood = Food(context: context)
         newFood.name = "Neues Lebensmittel"
@@ -156,10 +148,6 @@ extension Food: HasNutrients {
     }
 
     
-    public func doubleForKey(_ key: String) -> Double? {
-        return (self.value(forKey: key) as? NSNumber)?.doubleValue ?? nil
-    }
-    
     /// Return the value as a String in the unit specified by hkDispUnit in nutrients, e.g. "12.3 µg"
     /// If something fails, either nil or an empty unit string (e.g. "g") is returned, depending on showUnit
     func dispStringForNutrient(_ nutrient: Nutrient, formatter: NumberFormatter, showUnit: Bool = true) -> String? {
@@ -191,7 +179,18 @@ extension Food: HasNutrients {
         let aString: String = self.name?.uppercased() ?? " "
         self.didAccessValue(forKey: "uppercaseFirstLetterOfName")
         return String(aString[...aString.startIndex]) // 2017-10-08: Swift 4, hopefully this works fine (and supports at least UTF-16)
-    }    
+    }
 }
 
 
+extension Food: HasNutrients {
+    
+    // To comply with HasNutriens protocol. Amount of a Food is 100 g, cause this is everything in this database refers to
+    var amount: NSNumber? {
+        return NSNumber(value: 100.0) // Changed type to NSNumber? with iOS 11
+    }
+
+    public func doubleForKey(_ key: String) -> Double? {
+        return (self.value(forKey: key) as? NSNumber)?.doubleValue ?? nil
+    }
+}

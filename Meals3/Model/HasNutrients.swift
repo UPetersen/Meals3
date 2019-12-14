@@ -19,11 +19,16 @@ import Foundation
 /// and absolute amount in the meal or recipe for meals an recipes.
 protocol HasNutrients {
     
-//    var amount: Double { get }
     var dateOfCreation: Date? { get }
     var amount: NSNumber? { get }
 
     /// returns the double value for the nutrient with the key key as stored.
     /// Since all nutrients have a unit property this is with respect to this unit.
     func doubleForKey(_ key: String) -> Double?
+}
+
+
+
+protocol Ingredient {
+    var amount: NSNumber? {get set}
 }
