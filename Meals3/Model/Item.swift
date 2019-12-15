@@ -21,3 +21,17 @@ enum Item {
     case isHasNutrients(HasNutrients)
 }
 
+enum NutrientCollectionType {
+    case meal(Meal)
+    case recipe(Recipe)
+}
+
+enum IngredientType {
+    case mealIngredient(MealIngredient)
+    case recipeIngredient(RecipeIngredient)
+}
+
+enum AddOrChange {
+    case add
+    case change
+}

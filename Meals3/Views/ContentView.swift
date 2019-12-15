@@ -87,6 +87,9 @@ struct MealDetailView: View {
             Text("\(meal.dateOfCreation ?? Date(), formatter: dateFormatter)")
             Text(dateString(date: meal.dateOfCreation))
             
+            Text("\(meal.dateOfLastModification ?? Date(), formatter: dateFormatter)")
+            Text(dateString(date: meal.dateOfLastModification))
+
             DatePicker("", selection: date)
             Divider()
       

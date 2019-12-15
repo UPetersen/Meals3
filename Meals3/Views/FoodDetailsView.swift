@@ -18,6 +18,7 @@ struct FoodDetailsView: View {
     @Environment(\.managedObjectContext) var viewContext
     @EnvironmentObject var currentMeal: Meal
 
+    var nutrientCollection: NutrientCollection
     @ObservedObject var food: Food
     @State private var editingDisabled = true
     @State private var showingAddFood = false
@@ -121,8 +122,10 @@ struct FoodDetailsView: View {
         .onDisappear() {
             if self.viewContext.hasChanges {
                 self.food.dateOfLastModification = Date()
-                try? self.viewContext.save()
+                try? self.viewContext.save()            
             }
+            // FIXME: test, this sould not be necessary
+            try? self.food.managedObjectContext?.save()
         }
         .navigationBarHidden(false)
         .navigationBarItems(trailing: HStack {
@@ -132,7 +135,7 @@ struct FoodDetailsView: View {
                 self.showingAddFood = true
             }) { Image(systemName: "plus").padding() }
         }
-        .sheet(isPresented: $showingAddFood, content:{AddFoodView(food: self.food, meal: self.currentMeal, isPresented: self.$showingAddFood)})
+        .sheet(isPresented: $showingAddFood, content:{AddFoodView(food: self.food, meal: self.currentMeal, nutrientCollection: self.currentMeal as NutrientCollection, isPresented: self.$showingAddFood).environment(\.managedObjectContext, self.viewContext)})
         )
             .navigationBarTitle(self.food.name ?? "no name given")
             .resignKeyboardOnDragGesture()
@@ -175,7 +178,7 @@ struct FoodDetailsView_Previews: PreviewProvider {
                 }()
         
         return NavigationView {
-             FoodDetailsView(food: food)
+             FoodDetailsView(nutrientCollection: Meal.newestMeal(managedObjectContext: context) as NutrientCollection, food: food)
                 .environment(\.managedObjectContext, context)
                 .navigationBarTitle(food.name ?? "Lebensmittel")
         }

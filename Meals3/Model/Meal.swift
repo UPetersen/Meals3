@@ -48,6 +48,7 @@ extension Meal {
 
 }
 
+
 extension Collection where Element == Meal, Index == Int {
     func delete(at indices: IndexSet, from managedObjectContext: NSManagedObjectContext) {
         indices.forEach { managedObjectContext.delete(self[$0]) }

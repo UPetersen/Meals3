@@ -178,3 +178,18 @@ extension Meal: HasNutrients {
             }
         }
 }
+
+extension Meal: NutrientCollection {
+    func addIngredient(food: Food, amount: NSNumber, managedObjectContext: NSManagedObjectContext) {
+
+        let mealIngredient = MealIngredient(context: managedObjectContext)
+        mealIngredient.food = food
+        mealIngredient.amount = amount
+        self.addToIngredients(mealIngredient)
+        self.dateOfLastModification = Date()
+        try? managedObjectContext.save()
+        
+//            // Save and sync to HealthKit
+//             saveContextAndsyncToHealthKit(self)
+    }
+}

@@ -12,6 +12,7 @@ struct AddFoodView: View {
     @Environment(\.managedObjectContext) var viewContext
     var food: Food
     var meal: Meal
+    var nutrientCollection: NutrientCollection
     @Binding var isPresented: Bool
     @State private var amount: NSNumber? = nil
 
@@ -19,12 +20,14 @@ struct AddFoodView: View {
         NavigationView() {
             Form {
                 Section(header: Text("Lebensmittel hinzufügen")) {
-                    VStack {
+                    VStack(alignment: .leading) {
                         Text(food.name ?? "food without name")
                         HStack {
                             Text("Menge")
                             Spacer()
                             NSNumberTextField(label: "g", value: $amount, formatter: NumberFormatter())
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .padding()
                         }
                     }
                 }
@@ -33,15 +36,16 @@ struct AddFoodView: View {
                 print(self.meal.description)
             }
             .navigationBarTitle(Text("Hinzufügen"), displayMode: .inline)
-            .navigationBarItems(
-                leading:                     Button("Cancel") {
-                    print("Cancel")
-                    self.isPresented = false
-                }.padding(),
+            .navigationBarItems(leading:
+                Button("Cancel") { self.isPresented = false }.padding(),
                                 trailing:
                 Button("Add") {
-                    print("Add")
-
+                    if let amount = self.amount {
+                        self.nutrientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
+                        DispatchQueue.main.async {
+                            self.nutrientCollection.objectWillChange.send()
+                        }
+                    }
                     self.isPresented = false
                 }.padding()
             )
@@ -77,7 +81,7 @@ struct AddFoodView_Previews: PreviewProvider {
         let meal = Meal.newestMeal(managedObjectContext: context)
         
 
-        return AddFoodView(food: food, meal: meal, isPresented: .constant(true))
+        return AddFoodView(food: food, meal: meal, nutrientCollection: meal as NutrientCollection, isPresented: .constant(true))
             .environment(\.managedObjectContext, context)
 
     }
