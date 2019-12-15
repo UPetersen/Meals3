@@ -53,12 +53,12 @@ struct MealsView: View {
                 ) {
                     MealNutrientsView(meal: meal)
                     ForEach(meal.filteredAndSortedMealIngredients()!, id: \.self) { (mealIngredient: MealIngredient) in
-                        NavigationLink(destination:  FoodDetailsView(nutrientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as NutrientCollection, food: mealIngredient.food!).environmentObject(Meal.newestMeal(managedObjectContext: self.viewContext))) {
-                            MealIngredientCellView(mealIngredient: mealIngredient)
+                        NavigationLink(destination:
+                        FoodDetailsView(nutrientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as NutrientCollection,
+                                        food: mealIngredient.food!)
+                            .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))) {
+                            MealIngredientCellView(mealIngredient: mealIngredient )
                         }
-                        //                        NavigationLink(destination: MealDetailView(meal: meal)) {
-                        //                                MealIngredientCellView(mealIngredient: mealIngredient)
-                        //                        }
                     }
                 }
             }

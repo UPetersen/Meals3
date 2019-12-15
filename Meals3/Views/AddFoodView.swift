@@ -20,15 +20,12 @@ struct AddFoodView: View {
         NavigationView() {
             Form {
                 Section(header: Text("Lebensmittel hinzufügen")) {
-                    VStack(alignment: .leading) {
-                        Text(food.name ?? "food without name")
-                        HStack {
-                            Text("Menge")
-                            Spacer()
-                            NSNumberTextField(label: "g", value: $amount, formatter: NumberFormatter())
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .padding()
-                        }
+                    Text(food.name ?? "food without name")
+                    HStack {
+                        Text("Menge")
+                        Spacer()
+                        NSNumberTextField(label: "g", value: $amount, formatter: NumberFormatter())
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
                 }
             }

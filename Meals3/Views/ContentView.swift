@@ -134,6 +134,14 @@ struct MealIngredientCellView: View {
                     .lineLimit(1)
                 Spacer()
                 Text("\(mealIngredient.amount ?? NSNumber(-999), formatter: NumberFormatter()) g")
+                    .foregroundColor(Color(.systemBlue))
+                    .onTapGesture {
+                    print("tapped")
+                }
+//                Button(action: {
+//                    print("Plus button was tapped")
+//                }) { Text("\(mealIngredient.amount ?? NSNumber(-999), formatter: NumberFormatter()) g").padding() }
+
             }
             Text(self.contentFor(mealIngredient: mealIngredient))
                 .lineLimit(1)
