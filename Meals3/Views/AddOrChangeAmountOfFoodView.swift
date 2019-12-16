@@ -8,11 +8,12 @@
 
 import SwiftUI
 
-struct AddFoodView: View {
+struct AddOrChangeAmountOfFoodView: View {
     @Environment(\.managedObjectContext) var viewContext
     var food: Food
-    var meal: Meal
-    var nutrientCollection: NutrientCollection
+//    var meal: Meal
+//    var nutrientCollection: NutrientCollection
+    var task: Task
     @Binding var isPresented: Bool
     @State private var amount: NSNumber? = nil
 
@@ -29,19 +30,25 @@ struct AddFoodView: View {
                     }
                 }
             }
-            .onAppear() {
-                print(self.meal.description)
-            }
             .navigationBarTitle(Text("Hinzufügen"), displayMode: .inline)
             .navigationBarItems(leading:
                 Button("Cancel") { self.isPresented = false }.padding(),
                                 trailing:
-                Button("Add") {
+                Button("Save") {
                     if let amount = self.amount {
-                        self.nutrientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
-                        DispatchQueue.main.async {
-                            self.nutrientCollection.objectWillChange.send()
+                        switch self.task {
+                        case .addAmountOfFoodToNutrientCollection(let nutrientCollection):
+                            nutrientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
+                            DispatchQueue.main.async {
+                                nutrientCollection.objectWillChange.send()
+                            }
+                        case .changeAmountOfIngredient(let ingredient):
+                            print("hugo")
                         }
+//                        self.nutrientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
+//                        DispatchQueue.main.async {
+//                            self.nutrientCollection.objectWillChange.send()
+//                        }
                     }
                     self.isPresented = false
                 }.padding()
@@ -78,7 +85,11 @@ struct AddFoodView_Previews: PreviewProvider {
         let meal = Meal.newestMeal(managedObjectContext: context)
         
 
-        return AddFoodView(food: food, meal: meal, nutrientCollection: meal as NutrientCollection, isPresented: .constant(true))
+        return AddOrChangeAmountOfFoodView(food: food,
+//                           meal: meal,
+//                           nutrientCollection: meal as NutrientCollection,
+                           task: Task.addAmountOfFoodToNutrientCollection(meal as NutrientCollection),
+                           isPresented: .constant(true))
             .environment(\.managedObjectContext, context)
 
     }

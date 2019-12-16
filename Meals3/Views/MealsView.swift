@@ -20,6 +20,7 @@ struct MealsView: View {
     
     @State private var showingDeleteConfirmation = false
     @State private var indicesToDelete: IndexSet? = IndexSet()
+
     // Todo: ensure that there always exists a current meal
     
     @Binding var searchText: String

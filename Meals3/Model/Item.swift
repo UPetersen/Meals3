@@ -31,7 +31,7 @@ enum IngredientType {
     case recipeIngredient(RecipeIngredient)
 }
 
-enum AddOrChange {
-    case add
-    case change
+enum Task {
+    case addAmountOfFoodToNutrientCollection(NutrientCollection)
+    case changeAmountOfIngredient(Ingredient)
 }

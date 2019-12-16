@@ -24,3 +24,7 @@ extension MealIngredient {
     }
 }
 
+extension MealIngredient: Ingredient {
+    
+}
+

@@ -21,7 +21,7 @@ struct FoodDetailsView: View {
     var nutrientCollection: NutrientCollection
     @ObservedObject var food: Food
     @State private var editingDisabled = true
-    @State private var showingAddFood = false
+    @State private var showingAddOrChangeAmountOfFoodView = false
     
     var nutrientSections = NutrientSectionViewModel.sections()
     
@@ -132,10 +132,14 @@ struct FoodDetailsView: View {
             Button(self.editingDisabled ? "Edit" : "Done") { self.editingDisabled.toggle() }.padding()
             Button(action: {
                 print("Plus button was tapped")
-                self.showingAddFood = true
+                self.showingAddOrChangeAmountOfFoodView = true
             }) { Image(systemName: "plus").padding() }
         }
-        .sheet(isPresented: $showingAddFood, content:{AddFoodView(food: self.food, meal: self.currentMeal, nutrientCollection: self.currentMeal as NutrientCollection, isPresented: self.$showingAddFood).environment(\.managedObjectContext, self.viewContext)})
+        .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
+            AddOrChangeAmountOfFoodView(food: self.food,
+                        task: Task.addAmountOfFoodToNutrientCollection(self.currentMeal as NutrientCollection),
+                        isPresented: self.$showingAddOrChangeAmountOfFoodView)
+                .environment(\.managedObjectContext, self.viewContext)})
         )
             .navigationBarTitle(self.food.name ?? "no name given")
             .resignKeyboardOnDragGesture()
