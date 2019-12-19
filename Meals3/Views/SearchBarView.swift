@@ -52,7 +52,7 @@ struct SearchBarView: View {
             }
         }
         .padding(.horizontal)
-//        .navigationBarHidden(showCancelButton)
+        .navigationBarHidden(showCancelButton)
     }
 }
 

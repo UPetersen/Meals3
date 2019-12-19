@@ -179,7 +179,7 @@ extension Meal: HasNutrients {
         }
 }
 
-extension Meal: NutrientCollection {
+extension Meal: IngredientCollection {
     func addIngredient(food: Food, amount: NSNumber, managedObjectContext: NSManagedObjectContext) {
 
         let mealIngredient = MealIngredient(context: managedObjectContext)

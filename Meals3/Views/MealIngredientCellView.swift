@@ -13,8 +13,8 @@ struct MealIngredientCellView: View {
     var mealIngredient: MealIngredient
     @State private var task: Task?
     @State private var showingAddOrChangeAmountOfFoodView = false
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode> // This is a dummy, unfortunately I do not know a better way
 
-    
     var body: some View {
         VStack (alignment: .leading) {
             HStack {
@@ -29,23 +29,18 @@ struct MealIngredientCellView: View {
                         self.task = .changeAmountOfIngredient(self.mealIngredient as Ingredient)
                         self.showingAddOrChangeAmountOfFoodView = true
                 }
-//                Button(action: {
-//                    print("Plus button was tapped")
-//                }) { Text("\(mealIngredient.amount ?? NSNumber(-999), formatter: NumberFormatter()) g").padding() }
-
             }
             Text(self.contentFor(mealIngredient: mealIngredient))
                 .lineLimit(1)
                 .font(.footnote)
         }
-            // TODO: hier geht's weiter
+            // TODO: hier geht's weiter: optionals rausmachen
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
              AddOrChangeAmountOfFoodView(food: self.mealIngredient.food!,
                                                task: self.task!,
-                                            isPresented: self.$showingAddOrChangeAmountOfFoodView)
+                                               isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
                     .environment(\.managedObjectContext, self.viewContext)
         })
-
     }
     
     func stringForNumber (_ number: NSNumber, formatter: NumberFormatter, divisor: Double) -> String {

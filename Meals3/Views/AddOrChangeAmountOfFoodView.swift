@@ -11,10 +11,10 @@ import SwiftUI
 struct AddOrChangeAmountOfFoodView: View {
     @Environment(\.managedObjectContext) var viewContext
     var food: Food
-//    var meal: Meal
-//    var nutrientCollection: NutrientCollection
     var task: Task
     @Binding var isPresented: Bool
+    @Binding var presentationModeOfParentView: PresentationMode
+
     @State private var amount: NSNumber? = nil
 
     var body: some View {
@@ -30,6 +30,13 @@ struct AddOrChangeAmountOfFoodView: View {
                     }
                 }
             }
+            .onAppear() {
+                switch self.task {
+                case .changeAmountOfIngredient(let ingredient):
+                    self.amount = ingredient.amount
+                default: break
+                }
+            }
             .navigationBarTitle(Text("Hinzufügen"), displayMode: .inline)
             .navigationBarItems(leading:
                 Button("Cancel") { self.isPresented = false }.padding(),
@@ -37,20 +44,20 @@ struct AddOrChangeAmountOfFoodView: View {
                 Button("Save") {
                     if let amount = self.amount {
                         switch self.task {
-                        case .addAmountOfFoodToNutrientCollection(let nutrientCollection):
-                            nutrientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
+                        case .addAmountOfFoodToIngredientCollection(let ingredientCollection):
+                            ingredientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
                             DispatchQueue.main.async {
-                                nutrientCollection.objectWillChange.send()
+                                ingredientCollection.objectWillChange.send()
+                                self.isPresented = false // dismiss self
+                                self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
                             }
-                        case .changeAmountOfIngredient(let ingredient):
-                            print("hugo")
+                        case .changeAmountOfIngredient(var ingredient):
+                            DispatchQueue.main.async {
+                                ingredient.amount = self.amount
+                                self.isPresented = false // dismiss self
+                            }
                         }
-//                        self.nutrientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
-//                        DispatchQueue.main.async {
-//                            self.nutrientCollection.objectWillChange.send()
-//                        }
                     }
-                    self.isPresented = false
                 }.padding()
             )
         }
@@ -58,39 +65,37 @@ struct AddOrChangeAmountOfFoodView: View {
     
 }
 
-struct AddFoodView_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
-        let food: Food = {
-            let food = Food(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
-            food.name = "leckerer Donut"
-            food.comment = "Ein unnötiger Kommentar"
-            food.totalCarb = 12.0
-            food.totalFat = 23.0
-            food.totalProtein = 14.0
-            food.totalEnergyCals = 200.0
-            food.totalAlcohol = 4.0
-            food.totalWater = 55.0
-            food.totalDietaryFiber = 32.0
-            food.totalOrganicAcids = 0.4
-            food.totalSalt = 0.3
-            food.dateOfLastModification = Date()
-            food.carbGlucose = 12.0
-            
-            return food
-        }()
-        
-        let meal = Meal.newestMeal(managedObjectContext: context)
-        
-
-        return AddOrChangeAmountOfFoodView(food: food,
-//                           meal: meal,
-//                           nutrientCollection: meal as NutrientCollection,
-                           task: Task.addAmountOfFoodToNutrientCollection(meal as NutrientCollection),
-                           isPresented: .constant(true))
-            .environment(\.managedObjectContext, context)
-
-    }
-}
+//struct AddFoodView_Previews: PreviewProvider {
+//    static var previews: some View {
+//
+//        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//
+//        let food: Food = {
+//            let food = Food(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+//            food.name = "leckerer Donut"
+//            food.comment = "Ein unnötiger Kommentar"
+//            food.totalCarb = 12.0
+//            food.totalFat = 23.0
+//            food.totalProtein = 14.0
+//            food.totalEnergyCals = 200.0
+//            food.totalAlcohol = 4.0
+//            food.totalWater = 55.0
+//            food.totalDietaryFiber = 32.0
+//            food.totalOrganicAcids = 0.4
+//            food.totalSalt = 0.3
+//            food.dateOfLastModification = Date()
+//            food.carbGlucose = 12.0
+//
+//            return food
+//        }()
+//
+//        let meal = Meal.newestMeal(managedObjectContext: context)
+//
+//
+//        return AddOrChangeAmountOfFoodView(food: food,
+//                           task: Task.addAmountOfFoodToNutrientCollection(meal as NutrientCollection),
+//                           isPresented: .constant(true))
+//            .environment(\.managedObjectContext, context)
+//
+//    }
+//}

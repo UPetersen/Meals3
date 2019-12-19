@@ -36,7 +36,7 @@ protocol Ingredient {
     var amount: NSNumber? {get set}
 }
 
-protocol NutrientCollection {
+protocol IngredientCollection {
     var comment: String? {get set}
     var dateOfCreation: Date?  {get set}
     var dateOfLastModification: Date?  {get set}

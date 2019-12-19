@@ -31,9 +31,10 @@ struct ContentView: View {
 
         NavigationView {
             
+            // Search view
+
             VStack {
-                
-                // Search view
+
                 SearchBarView(searchText: $searchText)
                 .resignKeyboardOnDragGesture()
 

@@ -15,14 +15,11 @@ struct FoodNutritionStringView: View {
     
     var body: some View {
         
-        
         HStack {
             Text(text)
             Spacer()
             Text(value ?? "")
         }
-
-        
     }
 }
 

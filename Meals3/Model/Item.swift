@@ -21,7 +21,7 @@ enum Item {
     case isHasNutrients(HasNutrients)
 }
 
-enum NutrientCollectionType {
+enum IngredientCollectionType {
     case meal(Meal)
     case recipe(Recipe)
 }
@@ -31,7 +31,8 @@ enum IngredientType {
     case recipeIngredient(RecipeIngredient)
 }
 
+/// Handle whether a certain amount of food is to be added to an IngredientCollection (aka meal or recipe) or an the amount of an ingredient (of an IngredientCollection) is to be changed
 enum Task {
-    case addAmountOfFoodToNutrientCollection(NutrientCollection)
+    case addAmountOfFoodToIngredientCollection(IngredientCollection)
     case changeAmountOfIngredient(Ingredient)
 }

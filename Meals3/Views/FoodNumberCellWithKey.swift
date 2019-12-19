@@ -82,7 +82,6 @@ extension View {
 }
 
 
-
 struct FoodNumberCellWithKey_Previews: PreviewProvider {
 
     static var title = String(#file.split(separator: "/").last ?? "file not found")

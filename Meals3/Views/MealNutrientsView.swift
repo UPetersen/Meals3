@@ -8,14 +8,12 @@
 
 import SwiftUI
 
-
 private let dateFormatter: DateFormatter = {
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .medium
     dateFormatter.timeStyle = .medium
     return dateFormatter
 }()
-
 
 
 struct MealNutrientsView: View {

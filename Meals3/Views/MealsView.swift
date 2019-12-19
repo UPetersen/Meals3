@@ -54,24 +54,23 @@ struct MealsView: View {
                 ) {
                     MealNutrientsView(meal: meal)
                     ForEach(meal.filteredAndSortedMealIngredients()!, id: \.self) { (mealIngredient: MealIngredient) in
+                        
                         NavigationLink(destination:
-                        FoodDetailsView(nutrientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as NutrientCollection,
+                        FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as IngredientCollection,
                                         food: mealIngredient.food!)
                             .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))) {
-                            MealIngredientCellView(mealIngredient: mealIngredient )
+                            MealIngredientCellView(mealIngredient: mealIngredient)
                         }
                     }
                 }
             }
             .onMove(perform: self.move)
-                
             .onDelete { indices in
                 print("onDelete")
                 self.indicesToDelete = indices
                 self.showingDeleteConfirmation = true
             }
         }
-            
         .alert(isPresented: self.$showingDeleteConfirmation){
             return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
                          primaryButton: .destructive(Text("Delete")) {

@@ -8,20 +8,16 @@
 
 import SwiftUI
 
-//final class Editierbar: ObservableObject {
-//    @Published var isEditierbar: Bool = true
-//}
-//
-
 struct FoodDetailsView: View {
     
     @Environment(\.managedObjectContext) var viewContext
     @EnvironmentObject var currentMeal: Meal
 
-    var nutrientCollection: NutrientCollection
+    var ingredientCollection: IngredientCollection
     @ObservedObject var food: Food
     @State private var editingDisabled = true
     @State private var showingAddOrChangeAmountOfFoodView = false
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var nutrientSections = NutrientSectionViewModel.sections()
     
@@ -116,10 +112,11 @@ struct FoodDetailsView: View {
             }
         }
         .onAppear() {
+            print("foodDetail appears")
             print(self.currentMeal.description)
         }
-
         .onDisappear() {
+             print("foodDetail disappears")
             if self.viewContext.hasChanges {
                 self.food.dateOfLastModification = Date()
                 try? self.viewContext.save()            
@@ -137,15 +134,14 @@ struct FoodDetailsView: View {
         }
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
             AddOrChangeAmountOfFoodView(food: self.food,
-                        task: Task.addAmountOfFoodToNutrientCollection(self.currentMeal as NutrientCollection),
-                        isPresented: self.$showingAddOrChangeAmountOfFoodView)
+                        task: .addAmountOfFoodToIngredientCollection(self.currentMeal as IngredientCollection),
+                        isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
                 .environment(\.managedObjectContext, self.viewContext)})
         )
             .navigationBarTitle(self.food.name ?? "no name given")
             .resignKeyboardOnDragGesture()
     }
 }
-
 
 
 
@@ -182,7 +178,7 @@ struct FoodDetailsView_Previews: PreviewProvider {
                 }()
         
         return NavigationView {
-             FoodDetailsView(nutrientCollection: Meal.newestMeal(managedObjectContext: context) as NutrientCollection, food: food)
+             FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: context) as IngredientCollection, food: food)
                 .environment(\.managedObjectContext, context)
                 .navigationBarTitle(food.name ?? "Lebensmittel")
         }
