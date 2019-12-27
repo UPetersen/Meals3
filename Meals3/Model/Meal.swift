@@ -48,6 +48,9 @@ extension Meal {
 
 }
 
+extension Meal: Identifiable {
+    
+}
 
 extension Collection where Element == Meal, Index == Int {
     func delete(at indices: IndexSet, from managedObjectContext: NSManagedObjectContext) {

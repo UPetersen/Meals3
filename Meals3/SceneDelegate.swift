@@ -22,16 +22,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Get the managed object context from the shared persistent container
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
+        // Ohter shared classes
+        let search = Search() // everything for the search bars
+        
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath
-//        let contentView = ContentView().environment(\.managedObjectContext, context)
-        let appView = AppView().environment(\.managedObjectContext, context)
+        let contentView = ContentView()
+            .environment(\.managedObjectContext, context)
+            .environmentObject(search)
+//        let appView = AppView().environment(\.managedObjectContext, context)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             
-//            window.rootViewController = UIHostingController(rootView: contentView)
-            window.rootViewController = UIHostingController(rootView: appView)
+            window.rootViewController = UIHostingController(rootView: contentView)
+//            window.rootViewController = UIHostingController(rootView: appView)
+            
+            // Speed up all animations (view transitions)
+            window.layer.speed = 2.0
+
             self.window = window
             window.makeKeyAndVisible()
         }

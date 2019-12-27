@@ -147,6 +147,23 @@ extension Food {
         }
     }
 
+    func isMealIngredient() -> Bool {
+        if self.mealIngredients != nil && self.mealIngredients!.count > 0 {
+            return true
+        }
+        return false
+    }
+    
+    func isRecipeIngredient() -> Bool {
+        if self.recipeIngredients != nil && self.recipeIngredients!.count > 0 {
+            return true
+        }
+        return false
+    }
+    
+    func isMealAndRecipeIngredient() -> Bool {
+        return self.isMealIngredient() && self.isRecipeIngredient()
+    }
     
     /// Return the value as a String in the unit specified by hkDispUnit in nutrients, e.g. "12.3 µg"
     /// If something fails, either nil or an empty unit string (e.g. "g") is returned, depending on showUnit
@@ -180,7 +197,17 @@ extension Food {
         self.didAccessValue(forKey: "uppercaseFirstLetterOfName")
         return String(aString[...aString.startIndex]) // 2017-10-08: Swift 4, hopefully this works fine (and supports at least UTF-16)
     }
+
+
+
+
 }
+
+
+extension Food: Identifiable {
+    
+}
+
 
 
 extension Food: HasNutrients {

@@ -8,18 +8,21 @@
 
 import Foundation
 
-struct NutrientSectionViewModel: Hashable {
+struct NutrientSectionViewModel: Hashable, Identifiable {
     var header: String
     var keys: [String]
     
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(header)
+    var id: String {
+        self.header
     }
+    
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(header)
+//    }
 }
 
 extension NutrientSectionViewModel {
     static func sections() -> [NutrientSectionViewModel] {
-//        var sections: [NutrientSectionViewModel]
         var sections = [NutrientSectionViewModel(header: "GRUNDNÄHRWERTE JE 100 g",
                                                 keys: ["totalEnergyCals", "totalCarb", "totalProtein", "totalFat", "totalAlcohol", "totalDietaryFiber", "totalMineralsInRawAsh","totalOrganicAcids","totalWater", "totalSalt"]
         )]

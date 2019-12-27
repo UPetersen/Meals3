@@ -24,7 +24,7 @@ extension MealIngredient {
     }
 }
 
-extension MealIngredient: Ingredient {
+extension MealIngredient: Ingredient, Identifiable {
     
 }
 

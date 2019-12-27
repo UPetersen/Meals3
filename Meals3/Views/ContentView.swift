@@ -21,59 +21,68 @@ private let dateFormatter: DateFormatter = {
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
-    @State private var searchText = ""
+    @EnvironmentObject var search: Search
     
+    let oneMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
+        print("in Numberformatter")
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        numberFormatter.maximumFractionDigits = 1
+        numberFormatter.roundingMode = NumberFormatter.RoundingMode.halfUp
+        numberFormatter.zeroSymbol = "0"
+        return numberFormatter
+    }()
 
- 
+    @ObservedObject var newSearch = Search()
+
+//    @State private var searchText = ""
+    @State private var showMenu: Bool = false
+    
     var body: some View {
+                
+        return NavigationView {
+            GeometryReader { geometry in
+                ZStack(alignment: .leading)  {
+                    VStack{
+                        SearchBarView(searchText: self.$newSearch.text)
+  
+                        SearchResultsView(search: self.newSearch, formatter: self.oneMaxDigitsNumberFormatter)
+//                        MealsView(search: self.search)
 
-
-
-        NavigationView {
-            
-            // Search view
-
-            VStack {
-
-                SearchBarView(searchText: $searchText)
-                .resignKeyboardOnDragGesture()
-
-                MealsView(searchText: $searchText)
-                    .navigationBarTitle(Text("Master"))
-                    .navigationBarItems(
-                        leading: EditButton(),
-                        trailing: Button(
-                            action: {
-                                withAnimation {
-                                    Event.create(in: self.viewContext)
-                                    // Create a new Meal
-                                    let _ = Meal(context: self.viewContext)
-                                    try? self.viewContext.save()
-                                    //                                HealthManager.synchronize(meal, withSynchronisationMode: .save)
-                                }
-                        }
-                        ) {
-                            Image(systemName: "plus")
-                        }
-                )
-                Text("Detail view content goes here")
-                    .navigationBarTitle(Text("Detail"))
-            }.navigationViewStyle(DoubleColumnNavigationViewStyle())
-//            .resignKeyboardOnDragGesture()
-
-            
+                        // Bottom tool bar
+                        MainViewToolbar()
+                    }
+                    .offset(x: self.showMenu ? geometry.size.width*0.4 : 0)
+                    .disabled(self.showMenu ? true : false)
+                    
+                    if self.showMenu {
+                        MenuView(showMenu: self.$showMenu)
+                            .frame(width: geometry.size.width*0.6, height: geometry.size.height)
+                            .transition(.move(edge: .leading))
+//                            .gesture(drag)
+                    }
+                }
+            }
+            .navigationViewStyle(StackNavigationViewStyle())
+//            .navigationViewStyle(DoubleColumnNavigationViewStyle())
+            .navigationBarTitle(Text("Mahlzeiten"), displayMode: .inline)
+            .navigationBarItems(
+                leading: Button(action: { withAnimation { self.showMenu.toggle() } },
+                                label: { Image(systemName: "line.horizontal.3").padding() }
+            ), trailing: EditButton())
+            //            .resignKeyboardOnDragGesture()
         }
+        
+        ////            .resignKeyboardOnDragGesture()
+        //        }
     }
 }
-
-//struct MealsView: View {
-//}
 
 
 struct MealDetailView: View {
     @ObservedObject var meal: Meal
     @State private var birthDate: Date = Date()
-
+    
     var body: some View {
         
         let formatter = RelativeDateTimeFormatter()
@@ -83,21 +92,21 @@ struct MealDetailView: View {
             get: {self.meal.dateOfCreation ?? Date()},
             set: {self.meal.dateOfCreation = $0}
         )
-                
+        
         return VStack {
             Text("\(meal.dateOfCreation ?? Date(), formatter: dateFormatter)")
             Text(dateString(date: meal.dateOfCreation))
             
             Text("\(meal.dateOfLastModification ?? Date(), formatter: dateFormatter)")
             Text(dateString(date: meal.dateOfLastModification))
-
+            
             DatePicker("", selection: date)
             Divider()
-      
+            
             Text("Meal has \(meal.ingredients?.count ?? 0) ingredients:")
-
+            
             MealIngredientsView(meal: meal)
-
+            
             Text("Comment")
             Text("this shall be the comment")
         }
@@ -115,8 +124,7 @@ struct MealDetailView: View {
         aFormatter.timeStyle = .short
         aFormatter.dateStyle = .full
         aFormatter.doesRelativeDateFormatting = true // "E.g. yesterday
-//        aFormatter.locale = Locale(identifier: "de_DE")
-        print("aFormatter: \(aFormatter.string(from: date))")
+        //        aFormatter.locale = Locale(identifier: "de_DE")
         return aFormatter.string(from: date)
     }
     
@@ -127,7 +135,7 @@ struct MealDetailView: View {
 
 struct MealIngredientsView: View {
     @ObservedObject var meal: Meal
-
+    
     var body: some View {
         return List {
             if meal.filteredAndSortedMealIngredients() == nil {

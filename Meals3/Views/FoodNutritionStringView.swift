@@ -12,13 +12,21 @@ struct FoodNutritionStringView: View {
     
     var text: String = ""
     @Binding var value: String?
+    @Binding var editingDisabled: Bool
     
     var body: some View {
         
-        HStack {
+        let valueAsString = Binding<String> (
+            get: { self.value ?? "no name" },
+            set: { self.value = $0 }
+        )
+        
+        return HStack {
             Text(text)
             Spacer()
-            Text(value ?? "")
+            TextField(text, text: valueAsString)
+                .multilineTextAlignment(.trailing)
+            .foodInputFieldEditingModifier(editingDisabled: editingDisabled)
         }
     }
 }
@@ -67,13 +75,13 @@ struct FoodNutritionStringView_Previews: PreviewProvider {
         
         return NavigationView {
              VStack {
-                 FoodNutritionStringView(text: "Name", value: $string0)
+                FoodNutritionStringView(text: "Name", value: $string0, editingDisabled: .constant(true))
                  Divider()
-                 FoodNutritionStringView(text: "Detail", value: $string1)
+                 FoodNutritionStringView(text: "Detail", value: $string1, editingDisabled: .constant(true))
                  Divider()
-                 FoodNutritionStringView(text: "Untergr.", value: $string2)
+                 FoodNutritionStringView(text: "Untergr.", value: $string2, editingDisabled: .constant(true))
                  Divider()
-                 FoodNutritionStringView(text: "Refer.", value: $string3)
+                 FoodNutritionStringView(text: "Refer.", value: $string3, editingDisabled: .constant(true))
                  Divider()
 
              }.padding()

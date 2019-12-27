@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct FoodNumberCellWithKey: View {
+struct FoodNumberFieldWithKey: View {
     
     // TODO: testen und vergleichen, insbesondere, wie oft etwas aufgerufen wird. (Ggf. auch Rechenleistung durch ForEach mit 100.000 Elementen oder so.
     // a.) Wie hier mit Aniview
@@ -41,7 +41,7 @@ struct FoodNumberCellWithKey: View {
                     NSNumberTextField(label: "", value: value, formatter: numberFormatter)
                     Text(nutrient.hkDispUnitText)
                 }
-                .foodCellEditingModifier(editingDisabled: editingDisabled)
+                .foodInputFieldEditingModifier(editingDisabled: editingDisabled)
 
             })
         } else {
@@ -53,7 +53,7 @@ struct FoodNumberCellWithKey: View {
 }
 
 
-struct FoodCellEditingModifier: ViewModifier {
+struct FoodInputFieldEditingModifier: ViewModifier {
     var editingDisabled: Bool = true
     
     func body(content: Content) -> some View {
@@ -76,8 +76,8 @@ struct FoodCellEditingModifier: ViewModifier {
 }
 
 extension View {
-    func foodCellEditingModifier(editingDisabled: Bool) -> some View {
-        modifier(FoodCellEditingModifier(editingDisabled: editingDisabled))
+    func foodInputFieldEditingModifier(editingDisabled: Bool) -> some View {
+        modifier(FoodInputFieldEditingModifier(editingDisabled: editingDisabled))
     }
 }
 
@@ -121,7 +121,7 @@ struct FoodNumberCellWithKey_Previews: PreviewProvider {
 
         return NavigationView {
             Form {
-                FoodNumberCellWithKey(editingDisabled: $isDisabled, food: food, key: "totalEnergyCals", numberFormatter: NumberFormatter())
+                FoodNumberFieldWithKey(editingDisabled: $isDisabled, food: food, key: "totalEnergyCals", numberFormatter: NumberFormatter())
                     .environment(\.managedObjectContext, context)
                     .navigationBarTitle(food.name ?? "no name given")
             }

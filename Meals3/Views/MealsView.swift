@@ -12,6 +12,7 @@ import CoreData
 struct MealsView: View {
     
     @Environment(\.managedObjectContext) var viewContext
+    @ObservedObject var search: Search
     
     //    @FetchRequest(
     //        sortDescriptors: [NSSortDescriptor(keyPath: \Meal.dateOfCreation, ascending: false)],
@@ -23,15 +24,16 @@ struct MealsView: View {
 
     // Todo: ensure that there always exists a current meal
     
-    @Binding var searchText: String
+//    @Binding var searchText: String
     @FetchRequest var meals: FetchedResults<Meal>
-    init(searchText: Binding<String>) {
-        
+    
+    init(search: Search) {
+        self.search = search
         let searchFilter = SearchFilter.Contains
-        self._searchText = searchText
         
         let request = NSFetchRequest<Meal>(entityName: "Meal")
-        request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(searchText.wrappedValue)
+        request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(search.text)
+//        request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(searchText.wrappedValue)
         request.fetchBatchSize = 50
         request.fetchLimit = 50  // Speeds up a lot, especially inital loading of this view controller, but needs care
         request.returnsObjectsAsFaults = true   // objects are only loaded, when needed/used -> faster but more frequent disk reads
@@ -42,10 +44,9 @@ struct MealsView: View {
         self._meals = FetchRequest(fetchRequest: request)
     }
     
-    
     var body: some View {
         List {
-            ForEach(meals, id: \.self) { (meal: Meal) in
+            ForEach(meals){ (meal: Meal) in
                 
                 Section(header:
                     NavigationLink(destination: MealDetailView(meal: meal)) {
@@ -53,13 +54,13 @@ struct MealsView: View {
                     }
                 ) {
                     MealNutrientsView(meal: meal)
-                    ForEach(meal.filteredAndSortedMealIngredients()!, id: \.self) { (mealIngredient: MealIngredient) in
+                    ForEach(meal.filteredAndSortedMealIngredients()!) { (mealIngredient: MealIngredient) in
                         
                         NavigationLink(destination:
-                        FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as IngredientCollection,
-                                        food: mealIngredient.food!)
-                            .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))) {
-                            MealIngredientCellView(mealIngredient: mealIngredient)
+                            FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as IngredientCollection,
+                                            food: mealIngredient.food!)
+                                .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))) {
+                                    MealIngredientCellView(mealIngredient: mealIngredient)
                         }
                     }
                 }
@@ -71,6 +72,7 @@ struct MealsView: View {
                 self.showingDeleteConfirmation = true
             }
         }
+        .resignKeyboardOnDragGesture() // must be outermost
         .alert(isPresented: self.$showingDeleteConfirmation){
             return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
                          primaryButton: .destructive(Text("Delete")) {
