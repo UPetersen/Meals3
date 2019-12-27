@@ -12,7 +12,7 @@ struct MenuView: View {
     @Environment(\.managedObjectContext) var viewContext
     @Binding var showMenu: Bool
     @State private var isPresentingNewFood: Bool = false
-    
+        
     var body: some View {
         
         // small drag to remove menu
@@ -80,6 +80,9 @@ struct MenuView: View {
         }
     }
 }
+
+
+
 
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {

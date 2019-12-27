@@ -9,6 +9,8 @@
 import SwiftUI
 import CoreData
 
+
+
 struct SearchResultsView: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var search: Search
@@ -20,18 +22,15 @@ struct SearchResultsView: View {
     //    private var fetchRequest: FetchRequest<Food>
     //    private var foods: FetchedResults<Food> { fetchRequest.wrappedValue }
 
-    private var totalFoodsCount: Int { // fixed property requires to pass viewContext as parameter to this struct
-        do {
-            let counts = try viewContext.count(for: self.nsFetchRequest)
-            return counts
-        } catch {
-            print(error)
-        }
-        return -1
-    }
+    private var totalFoodsCount: Int { (try? viewContext.count(for: self.nsFetchRequest)) ?? -1 }
 
     @State private var didScrollDown = false
     @State private var didScrollUp = false
+    
+    @State private var headerAppeared = false
+    @State private var headerDisAppeared = false
+    @State private var footerAppeared = false
+    @State private var footerDisAppeared = false
 
     init(search: Search, formatter: NumberFormatter) {
         self.search = search
@@ -72,7 +71,7 @@ struct SearchResultsView: View {
         VStack {
             HStack {  // Header row with count information, e.g. "0 bis 49 von 166"
                 Spacer()
-                Text("\(self.search.fetchOffset) bis \(self.search.fetchOffset + self.foods.endIndex-1) von \(self.totalFoodsCount)")
+                Text("\(self.search.fetchOffset) bis \(self.search.fetchOffset + self.foods.endIndex-1) von \(self.totalFoodsCount), h: \(self.headerAppeared.description)|\(self.headerDisAppeared.description), f: \(self.footerAppeared.description)| \(self.footerDisAppeared.description)")
                 Spacer()
             }
             .font(.footnote)
@@ -80,53 +79,44 @@ struct SearchResultsView: View {
             .frame(height: 10)
             
             List {
-                Text("")
-                    .multilineTextAlignment(.center)
-                    .frame(width: 0, height: 0)
-                    .onAppear(){
-                        print("header did apear")
-                        if self.didScrollDown {
-                            self.scrollUp()
-                        }
-                        //                    self.scrollUp()
-                        //                    self.search.fetchOffset = 0 //max(0, self.search.fetchOffset - self.search.fetchLimit)
+                Text("").frame(width: 0, height: 0).hidden()
+                    .onAppear(){ self.shouldScrollUp()
+//                        }
+                        self.headerAppeared = true
+                        self.headerDisAppeared = false
                 }.onDisappear() {
-                    print("header disappeared")
                     self.didScrollDown = true
+                    
+                    self.headerAppeared = false
+                    self.headerDisAppeared = true
                 }
                 
                 ForEach(foods) { (food: Food) in
                     VStack(alignment: .leading) {
-                        Text(food.name ?? "no name")
+                        Text(food.name ?? "")
                         Text(self.nutrientStringForFood(food: food))
                             .font(.footnote)
                     }
                 }
                 
-                Text("")
-                    .frame(width: 0, height: 0)
+                Text("").frame(width: 0, height: 0)
                     .onAppear(){
-                        print("footer appeared: \(self.search.fetchLimit)")
-                        //                    if self.fetchRequest.wrappedValue.count < self.search.fetchLimit {
-                        //                        print("am Ende")
-                        //                        self.scrollUp()
-                        //                    } else {
-                        //                        print("not am ende")
-                        //                        print("offset davor: \(self.search.fetchOffset)")
-                        //                        self.search.fetchOffset = self.search.fetchOffset + self.search.fetchLimit
-                        //                        print("offset danach \(self.search.fetchOffset)")
-                        //                    }
+                        self.shouldScrollDown()
                         
-                        self.search.fetchOffset = self.search.fetchOffset + 30
-                        
-                        //                self.search.fetchOffset = min(self.foods.count - self.search.fetchLimit, self.search.fetchOffset + self.search.fetchLimit)
+                        self.footerAppeared = true
+                        self.footerDisAppeared = false
+                }.onDisappear() {
+                    self.footerAppeared = false
+                    self.footerDisAppeared = true
                 }
             }
-            .environment(\.defaultMinListRowHeight, 1)
+            .environment(\.defaultMinListRowHeight, -10)
                 .resignKeyboardOnDragGesture() // must be outside of the list
-                
-                .onTapGesture {
-                    //            self.search.fetchOffset = self.search.fetchOffset + 10
+                .onTapGesture(count: 2) {
+                    print("double tap")
+                    self.search.fetchOffset = 0 // double tap moves to top of list (by refetching with offset = 0)
+                }
+                .onTapGesture { // single tap prints debug data to console
                     print("startIndex: \(self.foods.startIndex)")
                     print("endIndex: \(self.foods.endIndex)")
                     print("count: \(self.foods.count)")
@@ -139,15 +129,21 @@ struct SearchResultsView: View {
         }
     }
     
-        
-    func scrollUp() {
-        if self.search.fetchOffset <= 0 {
-            return
-        } else {
-            self.search.fetchOffset = max(0, self.search.fetchOffset - self.foods.count)
+    func shouldScrollDown() {
+        print("should scroll down")
+        let newOffset = max ( 0, min(self.search.fetchOffset + 30, self.totalFoodsCount - self.search.fetchLimit) )
+        if self.search.fetchOffset != newOffset {
+            self.search.fetchOffset = newOffset
         }
     }
-    
+        
+    func shouldScrollUp() {
+        print("should scoll up")
+        guard self.search.fetchOffset > 0 && self.didScrollDown else {
+            return
+        }
+        self.search.fetchOffset = max(0, self.search.fetchOffset - self.foods.count)
+    }
     
     
     func nutrientStringForFood(food: Food?) -> String {
