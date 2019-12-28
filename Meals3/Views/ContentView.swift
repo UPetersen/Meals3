@@ -21,7 +21,7 @@ private let dateFormatter: DateFormatter = {
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
-    @EnvironmentObject var search: Search
+//    @EnvironmentObject var search: Search
     
     let oneMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
         print("in Numberformatter")
@@ -33,7 +33,7 @@ struct ContentView: View {
         return numberFormatter
     }()
 
-    @ObservedObject var newSearch = Search()
+    @ObservedObject var search = Search()
 
 //    @State private var searchText = ""
     @State private var showMenu: Bool = false
@@ -44,10 +44,10 @@ struct ContentView: View {
             GeometryReader { geometry in
                 ZStack(alignment: .leading)  {
                     VStack{
-                        SearchBarView(searchText: self.$newSearch.text)
+                        SearchBarView(searchText: self.$search.text)
   
-                        SearchResultsView(search: self.newSearch, formatter: self.oneMaxDigitsNumberFormatter)
-//                        MealsView(search: self.search)
+//                        SearchResultsView(search: self.newSearch, formatter: self.oneMaxDigitsNumberFormatter)
+                        MealsView(search: self.search)
 
                         // Bottom tool bar
                         MainViewToolbar()

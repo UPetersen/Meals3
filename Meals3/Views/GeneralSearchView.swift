@@ -10,7 +10,6 @@ import SwiftUI
 
 struct GeneralSearchView: View {
     @Environment(\.managedObjectContext) var viewContext
-    @EnvironmentObject var search: Search
     
     let oneMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
         let numberFormatter = NumberFormatter()
@@ -21,16 +20,15 @@ struct GeneralSearchView: View {
         return numberFormatter
     }()
 
-
-@ObservedObject var newSearch = Search()
+    @ObservedObject var search = Search()
 
     var body: some View {
         
         return VStack{
-            SearchBarView(searchText: $newSearch.text)
+            SearchBarView(searchText: $search.text)
                 .resignKeyboardOnDragGesture()
             
-            SearchResultsView(search: newSearch, formatter: oneMaxDigitsNumberFormatter)
+            SearchResultsView(search: search, formatter: oneMaxDigitsNumberFormatter)
                         
             // Bottom tool bar
 //            GeneralSearchViewToolbar()
@@ -43,12 +41,10 @@ struct GeneralSearchView: View {
 struct GeneralSearchView_Previews: PreviewProvider {
     static var previews: some View {
         let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
-        
 
         return NavigationView {
             return GeneralSearchView()
-                .environmentObject(Search())
+//                .environmentObject(Search())
                 .environment(\.managedObjectContext, viewContext)
                 .navigationBarTitle("General search")
         }

@@ -42,24 +42,31 @@ struct AddOrChangeAmountOfFoodView: View {
                 Button("Cancel") { self.isPresented = false }.padding(),
                                 trailing:
                 Button("Save") {
-                    if let amount = self.amount {
-                        switch self.task {
-                        case .addAmountOfFoodToIngredientCollection(let ingredientCollection):
-                            ingredientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
-                            DispatchQueue.main.async {
-                                ingredientCollection.objectWillChange.send()
-                                self.isPresented = false // dismiss self
-                                self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
-                            }
-                        case .changeAmountOfIngredient(var ingredient):
-                            DispatchQueue.main.async {
-                                ingredient.amount = self.amount
-                                self.isPresented = false // dismiss self
-                            }
-                        }
-                    }
+                    self.save()
                 }.padding()
             )
+        }
+            .onTapGesture(count: 2) {
+                self.save()
+        }
+
+    }
+    func save() {
+        if let amount = self.amount {
+            switch self.task {
+            case .addAmountOfFoodToIngredientCollection(let ingredientCollection):
+                ingredientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
+                DispatchQueue.main.async {
+                    ingredientCollection.objectWillChange.send()
+                    self.isPresented = false // dismiss self
+                    self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
+                }
+            case .changeAmountOfIngredient(var ingredient):
+                DispatchQueue.main.async {
+                    ingredient.amount = self.amount
+                    self.isPresented = false // dismiss self
+                }
+            }
         }
     }
     

@@ -33,6 +33,8 @@ struct SearchResultsView: View {
     @State private var footerDisAppeared = false
 
     init(search: Search, formatter: NumberFormatter) {
+        print("initialization of search results")
+        
         self.search = search
         self.formatter = formatter
         
@@ -79,8 +81,10 @@ struct SearchResultsView: View {
             .frame(height: 10)
             
             List {
-                Text("").frame(width: 0, height: 0).hidden()
-                    .onAppear(){ self.shouldScrollUp()
+                // TODO: remove the invisible header and footer text row and move the test into the ForEach and test every single cell when it appears if it is the first or the last cell and then page up or down. See also https://stackoverflow.com/questions/56893240/is-there-any-way-to-make-a-paged-scrollview-in-swiftui , and there the last post.
+                // But maybe this post https://stackoverflow.com/questions/57258846/how-to-make-a-swiftui-list-scroll-automatically/58708206#58708206 is more close to what is needed.
+                Text("").frame(width: 0, height: 0)  //.hidden()
+                    .onAppear(){ self.shouldLoadPreviousPage()
 //                        }
                         self.headerAppeared = true
                         self.headerDisAppeared = false
@@ -92,16 +96,14 @@ struct SearchResultsView: View {
                 }
                 
                 ForEach(foods) { (food: Food) in
-                    VStack(alignment: .leading) {
-                        Text(food.name ?? "")
-                        Text(self.nutrientStringForFood(food: food))
-                            .font(.footnote)
+                    NavigationLink(destination: LazyView(self.foodDetailsView(food: food)) ) {
+                             FoodNutrientsRowView(food: food, formatter: self.formatter)
                     }
                 }
                 
                 Text("").frame(width: 0, height: 0)
                     .onAppear(){
-                        self.shouldScrollDown()
+                        self.shouldLoadNextPage()
                         
                         self.footerAppeared = true
                         self.footerDisAppeared = false
@@ -110,53 +112,45 @@ struct SearchResultsView: View {
                     self.footerDisAppeared = true
                 }
             }
-            .environment(\.defaultMinListRowHeight, -10)
+            .environment(\.defaultMinListRowHeight, 1) // for invisible header and footer, which keep this space unfortunately
                 .resignKeyboardOnDragGesture() // must be outside of the list
-                .onTapGesture(count: 2) {
-                    print("double tap")
-                    self.search.fetchOffset = 0 // double tap moves to top of list (by refetching with offset = 0)
-                }
-                .onTapGesture { // single tap prints debug data to console
-                    print("startIndex: \(self.foods.startIndex)")
-                    print("endIndex: \(self.foods.endIndex)")
-                    print("count: \(self.foods.count)")
-                    print("underestimatedCount: \(self.foods.underestimatedCount)")
-                    print("indices: \(self.foods.indices.description)")
-                    print("count all: \(self.totalFoodsCount)")
-                    print("offset: \(self.search.fetchOffset)")
-                    print("limit: \(self.search.fetchLimit)")
-            }
+//                .onTapGesture(count: 2) {
+//                    print("double tap")
+//                    self.search.fetchOffset = 0 // double tap moves to top of list (by refetching with offset = 0)
+//                }
+//                .onTapGesture { // single tap prints debug data to console
+//                    print("startIndex: \(self.foods.startIndex)")
+//                    print("endIndex: \(self.foods.endIndex)")
+//                    print("count: \(self.foods.count)")
+//                    print("underestimatedCount: \(self.foods.underestimatedCount)")
+//                    print("indices: \(self.foods.indices.description)")
+//                    print("count all: \(self.totalFoodsCount)")
+//                    print("offset: \(self.search.fetchOffset)")
+//                    print("limit: \(self.search.fetchLimit)")
+//            }
         }
     }
+        
+    func foodDetailsView(food: Food) -> some View {
+        FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as IngredientCollection,
+                    food: food)
+        .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
+    }
     
-    func shouldScrollDown() {
-        print("should scroll down")
+    func shouldLoadNextPage() {
+        print("should load next page")
         let newOffset = max ( 0, min(self.search.fetchOffset + 30, self.totalFoodsCount - self.search.fetchLimit) )
         if self.search.fetchOffset != newOffset {
             self.search.fetchOffset = newOffset
         }
     }
         
-    func shouldScrollUp() {
-        print("should scoll up")
+    func shouldLoadPreviousPage() {
+        print("should load previous page")
         guard self.search.fetchOffset > 0 && self.didScrollDown else {
             return
         }
         self.search.fetchOffset = max(0, self.search.fetchOffset - self.foods.count)
-    }
-    
-    
-    func nutrientStringForFood(food: Food?) -> String {
-        if let food = food {
-            let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: food.doubleForKey("totalEnergyCals"), formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: food.doubleForKey("totalCarb"),    formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            let totalProtein = Nutrient.dispStringForNutrientWithKey("totalProtein", value: food.doubleForKey("totalProtein"), formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            let totalFat     = Nutrient.dispStringForNutrientWithKey("totalFat",     value: food.doubleForKey("totalFat"),     formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            let carbFructose = Nutrient.dispStringForNutrientWithKey("carbFructose", value: food.doubleForKey("carbFructose"), formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            let carbGlucose   = Nutrient.dispStringForNutrientWithKey("carbGlucose", value: food.doubleForKey("carbGlucose"),  formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            return totalEnergyCals + ", " + totalCarb + " KH, " + totalProtein + " P, " + totalFat + " F, " + carbFructose + " Fr., " + carbGlucose + " Gl."
-        }
-        return "no data"
     }
 }
 

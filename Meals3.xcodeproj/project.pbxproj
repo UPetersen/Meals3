@@ -34,6 +34,8 @@
 		C62BB6D423B0AC2E000132F0 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6D323B0AC2E000132F0 /* SearchResultsView.swift */; };
 		C62E84AF237FD99A002424C8 /* FoodNutritionNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62E84AE237FD99A002424C8 /* FoodNutritionNumberView.swift */; };
 		C63792B323A541E2006824E1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63792B223A541E2006824E1 /* Item.swift */; };
+		C648803B23B7E41100294EFD /* HelperViewsAndStuff.swift in Sources */ = {isa = PBXBuildFile; fileRef = C648803A23B7E41100294EFD /* HelperViewsAndStuff.swift */; };
+		C648803D23B7E44400294EFD /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C648803C23B7E44400294EFD /* LazyView.swift */; };
 		C64F34762393AAA5001C9511 /* FoodNumberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64F34752393AAA5001C9511 /* FoodNumberCell.swift */; };
 		C64F34782393B5C3001C9511 /* FoodNumberFieldWithKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64F34772393B5C3001C9511 /* FoodNumberFieldWithKey.swift */; };
 		C65768422376B46000D6CB98 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65768412376B46000D6CB98 /* SearchFilter.swift */; };
@@ -48,6 +50,7 @@
 		C6AD65F5236B5D750021D5A6 /* Event+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AD65F3236B5D750021D5A6 /* Event+CoreDataProperties.swift */; };
 		C6AF67D02373542F009331F6 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF67CF2373542F009331F6 /* AppView.swift */; };
 		C6C61F17238EE87F009E2F98 /* NSNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */; };
+		C6D58A7523B7CB9A0037A589 /* FoodNutrientsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D58A7423B7CB9A0037A589 /* FoodNutrientsRowView.swift */; };
 		C6F45B84236B65AD00C4FAC3 /* GeoLocation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F45B62236B65AD00C4FAC3 /* GeoLocation+CoreDataClass.swift */; };
 		C6F45B85236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F45B63236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift */; };
 		C6F45B86236B65AD00C4FAC3 /* Group+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F45B64236B65AD00C4FAC3 /* Group+CoreDataClass.swift */; };
@@ -144,6 +147,8 @@
 		C62BB6D323B0AC2E000132F0 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		C62E84AE237FD99A002424C8 /* FoodNutritionNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutritionNumberView.swift; sourceTree = "<group>"; };
 		C63792B223A541E2006824E1 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		C648803A23B7E41100294EFD /* HelperViewsAndStuff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperViewsAndStuff.swift; sourceTree = "<group>"; };
+		C648803C23B7E44400294EFD /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		C64F34752393AAA5001C9511 /* FoodNumberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNumberCell.swift; sourceTree = "<group>"; };
 		C64F34772393B5C3001C9511 /* FoodNumberFieldWithKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNumberFieldWithKey.swift; sourceTree = "<group>"; };
 		C65768412376B46000D6CB98 /* SearchFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
@@ -158,6 +163,7 @@
 		C6AD65F3236B5D750021D5A6 /* Event+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C6AF67CF2373542F009331F6 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNumberTextField.swift; sourceTree = "<group>"; };
+		C6D58A7423B7CB9A0037A589 /* FoodNutrientsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutrientsRowView.swift; sourceTree = "<group>"; };
 		C6F45B62236B65AD00C4FAC3 /* GeoLocation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GeoLocation+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C6F45B63236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GeoLocation+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C6F45B64236B65AD00C4FAC3 /* Group+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Group+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -282,6 +288,8 @@
 				C62BB6CB23B003D0000132F0 /* MainViewToolbar.swift */,
 				C62BB6CD23B00700000132F0 /* GeneralSearchView.swift */,
 				C62BB6D323B0AC2E000132F0 /* SearchResultsView.swift */,
+				C648803C23B7E44400294EFD /* LazyView.swift */,
+				C6D58A7423B7CB9A0037A589 /* FoodNutrientsRowView.swift */,
 				C6A203E923ABFE1F0022ABDD /* MenuView.swift */,
 				C692116723A4FCDF000AC4A2 /* AddOrChangeAmountOfFoodView.swift */,
 				C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */,
@@ -294,6 +302,7 @@
 				C683C9D62378472700EDCB66 /* FoodDetailsView.swift */,
 				C64F34772393B5C3001C9511 /* FoodNumberFieldWithKey.swift */,
 				C607D03223809C50009BA48C /* FoodNutritionStringView.swift */,
+				C648803A23B7E41100294EFD /* HelperViewsAndStuff.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -574,6 +583,7 @@
 				C6F45BA3236B65AD00C4FAC3 /* Recipe+CoreDataProperties.swift in Sources */,
 				C62BB6CE23B00700000132F0 /* GeneralSearchView.swift in Sources */,
 				C6AD65F4236B5D750021D5A6 /* Event+CoreDataClass.swift in Sources */,
+				C6D58A7523B7CB9A0037A589 /* FoodNutrientsRowView.swift in Sources */,
 				C604B2B1236C247A006BFE9E /* SubGroupExtension.swift in Sources */,
 				C6F45B97236B65AD00C4FAC3 /* Nutrient+CoreDataProperties.swift in Sources */,
 				C604B2B6236C247A006BFE9E /* RecipeIngredientExtension.swift in Sources */,
@@ -604,6 +614,7 @@
 				C6FE88BE236B5A3100881ACB /* SceneDelegate.swift in Sources */,
 				C65768442376B94800D6CB98 /* SearchBarView.swift in Sources */,
 				C6F45B9D236B65AD00C4FAC3 /* Meal+CoreDataProperties.swift in Sources */,
+				C648803D23B7E44400294EFD /* LazyView.swift in Sources */,
 				C6F45B85236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift in Sources */,
 				C6F45B89236B65AD00C4FAC3 /* Detail+CoreDataProperties.swift in Sources */,
 				C6F45B9E236B65AD00C4FAC3 /* ServingSize+CoreDataClass.swift in Sources */,
@@ -632,6 +643,7 @@
 				C6F45B90236B65AD00C4FAC3 /* Source+CoreDataClass.swift in Sources */,
 				C62BB6D423B0AC2E000132F0 /* SearchResultsView.swift in Sources */,
 				C6F45B99236B65AD00C4FAC3 /* Preparation+CoreDataProperties.swift in Sources */,
+				C648803B23B7E41100294EFD /* HelperViewsAndStuff.swift in Sources */,
 				C604B2B4236C247A006BFE9E /* NutrientExtension.swift in Sources */,
 				C6F45B84236B65AD00C4FAC3 /* GeoLocation+CoreDataClass.swift in Sources */,
 				C6F45B98236B65AD00C4FAC3 /* Preparation+CoreDataClass.swift in Sources */,

@@ -50,16 +50,12 @@ struct MealsView: View {
                 
                 Section(header:
                     NavigationLink(destination: MealDetailView(meal: meal)) {
-                        MealNutrientsView(meal: meal)
+                        LazyView( MealNutrientsView(meal: meal) )
                     }
                 ) {
                     MealNutrientsView(meal: meal)
                     ForEach(meal.filteredAndSortedMealIngredients()!) { (mealIngredient: MealIngredient) in
-                        
-                        NavigationLink(destination:
-                            FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as IngredientCollection,
-                                            food: mealIngredient.food!)
-                                .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))) {
+                        NavigationLink(destination: self.lazyFoodDetailsView(food: mealIngredient.food!)) {
                                     MealIngredientCellView(mealIngredient: mealIngredient)
                         }
                     }
@@ -83,6 +79,14 @@ struct MealsView: View {
                 },
                          secondaryButton: .cancel())
         }
+    }
+    
+    func lazyFoodDetailsView(food: Food) -> some View {
+        LazyView(
+            FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as IngredientCollection,
+                            food: food)
+                .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
+        )
     }
     
     func move (from source: IndexSet, to destination: Int) {

@@ -107,6 +107,9 @@ struct FoodDetailsView: View {
                     }
                 }
             } // Form
+                .onTapGesture(count: 2) {
+                    self.showingAddOrChangeAmountOfFoodView = true
+            }
 
             FoodDetailViewToolbar(food: food)
             

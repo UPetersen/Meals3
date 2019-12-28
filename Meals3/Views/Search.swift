@@ -8,7 +8,12 @@
 import Combine
 
 class Search: ObservableObject {
-    @Published var text: String = "Eier"
+    @Published var text: String = "Eier" {
+        didSet {
+            fetchOffset = 0
+            print("did set fetchoffset to zero")
+        } // Enforces reload
+    }
     @Published var filter: SearchFilter = .Contains
     @Published var sortRule: FoodListSortRule = .NameAscending
     @Published var foodListType: FoodListType = .All
