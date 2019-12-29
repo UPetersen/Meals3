@@ -26,7 +26,6 @@ struct FoodDetailViewToolbar: View {
                 Image(systemName: "doc.on.doc")
             }
             
-            
             Spacer()
             
             Button(action: {

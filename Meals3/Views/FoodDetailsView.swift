@@ -110,6 +110,8 @@ struct FoodDetailsView: View {
                 .onTapGesture(count: 2) {
                     self.showingAddOrChangeAmountOfFoodView = true
             }
+//            .environment(\.defaultMinListRowHeight, 1)
+
 
             FoodDetailViewToolbar(food: food)
             

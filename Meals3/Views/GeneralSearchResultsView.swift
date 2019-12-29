@@ -1,5 +1,5 @@
 //
-//  SearchResultsView.swift
+//  GeneralSearchResultsView.swift
 //  Meals3
 //
 //  Created by Uwe Petersen on 23.12.19.
@@ -11,7 +11,7 @@ import CoreData
 
 
 
-struct SearchResultsView: View {
+struct GeneralSearchResultsView: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var search: Search
     var formatter: NumberFormatter
@@ -60,7 +60,6 @@ struct SearchResultsView: View {
         request.fetchOffset = 0
         self.nsFetchRequest = request // request for displaying count of foods with fetchOffest = 0 and fetchLimit = 0
 
-        
         // TODO: avoid the need of the following lines and fix the error with the "Ä" in the name
         //        var sectionNameKeyPath = search.sortRule.sectionNameKeyPath
         //        if search.sortRule == FoodListSortRule.NameAscending && (search.foodListType == FoodListType.All || search.foodListType == FoodListType.BLS) {
@@ -156,6 +155,6 @@ struct SearchResultsView: View {
 
 //struct SearchResultsView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        SearchResultsView(search: Search(), formatter: NumberFormatter())
+//        GeneralSearchResultsView(search: Search(), formatter: NumberFormatter())
 //    }
 //}

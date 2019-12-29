@@ -20,7 +20,7 @@ private let dateFormatter: DateFormatter = {
 }()
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) var viewContext
+@Environment(\.managedObjectContext) var viewContext
 //    @EnvironmentObject var search: Search
     
     let oneMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
@@ -46,11 +46,11 @@ struct ContentView: View {
                     VStack{
                         SearchBarView(searchText: self.$search.text)
   
-//                        SearchResultsView(search: self.newSearch, formatter: self.oneMaxDigitsNumberFormatter)
+//                        GeneralSearchResultsView(search: self.newSearch, formatter: self.oneMaxDigitsNumberFormatter)
                         MealsView(search: self.search)
 
                         // Bottom tool bar
-                        MainViewToolbar()
+                        MealsViewToolbar()
                     }
                     .offset(x: self.showMenu ? geometry.size.width*0.4 : 0)
                     .disabled(self.showMenu ? true : false)
@@ -78,62 +78,12 @@ struct ContentView: View {
     }
 }
 
-
-struct MealDetailView: View {
-    @ObservedObject var meal: Meal
-    @State private var birthDate: Date = Date()
-    
-    var body: some View {
-        
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
-        
-        let date = Binding<Date>(
-            get: {self.meal.dateOfCreation ?? Date()},
-            set: {self.meal.dateOfCreation = $0}
-        )
-        
-        return VStack {
-            Text("\(meal.dateOfCreation ?? Date(), formatter: dateFormatter)")
-            Text(dateString(date: meal.dateOfCreation))
-            
-            Text("\(meal.dateOfLastModification ?? Date(), formatter: dateFormatter)")
-            Text(dateString(date: meal.dateOfLastModification))
-            
-            DatePicker("", selection: date)
-            Divider()
-            
-            Text("Meal has \(meal.ingredients?.count ?? 0) ingredients:")
-            
-            MealIngredientsView(meal: meal)
-            
-            Text("Comment")
-            Text("this shall be the comment")
-        }
-        .navigationBarTitle("Mahlzeit-Details")
-        .onDisappear(){
-            try? self.meal.managedObjectContext?.save()
-        }
-    }
-    
-    
-    func dateString(date: Date?) -> String {
-        guard let date = date else { return "no date avaiable" }
-        
-        let aFormatter = DateFormatter()
-        aFormatter.timeStyle = .short
-        aFormatter.dateStyle = .full
-        aFormatter.doesRelativeDateFormatting = true // "E.g. yesterday
-        //        aFormatter.locale = Locale(identifier: "de_DE")
-        return aFormatter.string(from: date)
-    }
-    
-    
-}
+//
 
 
 
 struct MealIngredientsView: View {
+    @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var meal: Meal
     
     var body: some View {
@@ -143,6 +93,15 @@ struct MealIngredientsView: View {
             } else {
                 ForEach(meal.filteredAndSortedMealIngredients()!, id: \.self) { (mealIngredient: MealIngredient) in
                     MealIngredientCellView(mealIngredient: mealIngredient)
+                }
+                .onDelete() { IndexSet in
+                    print("Deleting meal ingredient from food.")
+                    for index in IndexSet {
+                        print (self.meal.filteredAndSortedMealIngredients()![index].description)
+                        self.viewContext.delete(self.meal.filteredAndSortedMealIngredients()![index])
+//                        HealthManager.synchronize(meal, withSynchronisationMode: .update)
+
+                    }
                 }
             }
         }
@@ -155,3 +114,8 @@ struct ContentView_Previews: PreviewProvider {
         return ContentView().environment(\.managedObjectContext, context)
     }
 }
+
+
+//func deleteFruit(offsets: IndexSet) {
+//    fruits.remove(atOffsets: offsets)
+//}

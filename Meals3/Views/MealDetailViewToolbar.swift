@@ -1,14 +1,15 @@
 //
-//  MainViewToolbar.swift
+//  MealDetailViewToolbar.swift
 //  Meals3
 //
-//  Created by Uwe Petersen on 22.12.19.
+//  Created by Uwe Petersen on 29.12.19.
 //  Copyright © 2019 Uwe Petersen. All rights reserved.
 //
 
 import SwiftUI
 
-struct MainViewToolbar: View {
+struct MealDetailViewToolbar: View {
+    
     @Environment(\.managedObjectContext) var viewContext
     @State private var isShowingGeneralSearchView = false
     
@@ -27,8 +28,8 @@ struct MainViewToolbar: View {
 
             Spacer()
             
-            Button(action: { withAnimation {self.newMeal()} },
-                   label: { Image(systemName: "plus") }
+            Button(action: { withAnimation {print("delete the meal with questions")} },
+                   label: { Image(systemName: "trash") }
             )
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
@@ -39,26 +40,12 @@ struct MainViewToolbar: View {
         }
         .padding()
     }
-    
-    func newMeal() {
-        let _ = Meal(context: self.viewContext)
-        try? self.viewContext.save()
-//        HealthManager.synchronize(meal, withSynchronisationMode: .save)
-    }
+
+
 }
 
-
-
-
-
-struct MainViewToolbar_Previews: PreviewProvider {
+struct MealDetailViewToolbar_Previews: PreviewProvider {
     static var previews: some View {
-        let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
-        return NavigationView {
-            return MainViewToolbar()
-                .environment(\.managedObjectContext, viewContext)
-                .navigationBarTitle("Main view toolbar")
-        }
+        MealDetailViewToolbar()
     }
 }

@@ -28,7 +28,7 @@ struct GeneralSearchView: View {
             SearchBarView(searchText: $search.text)
                 .resignKeyboardOnDragGesture()
             
-            SearchResultsView(search: search, formatter: oneMaxDigitsNumberFormatter)
+            GeneralSearchResultsView(search: search, formatter: oneMaxDigitsNumberFormatter)
                         
             // Bottom tool bar
 //            GeneralSearchViewToolbar()

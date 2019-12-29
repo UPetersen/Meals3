@@ -13,12 +13,7 @@ struct MealsView: View {
     
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var search: Search
-    
-    //    @FetchRequest(
-    //        sortDescriptors: [NSSortDescriptor(keyPath: \Meal.dateOfCreation, ascending: false)],
-    //        animation: .default)
-    //    var mealsss: FetchedResults<Meal>
-    
+        
     @State private var showingDeleteConfirmation = false
     @State private var indicesToDelete: IndexSet? = IndexSet()
 
