@@ -48,7 +48,6 @@ struct MealsView: View {
                         LazyView( MealNutrientsView(meal: meal) )
                     }
                 ) {
-                    MealNutrientsView(meal: meal)
                     ForEach(meal.filteredAndSortedMealIngredients()!) { (mealIngredient: MealIngredient) in
                         NavigationLink(destination: self.lazyFoodDetailsView(food: mealIngredient.food!)) {
                                     MealIngredientCellView(mealIngredient: mealIngredient)

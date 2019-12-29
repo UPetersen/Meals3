@@ -16,19 +16,19 @@ struct MealsViewToolbar: View {
     var body: some View {
         HStack {
             Button(action: { withAnimation{print("book")} },
-                   label: { Image(systemName: "book") }
+                   label: { Image(systemName: "book").padding(.horizontal) }
             )
 
             Spacer()
             
             Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
-                   label: { Image(systemName: "magnifyingglass") }
+                   label: { Image(systemName: "magnifyingglass").padding(.horizontal) }
             )
 
             Spacer()
             
             Button(action: { withAnimation {self.newMeal()} },
-                   label: { Image(systemName: "plus") }
+                   label: { Image(systemName: "plus").padding(.horizontal) }
             )
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to

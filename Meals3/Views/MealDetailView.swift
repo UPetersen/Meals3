@@ -32,23 +32,30 @@ struct MealDetailView: View {
         )
         
         return VStack {
-            Text("\(meal.dateOfCreation ?? Date(), formatter: dateFormatter)")
-            Text(dateString(date: meal.dateOfCreation))
-            
-            Text("\(meal.dateOfLastModification ?? Date(), formatter: dateFormatter)")
-            Text(dateString(date: meal.dateOfLastModification))
-            
-            DatePicker("", selection: date)
-            Divider()
-            
-            Text("Meal has \(meal.ingredients?.count ?? 0) ingredients:")
-            
-            MealIngredientsView(meal: meal)
+//            Text("\(meal.dateOfCreation ?? Date(), formatter: dateFormatter)")
+//            Text(dateString(date: meal.dateOfCreation))
+//
+//            Text("\(meal.dateOfLastModification ?? Date(), formatter: dateFormatter)")
+//            Text(dateString(date: meal.dateOfLastModification))
+            Form {
+                Section(header: Text("Datum und Kommentar")) {
+                    DatePicker("Datum", selection: date)
+                }
+                Section(header: Text("Die Mahlzeit hat \(meal.ingredients?.count ?? 0) Zutaten")) {
+                    MealIngredientsView(meal: meal)
+                }
+//                Text("Meal has \(meal.ingredients?.count ?? 0) ingredients:")
+            }
+//            Divider()
+//
+//            Text("Meal has \(meal.ingredients?.count ?? 0) ingredients:")
+//
+//            MealIngredientsView(meal: meal)
             
             MealDetailViewToolbar().environmentObject(meal)
         }
         .navigationBarTitle("Mahlzeit-Details")
-        .navigationBarItems(trailing: EditButton())
+        .navigationBarItems(trailing: EditButton().padding())
         .onDisappear(){
             try? self.meal.managedObjectContext?.save()
         }

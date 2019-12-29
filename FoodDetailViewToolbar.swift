@@ -23,7 +23,7 @@ struct FoodDetailViewToolbar: View {
                 self.copyFood()
                 self.showingCopyFoodConfirmationAlert = true
             }) {
-                Image(systemName: "doc.on.doc")
+                Image(systemName: "doc.on.doc").padding(.horizontal)
             }
             
             Spacer()
@@ -31,7 +31,7 @@ struct FoodDetailViewToolbar: View {
             Button(action: {
                 self.toggleFavoriteBookmark()
             }) {
-                Image(systemName: food.favoriteListItem != nil ? "bookmark.fill" : "bookmark")
+                Image(systemName: food.favoriteListItem != nil ? "bookmark.fill" : "bookmark").padding(.horizontal)
             }
             
             Spacer()
@@ -39,7 +39,7 @@ struct FoodDetailViewToolbar: View {
             Button(action: {
                 self.showingDeleteFoodConfirmationAlert = true
             }) {
-                Image(systemName: "trash")
+                Image(systemName: "trash").padding(.horizontal)
             }
             .alert(isPresented: $showingDeleteFoodConfirmationAlert){ deleteFoodConfirmationAlert() }
         }

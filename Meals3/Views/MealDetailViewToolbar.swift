@@ -9,28 +9,33 @@
 import SwiftUI
 
 struct MealDetailViewToolbar: View {
-    
     @Environment(\.managedObjectContext) var viewContext
+    @EnvironmentObject var meal: Meal
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     @State private var isShowingGeneralSearchView = false
-    
+    @State private var showingDeleteConfirmation = false
+
     
     var body: some View {
         HStack {
             Button(action: { withAnimation{print("book")} },
-                   label: { Image(systemName: "book") }
-            )
+                   label: { Image(systemName: "book").padding(.horizontal)
+            })
 
             Spacer()
             
             Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
-                   label: { Image(systemName: "magnifyingglass") }
-            )
+                   label: { Image(systemName: "magnifyingglass").padding(.horizontal)
+            })
 
             Spacer()
             
-            Button(action: { withAnimation {print("delete the meal with questions")} },
-                   label: { Image(systemName: "trash") }
-            )
+            Button(action: { withAnimation {self.showingDeleteConfirmation = true} },
+                   label: { Image(systemName: "trash").padding(.horizontal)
+            })
+                .alert(isPresented: $showingDeleteConfirmation){ self.deleteAlert() }
+
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
             NavigationLink(destination: GeneralSearchView(),
@@ -41,7 +46,22 @@ struct MealDetailViewToolbar: View {
         .padding()
     }
 
-
+    func deleteMeal() {
+        self.showingDeleteConfirmation = true
+    }
+    
+    func deleteAlert() -> Alert {
+        print("delete the meal with confirmation")
+        return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
+              primaryButton: .destructive(Text("Delete")) {
+                self.viewContext.delete(self.meal)
+                try? self.viewContext.save()
+                self.presentationMode.wrappedValue.dismiss()
+            },
+              secondaryButton: .cancel())
+    }
+    
+    
 }
 
 struct MealDetailViewToolbar_Previews: PreviewProvider {
