@@ -55,11 +55,15 @@ struct AddOrChangeAmountOfFoodView: View {
         if let amount = self.amount {
             switch self.task {
             case .addAmountOfFoodToIngredientCollection(let ingredientCollection):
-                ingredientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
                 DispatchQueue.main.async {
-                    ingredientCollection.objectWillChange.send()
-                    self.isPresented = false // dismiss self
-                    self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
+                    ingredientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
+//                    ingredientCollection.objectWillChange.send()
+                    if let meal = ingredientCollection as? Meal {
+                        meal.objectWillChange.send()
+                        meal.dateOfLastModification = Date()
+                        self.isPresented = false // dismiss self
+                        self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
+                    }
                 }
             case .changeAmountOfIngredient(var ingredient):
                 DispatchQueue.main.async {

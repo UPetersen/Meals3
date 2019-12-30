@@ -16,6 +16,9 @@ struct MealsView: View {
         
     @State private var showingDeleteConfirmation = false
     @State private var indicesToDelete: IndexSet? = IndexSet()
+//    @State private var meal: Meal?
+    @EnvironmentObject var currentMeal: Meal
+//    @ObservedObject var ingredients: IngredientCollection
 
     // Todo: ensure that there always exists a current meal
     
@@ -42,7 +45,6 @@ struct MealsView: View {
     var body: some View {
         List {
             ForEach(meals){ (meal: Meal) in
-                
                 Section(header:
                     NavigationLink(destination: MealDetailView(meal: meal)) {
                         LazyView( MealNutrientsView(meal: meal) )

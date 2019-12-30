@@ -8,16 +8,18 @@
 
 import SwiftUI
 
-struct FoodDetailsView: View {
-    
+//struct FoodDetailsView<T>: View where T: IngredientCollection {
+    struct FoodDetailsView: View {
+
     @Environment(\.managedObjectContext) var viewContext
     @EnvironmentObject var currentMeal: Meal
-    
     var ingredientCollection: IngredientCollection
     @ObservedObject var food: Food
     @State private var editingDisabled = true
     @State private var showingAddOrChangeAmountOfFoodView = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+//    @ObservedObject var aIngriedientCollection: T
     
     var nutrientSections = NutrientSectionViewModel.sections()
     
@@ -141,9 +143,14 @@ struct FoodDetailsView: View {
         }
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
             AddOrChangeAmountOfFoodView(food: self.food,
-                                        task: .addAmountOfFoodToIngredientCollection(self.currentMeal as IngredientCollection),
+                                        task: .addAmountOfFoodToIngredientCollection(self.ingredientCollection),
                                         isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
-                .environment(\.managedObjectContext, self.viewContext)})
+                .environment(\.managedObjectContext, self.viewContext)}
+//            AddOrChangeAmountOfFoodView(food: self.food,
+//                                        task: .addAmountOfFoodToIngredientCollection(self.currentMeal as IngredientCollection),
+//                                        isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
+//                .environment(\.managedObjectContext, self.viewContext)}
+            )
         )
             .navigationBarTitle(self.food.name ?? "no name given")
             .resignKeyboardOnDragGesture()

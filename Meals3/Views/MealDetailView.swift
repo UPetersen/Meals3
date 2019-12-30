@@ -32,25 +32,19 @@ struct MealDetailView: View {
         )
         
         return VStack {
-//            Text("\(meal.dateOfCreation ?? Date(), formatter: dateFormatter)")
-//            Text(dateString(date: meal.dateOfCreation))
-//
-//            Text("\(meal.dateOfLastModification ?? Date(), formatter: dateFormatter)")
-//            Text(dateString(date: meal.dateOfLastModification))
             Form {
-                Section(header: Text("Datum und Kommentar")) {
-                    DatePicker("Datum", selection: date)
+                Section(header: Text("Datum und Kommentar, letzte Änderung am \(self.dateString(date: self.meal.dateOfLastModification))")) {
+                    DatePicker("Datum:", selection: date)
+//                    HStack {
+//                        Text("Letzte Änderung:")
+//                        Spacer()
+//                        Text(self.dateString(date: self.meal.dateOfLastModification)).foregroundColor(.secondary)
+//                    }
                 }
-                Section(header: Text("Die Mahlzeit hat \(meal.ingredients?.count ?? 0) Zutaten")) {
+                Section(header: Text("\(meal.ingredients?.count ?? 0) Zutaten")) {
                     MealIngredientsView(meal: meal)
                 }
-//                Text("Meal has \(meal.ingredients?.count ?? 0) ingredients:")
             }
-//            Divider()
-//
-//            Text("Meal has \(meal.ingredients?.count ?? 0) ingredients:")
-//
-//            MealIngredientsView(meal: meal)
             
             MealDetailViewToolbar().environmentObject(meal)
         }
@@ -72,8 +66,6 @@ struct MealDetailView: View {
         //        aFormatter.locale = Locale(identifier: "de_DE")
         return aFormatter.string(from: date)
     }
-    
-    
 }
 
 

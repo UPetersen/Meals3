@@ -37,9 +37,9 @@ struct MealIngredientCellView: View {
             // TODO: hier geht's weiter: optionals rausmachen
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
              AddOrChangeAmountOfFoodView(food: self.mealIngredient.food!,
-                                               task: self.task!,
-                                               isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
-                    .environment(\.managedObjectContext, self.viewContext)
+                                         task: self.task!,
+                                         isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
+                .environment(\.managedObjectContext, self.viewContext)
         })
     }
     
@@ -47,6 +47,7 @@ struct MealIngredientCellView: View {
         return (formatter.string(from: NSNumber(value: number.doubleValue / divisor)) ?? "nan")
     }
     
+    // TODO: put formatter into environment or pass it along as parameter
     func contentFor(mealIngredient: MealIngredient) -> String {
         // Returns a String like "44 kcal, 10 g, KH, ..."
         //        let formatter = oneMaxDigitsNumberFormatter

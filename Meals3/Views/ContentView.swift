@@ -82,32 +82,6 @@ struct ContentView: View {
 
 
 
-struct MealIngredientsView: View {
-    @Environment(\.managedObjectContext) var viewContext
-    @ObservedObject var meal: Meal
-    
-    var body: some View {
-        return List {
-            if meal.filteredAndSortedMealIngredients() == nil {
-                Text("Leere Mahlzeit").foregroundColor(Color(.placeholderText))
-            } else {
-                ForEach(meal.filteredAndSortedMealIngredients()!, id: \.self) { (mealIngredient: MealIngredient) in
-                    MealIngredientCellView(mealIngredient: mealIngredient)
-                }
-                .onDelete() { IndexSet in
-                    print("Deleting meal ingredient from food.")
-                    for index in IndexSet {
-                        print (self.meal.filteredAndSortedMealIngredients()![index].description)
-                        self.viewContext.delete(self.meal.filteredAndSortedMealIngredients()![index])
-//                        HealthManager.synchronize(meal, withSynchronisationMode: .update)
-
-                    }
-                }
-            }
-        }
-    }
-}
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
