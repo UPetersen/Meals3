@@ -57,7 +57,6 @@ struct AddOrChangeAmountOfFoodView: View {
             case .addAmountOfFoodToIngredientCollection(let ingredientCollection):
                 DispatchQueue.main.async {
                     ingredientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
-//                    ingredientCollection.objectWillChange.send()
                     if let meal = ingredientCollection as? Meal {
                         meal.objectWillChange.send()
                         meal.dateOfLastModification = Date()
@@ -66,10 +65,13 @@ struct AddOrChangeAmountOfFoodView: View {
                     }
                 }
             case .changeAmountOfIngredient(var ingredient):
-                DispatchQueue.main.async {
-                    ingredient.amount = self.amount
-                    self.isPresented = false // dismiss self
-                }
+                ingredient.amount = self.amount
+                (ingredient as? MealIngredient)?.meal?.dateOfLastModification? = Date()
+                (ingredient as? RecipeIngredient)?.recipe?.dateOfLastModification? = Date()
+                self.isPresented = false // dismiss self
+//                DispatchQueue.main.async {
+//                    self.isPresented = false // dismiss self
+//                }
             }
         }
     }

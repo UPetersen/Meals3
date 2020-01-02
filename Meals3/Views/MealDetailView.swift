@@ -20,7 +20,9 @@ private let dateFormatter: DateFormatter = {
 struct MealDetailView: View {
     @ObservedObject var meal: Meal
     @State private var birthDate: Date = Date()
+    
     @EnvironmentObject var currentMeal: CurrentMeal
+    @Environment(\.managedObjectContext) var viewContext
     
     var body: some View {
         
@@ -34,15 +36,15 @@ struct MealDetailView: View {
         
         return VStack {
             Form {
-                Section(header: Text("Datum und Kommentar, letzte Änderung am \(self.dateString(date: self.meal.dateOfLastModification))")) {
+                Section(header: Text("Datum und Kommentar"),
+                        footer: HStack {
+                            Spacer()
+                            Text("Letzte Änderung am \(self.dateString(date: self.meal.dateOfLastModification))")
+                    })
+                            {
                     DatePicker("Datum:", selection: date)
-                    HStack {
-                        Text("Letzte Änderung:")
-                        Spacer()
-                        Text(self.dateString(date: self.meal.dateOfLastModification)).foregroundColor(.secondary)
-                    }
                 }
-                Section(header: Text("\(meal.ingredients?.count ?? 0) Zutaten")) {
+                Section(header: headerView(), footer: footerView()) {
                     MealIngredientsView(meal: meal)
                 }
             }
@@ -61,6 +63,52 @@ struct MealDetailView: View {
         }
     }
     
+    func headerView() -> some View {
+        Text(mealNutrientsString(meal: currentMeal.meal))
+    }
+    
+    func footerView() -> some View {
+        HStack {
+            Spacer()
+            Text("\(meal.ingredients?.count ?? 0) Zutaten, insgesamt \(amountString(meal: currentMeal.meal)) g")
+        }
+    }
+    
+     var calsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.none
+        numberFormatter.zeroSymbol = "0"
+        return numberFormatter
+    }()
+    
+     var zeroMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.none
+        numberFormatter.zeroSymbol = "0"
+        return numberFormatter
+    }()
+    
+
+    func amountString(meal: Meal) -> String {
+        if let amount = meal.amount {
+            return zeroMaxDigitsNumberFormatter.string(from: amount) ?? ""
+        }
+        return ""
+    }
+    
+    func mealNutrientsString(meal: Meal?) -> String {
+        if let meal = meal {
+            let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: meal.doubleForKey("totalEnergyCals"), formatter: calsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
+            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"),    formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
+            let totalProtein = Nutrient.dispStringForNutrientWithKey("totalProtein", value: meal.doubleForKey("totalProtein"), formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
+            let totalFat     = Nutrient.dispStringForNutrientWithKey("totalFat",     value: meal.doubleForKey("totalFat"),     formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
+            let carbFructose = Nutrient.dispStringForNutrientWithKey("carbFructose", value: meal.doubleForKey("carbFructose"), formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
+            let carbGlucose   = Nutrient.dispStringForNutrientWithKey("carbGlucose", value: meal.doubleForKey("carbGlucose"),  formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
+            return totalEnergyCals + ", " + totalCarb + " KH, " + totalProtein + " Prot., " + totalFat + " Fett, " + carbFructose + " F, " + carbGlucose + " G"
+        }
+        return ""
+    }
+
     
     func dateString(date: Date?) -> String {
         guard let date = date else { return "no date avaiable" }
@@ -73,7 +121,6 @@ struct MealDetailView: View {
         return aFormatter.string(from: date)
     }
 }
-
 
 
 //struct MealDetailView_Previews: PreviewProvider {
