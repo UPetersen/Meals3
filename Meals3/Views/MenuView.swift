@@ -37,7 +37,7 @@ struct MenuView: View {
             Text("Neue Mahlzeit")
                 .padding()
                 .onTapGesture {
-                    self.currentMeal.meal = Meal(context: self.viewContext)
+                    self.currentMeal.meal = Meal(context: self.viewContext) // Creates new meal and sets it to current meal
                     withAnimation { self.showMenu = false }
             }
             Text("Neues Rezept")
@@ -71,15 +71,13 @@ struct MenuView: View {
     
     func foodDetailsView() -> some View {
         return FoodDetailsView(ingredientCollection: self.currentMeal.meal,
-//return FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext),
-//                               return FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as IngredientCollection,
                                food: Food(context: viewContext)
         )
-        .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
-        .onDisappear(){
-            withAnimation(.easeOut(duration: 0.1)) {
-                self.showMenu = false
-            }
+            .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
+            .onDisappear(){
+                withAnimation(.easeOut(duration: 0.1)) {
+                    self.showMenu = false
+                }
         }
     }
 }

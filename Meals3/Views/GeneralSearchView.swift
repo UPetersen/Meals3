@@ -13,9 +13,6 @@ struct GeneralSearchView<T>: View where T: IngredientCollection  {
 //struct GeneralSearchView: View  {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
-
-    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection // hier kommt das an!
-
     
     let oneMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
         let numberFormatter = NumberFormatter()
@@ -34,17 +31,11 @@ struct GeneralSearchView<T>: View where T: IngredientCollection  {
             SearchBarView(searchText: $search.text)
                 .resignKeyboardOnDragGesture()
 
-            
             GeneralSearchResultsView(search: search, formatter: oneMaxDigitsNumberFormatter, ingredientCollection: self.ingredientCollection)
-//            GeneralSearchResultsView(search: search, formatter: oneMaxDigitsNumberFormatter)
 
             // Bottom tool bar
 //            GeneralSearchViewToolbar()
          }
-//         .environmentObject(self.currentIngredientCollection)
-//         .onAppear() {
-//            print(self.oneMaxDigitsNumberFormatter.description)
-//        }
     }
 }
 

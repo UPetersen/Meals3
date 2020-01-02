@@ -22,8 +22,8 @@ struct MealNutrientsView: View {
     
     var body: some View {
         VStack {
-            Text("\(meal.dateOfCreation!, formatter: dateFormatter)")
-            Text("\(meal.dateOfLastModification!, formatter: dateFormatter)")
+            Text("Erstellt: \(meal.dateOfCreation!, formatter: dateFormatter)")
+            Text("Geändert: \(meal.dateOfLastModification!, formatter: dateFormatter)")
             Text(self.mealNutrientsString(meal: meal))
                 .font(.footnote)
                 .lineLimit(1)

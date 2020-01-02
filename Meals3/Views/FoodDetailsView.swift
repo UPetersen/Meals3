@@ -18,7 +18,7 @@ struct FoodDetailsView<T>: View where T: IngredientCollection {
     @State private var editingDisabled = true
     @State private var showingAddOrChangeAmountOfFoodView = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection // hier kommt das an!
+//    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection // hier kommt das an!
 
     
     
@@ -126,7 +126,6 @@ struct FoodDetailsView<T>: View where T: IngredientCollection {
             .onAppear() {
                 print("foodDetail appears")
                 print(self.viewContext.description)
-                print(self.currentIngredientCollection.collection.description)
         }
         .onDisappear() {
             print("foodDetail disappears")
@@ -150,16 +149,10 @@ struct FoodDetailsView<T>: View where T: IngredientCollection {
                                         task: .addAmountOfFoodToIngredientCollection(self.ingredientCollection),
                                         isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
                 .environment(\.managedObjectContext, self.viewContext)}
-//            AddOrChangeAmountOfFoodView(food: self.food,
-//                                        task: .addAmountOfFoodToIngredientCollection(self.currentMeal as IngredientCollection),
-//                                        isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
-//                .environment(\.managedObjectContext, self.viewContext)}
             )
         )
             .navigationBarTitle(self.food.name ?? "no name given")
             .resignKeyboardOnDragGesture()
-        
-        
         
     } // body
 }
@@ -200,7 +193,6 @@ struct FoodDetailsView_Previews: PreviewProvider {
         
         return NavigationView {
             FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
-//                FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: context) as IngredientCollection, food: food)
                 .environment(\.managedObjectContext, context)
                 .navigationBarTitle(food.name ?? "Lebensmittel")
         }

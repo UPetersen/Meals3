@@ -11,32 +11,20 @@ import SwiftUI
 import CoreData
 
 
-class CurrentIngredientCollection: ObservableObject {
-    @Published var collection: IngredientCollection
-    init(_ value: IngredientCollection) {
-        self.collection = value
-    }
-//    init(context: NSManagedObjectContext) {
-//        self.currentIngredientCollection = Meal.newestMeal(managedObjectContext: context)
+//class CurrentIngredientCollection: ObservableObject {
+//    @Published var collection: IngredientCollection
+//    init(_ value: IngredientCollection) {
+//        self.collection = value
 //    }
-}
-
-class CurrentMeal: ObservableObject {
-    @Published var meal: Meal
-    init(_ meal: Meal) {
-        self.meal = meal
-    }
-}
-//class CurrentIngredientCollectionType: ObservableObject {
-//@Published var collection: IngredientCollectionType
-//init(_ value: IngredientCollectionType) {
-//    self.collection = value
+////    init(context: NSManagedObjectContext) {
+////        self.currentIngredientCollection = Meal.newestMeal(managedObjectContext: context)
+////    }
 //}
+
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -46,32 +34,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Get the managed object context from the shared persistent container
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
-        // Other shared classes
-//        let search = Search() // everything for the search bars
-        let currentMeal = Meal.newestMeal(managedObjectContext: context)
-        // The ingredient collection (aka meal or recipe) to which foods will be added to as ingredients.
+        // The meal to which foods will be added to as ingredients.
         // Has to be changed, if a new meal is created or the current meal is deleted.
-//        var currentIngredientCollection: some IngredientCollection = Meal.newestMeal(managedObjectContext: context)
-
-        let currentIngredientCollection = CurrentIngredientCollection(currentMeal)
-//        let currentIngredientCollectionType = CurrentIngredientCollectionType(.meal(currentMeal))
-        let theCurrentMeal = CurrentMeal(currentMeal)
+        let currentMeal = CurrentMeal(Meal.newestMeal(managedObjectContext: context))
 
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath
         let contentView = ContentView()
             .environment(\.managedObjectContext, context)
-            .environmentObject(currentIngredientCollection)
             .environmentObject(currentMeal)
-//            .environmentObject(currentIngredientCollectionType)
-            .environmentObject(theCurrentMeal)
-//            .environmentObject(search)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             
             window.rootViewController = UIHostingController(rootView: contentView)
-//            window.rootViewController = UIHostingController(rootView: appView)
             
             // Speed up all animations (view transitions)
             window.layer.speed = 2.0

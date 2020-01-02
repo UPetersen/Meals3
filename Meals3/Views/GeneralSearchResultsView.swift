@@ -12,19 +12,11 @@ import CoreData
 
 
 struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
-//struct GeneralSearchResultsView: View  {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
     @ObservedObject var search: Search
     var formatter: NumberFormatter
-    
-    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection
-    @EnvironmentObject var currentMeal: Meal
-//    @State private var theCollection: T? = nil
-
-    
-
-    
+        
     private var nsFetchRequest: NSFetchRequest<Food> // used to derive the number of fetched foods without actually fetching any
     @FetchRequest var foods: FetchedResults<Food> // result of the fetch
     // Alternatively
@@ -41,8 +33,7 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
     @State private var footerAppeared = false
     @State private var footerDisAppeared = false
 
-//    init(search: Search, formatter: NumberFormatter) {
-        init(search: Search, formatter: NumberFormatter, ingredientCollection: T) {
+    init(search: Search, formatter: NumberFormatter, ingredientCollection: T) {
         print("initialization of search results")
         
         self.search = search
@@ -95,7 +86,6 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
                 // But maybe this post https://stackoverflow.com/questions/57258846/how-to-make-a-swiftui-list-scroll-automatically/58708206#58708206 is more close to what is needed.
                 Text("").frame(width: 0, height: 0)  //.hidden()
                     .onAppear(){ self.shouldLoadPreviousPage()
-//                        }
                         self.headerAppeared = true
                         self.headerDisAppeared = false
                 }.onDisappear() {
@@ -106,9 +96,6 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
                 }
                 
                 ForEach(foods) { (food: Food) in
-//                    NavigationLink(destination: self.foodDetailsView(food: food) ) {
-//                             FoodNutrientsRowView(food: food, formatter: self.formatter)
-//                    }
                     NavigationLink(destination: LazyView(self.foodDetailsView(food: food)) ) {
                              FoodNutrientsRowView(food: food, formatter: self.formatter)
                     }
@@ -128,10 +115,8 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
                     .onAppear() {
                         print("GeneralSearchResultsView appears")
                         print(self.viewContext.description)
-                        print(self.currentIngredientCollection.collection.description)
                 }
-
-//            .environment(\.defaultMinListRowHeight, 1) // for invisible header and footer, which keep this space unfortunately
+                .environment(\.defaultMinListRowHeight, 1) // for invisible header and footer, which keep this space unfortunately
                 .resignKeyboardOnDragGesture() // must be outside of the list
 
 //                .onTapGesture(count: 2) {
@@ -155,14 +140,9 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
     }
         
     func foodDetailsView(food: Food) -> some View {
-//        self.theCollection = (self.currentIngredientCollection.value as! T)
-//        self.theCollection = self.currentIngredientCollection.value as? T
-//        return FoodDetailsView(ingredientCollection: self.theCollection!,
-//        let aCollection = self.currentIngredientCollection.collection
-//        return FoodDetailsView(ingredientCollection: aCollection,
-      FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext),
-                    food: food)
-        .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
+        FoodDetailsView(ingredientCollection: self.ingredientCollection,
+                        food: food)
+            .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
     }
     
     func shouldLoadNextPage() {

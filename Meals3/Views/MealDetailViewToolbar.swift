@@ -10,8 +10,8 @@ import SwiftUI
 
 struct MealDetailViewToolbar: View {
     @Environment(\.managedObjectContext) var viewContext
-    @EnvironmentObject var meal: Meal
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var currentMeal: CurrentMeal
 
     @State private var isShowingGeneralSearchView = false
     @State private var showingDeleteConfirmation = false
@@ -38,8 +38,7 @@ struct MealDetailViewToolbar: View {
 
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
-            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.meal),
-//                           NavigationLink(destination: GeneralSearchView(),
+            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.currentMeal.meal),
                            isActive: $isShowingGeneralSearchView,
                            label: {EmptyView()})
                 .frame(width: 0, height: 0)
@@ -55,15 +54,13 @@ struct MealDetailViewToolbar: View {
         print("delete the meal with confirmation")
         return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
               primaryButton: .destructive(Text("Delete")) {
-                self.viewContext.delete(self.meal)
-//                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
+                self.viewContext.delete(self.currentMeal.meal)
+                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
                 try? self.viewContext.save()
                 self.presentationMode.wrappedValue.dismiss()
             },
               secondaryButton: .cancel())
     }
-    
-    
 }
 
 struct MealDetailViewToolbar_Previews: PreviewProvider {

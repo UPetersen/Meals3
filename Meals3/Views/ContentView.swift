@@ -35,7 +35,6 @@ struct ContentView: View {
 
     @ObservedObject var search = Search()
 
-//    @State private var searchText = ""
     @State private var showMenu: Bool = false
     
     var body: some View {

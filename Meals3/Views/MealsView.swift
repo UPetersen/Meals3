@@ -17,7 +17,7 @@ struct MealsView: View {
     @State private var showingDeleteConfirmation = false
     @State private var indicesToDelete: IndexSet? = IndexSet()
 //    @State private var meal: Meal?
-    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection
+//    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection
 //    @EnvironmentObject var currentMeal: Meal
     @EnvironmentObject var currentMeal: CurrentMeal
 //    @ObservedObject var ingredients: IngredientCollection
@@ -65,6 +65,10 @@ struct MealsView: View {
                 self.indicesToDelete = indices
                 self.showingDeleteConfirmation = true
             }
+        }
+        .onAppear() {
+            print("Mealsview appeared.")
+            self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
         }
         .resignKeyboardOnDragGesture() // must be outermost
         .alert(isPresented: self.$showingDeleteConfirmation){

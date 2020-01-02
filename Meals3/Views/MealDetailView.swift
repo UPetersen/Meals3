@@ -55,6 +55,10 @@ struct MealDetailView: View {
             print("MealDetailView disappeared.")
             try? self.meal.managedObjectContext?.save()
         }
+        .onAppear() {
+            print("MealDetaliView appeared.")
+            self.currentMeal.meal = self.meal
+        }
     }
     
     
