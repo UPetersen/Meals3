@@ -87,7 +87,6 @@ struct MealsView: View {
     func lazyFoodDetailsView(food: Food) -> some View {
         LazyView(
             FoodDetailsView(ingredientCollection: self.currentMeal.meal,
-//                            FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext),
                             food: food)
                 .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
         )
@@ -98,7 +97,6 @@ struct MealsView: View {
         print("From: \(source.indices.endIndex.description)")
         print("To: \(destination)")
     }
-    
 }
 
 //struct MealsView_Previews: PreviewProvider {
