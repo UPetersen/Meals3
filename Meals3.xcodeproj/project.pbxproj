@@ -292,7 +292,6 @@
 			children = (
 				C692116723A4FCDF000AC4A2 /* AddOrChangeAmountOfFoodView.swift */,
 				C6FE88C1236B5A3100881ACB /* ContentView.swift */,
-				C64BE8FF23B9F50000E41CE2 /* MealIngredientsView.swift */,
 				C62BB6CD23B00700000132F0 /* GeneralSearchView.swift */,
 				C62BB6D323B0AC2E000132F0 /* GeneralSearchResultsView.swift */,
 				C6D58A7423B7CB9A0037A589 /* FoodNutrientsRowView.swift */,
@@ -303,6 +302,7 @@
 				C6A203E923ABFE1F0022ABDD /* MenuView.swift */,
 				C648803E23B8593C00294EFD /* MealDetailView.swift */,
 				C648804023B90EA700294EFD /* MealDetailViewToolbar.swift */,
+				C64BE8FF23B9F50000E41CE2 /* MealIngredientsView.swift */,
 				C690BA9323A80CE400581E88 /* MealIngredientCellView.swift */,
 				C69779BF2378097100B3C72C /* MealNutrientsView.swift */,
 				C60F510123A166AB009F2CDA /* MealsView.swift */,

@@ -8,8 +8,14 @@
 
 import SwiftUI
 
-struct GeneralSearchView: View {
+
+struct GeneralSearchView<T>: View where T: IngredientCollection  {
+//struct GeneralSearchView: View  {
     @Environment(\.managedObjectContext) var viewContext
+    @ObservedObject var ingredientCollection: T
+
+    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection // hier kommt das an!
+
     
     let oneMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
         let numberFormatter = NumberFormatter()
@@ -24,29 +30,33 @@ struct GeneralSearchView: View {
 
     var body: some View {
         
-        return VStack{
+         VStack{
             SearchBarView(searchText: $search.text)
                 .resignKeyboardOnDragGesture()
+
             
-            GeneralSearchResultsView(search: search, formatter: oneMaxDigitsNumberFormatter)
-                        
+            GeneralSearchResultsView(search: search, formatter: oneMaxDigitsNumberFormatter, ingredientCollection: self.ingredientCollection)
+//            GeneralSearchResultsView(search: search, formatter: oneMaxDigitsNumberFormatter)
+
             // Bottom tool bar
 //            GeneralSearchViewToolbar()
-        }
-
-        
+         }
+//         .environmentObject(self.currentIngredientCollection)
+//         .onAppear() {
+//            print(self.oneMaxDigitsNumberFormatter.description)
+//        }
     }
 }
 
-struct GeneralSearchView_Previews: PreviewProvider {
-    static var previews: some View {
-        let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
-        return NavigationView {
-            return GeneralSearchView()
-//                .environmentObject(Search())
-                .environment(\.managedObjectContext, viewContext)
-                .navigationBarTitle("General search")
-        }
-    }
-}
+//struct GeneralSearchView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//
+//        return NavigationView {
+//            return GeneralSearchView()
+////                .environmentObject(Search())
+//                .environment(\.managedObjectContext, viewContext)
+//                .navigationBarTitle("General search")
+//        }
+//    }
+//}

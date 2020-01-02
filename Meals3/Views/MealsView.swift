@@ -17,7 +17,9 @@ struct MealsView: View {
     @State private var showingDeleteConfirmation = false
     @State private var indicesToDelete: IndexSet? = IndexSet()
 //    @State private var meal: Meal?
-    @EnvironmentObject var currentMeal: Meal
+    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection
+//    @EnvironmentObject var currentMeal: Meal
+    @EnvironmentObject var currentMeal: CurrentMeal
 //    @ObservedObject var ingredients: IngredientCollection
 
     // Todo: ensure that there always exists a current meal
@@ -70,6 +72,7 @@ struct MealsView: View {
                          primaryButton: .destructive(Text("Delete")) {
                             if let indices = self.indicesToDelete {
                                 self.meals.delete(at: indices, from: self.viewContext)
+                                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
                                 try? self.viewContext.save()
                             }
                 },
@@ -79,7 +82,8 @@ struct MealsView: View {
     
     func lazyFoodDetailsView(food: Food) -> some View {
         LazyView(
-            FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as IngredientCollection,
+            FoodDetailsView(ingredientCollection: self.currentMeal.meal,
+//                            FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext),
                             food: food)
                 .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
         )

@@ -8,16 +8,19 @@
 
 import SwiftUI
 
-//struct FoodDetailsView<T>: View where T: IngredientCollection {
-    struct FoodDetailsView: View {
+struct FoodDetailsView<T>: View where T: IngredientCollection {
+//    struct FoodDetailsView: View {
 
     @Environment(\.managedObjectContext) var viewContext
-    @EnvironmentObject var currentMeal: Meal
-    var ingredientCollection: IngredientCollection
+    @ObservedObject var ingredientCollection: T
+//    var ingredientCollection: IngredientCollection
     @ObservedObject var food: Food
     @State private var editingDisabled = true
     @State private var showingAddOrChangeAmountOfFoodView = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection // hier kommt das an!
+
+    
     
 //    @ObservedObject var aIngriedientCollection: T
     
@@ -112,7 +115,7 @@ import SwiftUI
                 .onTapGesture(count: 2) {
                     self.showingAddOrChangeAmountOfFoodView = true
             }
-//            .environment(\.defaultMinListRowHeight, 1)
+            .environment(\.defaultMinListRowHeight, 1)
 
 
             FoodDetailViewToolbar(food: food)
@@ -122,7 +125,8 @@ import SwiftUI
             
             .onAppear() {
                 print("foodDetail appears")
-                print(self.currentMeal.description)
+                print(self.viewContext.description)
+                print(self.currentIngredientCollection.collection.description)
         }
         .onDisappear() {
             print("foodDetail disappears")
@@ -195,7 +199,8 @@ struct FoodDetailsView_Previews: PreviewProvider {
         }()
         
         return NavigationView {
-            FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: context) as IngredientCollection, food: food)
+            FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
+//                FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: context) as IngredientCollection, food: food)
                 .environment(\.managedObjectContext, context)
                 .navigationBarTitle(food.name ?? "Lebensmittel")
         }

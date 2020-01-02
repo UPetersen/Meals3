@@ -12,6 +12,7 @@ struct MenuView: View {
     @Environment(\.managedObjectContext) var viewContext
     @Binding var showMenu: Bool
     @State private var isPresentingNewFood: Bool = false
+    @EnvironmentObject var currentMeal: CurrentMeal
         
     var body: some View {
         
@@ -36,7 +37,7 @@ struct MenuView: View {
             Text("Neue Mahlzeit")
                 .padding()
                 .onTapGesture {
-                    _ = Meal(context: self.viewContext)
+                    self.currentMeal.meal = Meal(context: self.viewContext)
                     withAnimation { self.showMenu = false }
             }
             Text("Neues Rezept")
@@ -69,7 +70,9 @@ struct MenuView: View {
     }
     
     func foodDetailsView() -> some View {
-        return FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as IngredientCollection,
+        return FoodDetailsView(ingredientCollection: self.currentMeal.meal,
+//return FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext),
+//                               return FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as IngredientCollection,
                                food: Food(context: viewContext)
         )
         .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))

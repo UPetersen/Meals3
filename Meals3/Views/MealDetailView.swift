@@ -20,6 +20,7 @@ private let dateFormatter: DateFormatter = {
 struct MealDetailView: View {
     @ObservedObject var meal: Meal
     @State private var birthDate: Date = Date()
+    @EnvironmentObject var currentMeal: CurrentMeal
     
     var body: some View {
         
@@ -35,22 +36,23 @@ struct MealDetailView: View {
             Form {
                 Section(header: Text("Datum und Kommentar, letzte Änderung am \(self.dateString(date: self.meal.dateOfLastModification))")) {
                     DatePicker("Datum:", selection: date)
-//                    HStack {
-//                        Text("Letzte Änderung:")
-//                        Spacer()
-//                        Text(self.dateString(date: self.meal.dateOfLastModification)).foregroundColor(.secondary)
-//                    }
+                    HStack {
+                        Text("Letzte Änderung:")
+                        Spacer()
+                        Text(self.dateString(date: self.meal.dateOfLastModification)).foregroundColor(.secondary)
+                    }
                 }
                 Section(header: Text("\(meal.ingredients?.count ?? 0) Zutaten")) {
                     MealIngredientsView(meal: meal)
                 }
             }
             
-            MealDetailViewToolbar().environmentObject(meal)
+            MealDetailViewToolbar()
         }
         .navigationBarTitle("Mahlzeit-Details")
         .navigationBarItems(trailing: EditButton().padding())
         .onDisappear(){
+            print("MealDetailView disappeared.")
             try? self.meal.managedObjectContext?.save()
         }
     }

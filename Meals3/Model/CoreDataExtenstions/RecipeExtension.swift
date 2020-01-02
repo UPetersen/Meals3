@@ -84,7 +84,21 @@ extension Recipe {
         return recipe
     }
 
-    
-    
 }
+
+extension Recipe: IngredientCollection {
+    func addIngredient(food: Food, amount: NSNumber, managedObjectContext: NSManagedObjectContext) {
+
+        let recipeIngredient = RecipeIngredient(context: managedObjectContext)
+        recipeIngredient.food = food
+        recipeIngredient.amount = amount
+        self.addToIngredients(recipeIngredient)
+        self.dateOfLastModification = Date()
+        try? managedObjectContext.save()
+        
+//            // Save and sync to HealthKit
+//             saveContextAndsyncToHealthKit(self)
+    }
+}
+
 

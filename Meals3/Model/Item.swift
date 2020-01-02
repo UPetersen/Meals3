@@ -15,21 +15,21 @@ import CoreData
 /// - isFood: type is Food. Enclosed to the food is the meal that this food might be added to, later.
 /// - isMealIngredient: type is meal ingredient (which has a food and belongs to a meal). Enclosed is the meal.
 /// - isHasNutrients: type is has nutrients (conforms to the HasNutrients protocol), which might be a food, meal or recipe, which is enclosed.
-enum Item {
-    case isFood(Food, Meal?)
-    case isMealIngredient(MealIngredient)
-    case isHasNutrients(HasNutrients)
-}
+//enum Item {
+//    case isFood(Food, Meal?)
+//    case isMealIngredient(MealIngredient)
+//    case isHasNutrients(HasNutrients)
+//}
 
 enum IngredientCollectionType {
     case meal(Meal)
     case recipe(Recipe)
 }
 
-enum IngredientType {
-    case mealIngredient(MealIngredient)
-    case recipeIngredient(RecipeIngredient)
-}
+//enum IngredientType {
+//    case mealIngredient(MealIngredient)
+//    case recipeIngredient(RecipeIngredient)
+//}
 
 /// Handle whether a certain amount of food is to be added to an IngredientCollection (aka meal or recipe) or an the amount of an ingredient (of an IngredientCollection) is to be changed
 enum Task {

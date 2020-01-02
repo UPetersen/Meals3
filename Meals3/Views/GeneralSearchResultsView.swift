@@ -11,10 +11,19 @@ import CoreData
 
 
 
-struct GeneralSearchResultsView: View {
+struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
+//struct GeneralSearchResultsView: View  {
     @Environment(\.managedObjectContext) var viewContext
+    @ObservedObject var ingredientCollection: T
     @ObservedObject var search: Search
     var formatter: NumberFormatter
+    
+    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection
+    @EnvironmentObject var currentMeal: Meal
+//    @State private var theCollection: T? = nil
+
+    
+
     
     private var nsFetchRequest: NSFetchRequest<Food> // used to derive the number of fetched foods without actually fetching any
     @FetchRequest var foods: FetchedResults<Food> // result of the fetch
@@ -32,11 +41,13 @@ struct GeneralSearchResultsView: View {
     @State private var footerAppeared = false
     @State private var footerDisAppeared = false
 
-    init(search: Search, formatter: NumberFormatter) {
+//    init(search: Search, formatter: NumberFormatter) {
+        init(search: Search, formatter: NumberFormatter, ingredientCollection: T) {
         print("initialization of search results")
         
         self.search = search
         self.formatter = formatter
+        self.ingredientCollection = ingredientCollection
         
         let searchFilter = SearchFilter.Contains
         let predicates = [search.foodListType.predicate, searchFilter.predicateForSearchText(search.text)].compactMap{$0}
@@ -95,6 +106,9 @@ struct GeneralSearchResultsView: View {
                 }
                 
                 ForEach(foods) { (food: Food) in
+//                    NavigationLink(destination: self.foodDetailsView(food: food) ) {
+//                             FoodNutrientsRowView(food: food, formatter: self.formatter)
+//                    }
                     NavigationLink(destination: LazyView(self.foodDetailsView(food: food)) ) {
                              FoodNutrientsRowView(food: food, formatter: self.formatter)
                     }
@@ -111,8 +125,15 @@ struct GeneralSearchResultsView: View {
                     self.footerDisAppeared = true
                 }
             }
-            .environment(\.defaultMinListRowHeight, 1) // for invisible header and footer, which keep this space unfortunately
+                    .onAppear() {
+                        print("GeneralSearchResultsView appears")
+                        print(self.viewContext.description)
+                        print(self.currentIngredientCollection.collection.description)
+                }
+
+//            .environment(\.defaultMinListRowHeight, 1) // for invisible header and footer, which keep this space unfortunately
                 .resignKeyboardOnDragGesture() // must be outside of the list
+
 //                .onTapGesture(count: 2) {
 //                    print("double tap")
 //                    self.search.fetchOffset = 0 // double tap moves to top of list (by refetching with offset = 0)
@@ -128,10 +149,18 @@ struct GeneralSearchResultsView: View {
 //                    print("limit: \(self.search.fetchLimit)")
 //            }
         }
+        .onAppear() {
+            print(self.formatter.description)
+        }
     }
         
     func foodDetailsView(food: Food) -> some View {
-        FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext) as IngredientCollection,
+//        self.theCollection = (self.currentIngredientCollection.value as! T)
+//        self.theCollection = self.currentIngredientCollection.value as? T
+//        return FoodDetailsView(ingredientCollection: self.theCollection!,
+//        let aCollection = self.currentIngredientCollection.collection
+//        return FoodDetailsView(ingredientCollection: aCollection,
+      FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext),
                     food: food)
         .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
     }

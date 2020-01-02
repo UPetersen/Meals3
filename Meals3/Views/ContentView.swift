@@ -20,7 +20,7 @@ private let dateFormatter: DateFormatter = {
 }()
 
 struct ContentView: View {
-@Environment(\.managedObjectContext) var viewContext
+    @Environment(\.managedObjectContext) var viewContext
 //    @EnvironmentObject var search: Search
     
     let oneMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
@@ -46,7 +46,6 @@ struct ContentView: View {
                     VStack{
                         SearchBarView(searchText: self.$search.text)
   
-//                        GeneralSearchResultsView(search: self.newSearch, formatter: self.oneMaxDigitsNumberFormatter)
                         MealsView(search: self.search)
 
                         // Bottom tool bar

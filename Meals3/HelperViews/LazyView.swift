@@ -10,9 +10,10 @@ import SwiftUI
 
 /// Creates a lazy view from view.
 ///
-/// Helpfull for use of `NavigationLink` within `list`, where destination views are loaded immediately even when the user hasn’t navigated to that view.
+/// Helpful for use of `NavigationLink` within `list`, where destination views are loaded immediately even when the user hasn’t navigated to that view.
 /// Embedding the destination view in LazyView makes the destination view lazy and speeds up performance significantly for long lists.
 ///
+/// # Example for usage:
 /// ```Swift
 /// NavigationLink(destination: LazyView(Text("Detail Screen"))){
 ///    Text("Tap me to see detail screen!")

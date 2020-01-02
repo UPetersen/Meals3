@@ -38,7 +38,8 @@ struct MealDetailViewToolbar: View {
 
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
-            NavigationLink(destination: GeneralSearchView(),
+            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.meal),
+//                           NavigationLink(destination: GeneralSearchView(),
                            isActive: $isShowingGeneralSearchView,
                            label: {EmptyView()})
                 .frame(width: 0, height: 0)
@@ -55,6 +56,7 @@ struct MealDetailViewToolbar: View {
         return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
               primaryButton: .destructive(Text("Delete")) {
                 self.viewContext.delete(self.meal)
+//                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
                 try? self.viewContext.save()
                 self.presentationMode.wrappedValue.dismiss()
             },
