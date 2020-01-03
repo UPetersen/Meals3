@@ -160,15 +160,16 @@ extension Meal: HasNutrients {
         /// sum of the content of one nutrient (e.g. "totalCarb") in a meal. Thus one has to sum over all (meal) ingredients
         /// Example: (sum [totalCarb content of each ingredient] / 100)
         func doubleForKey(_ key: String) -> Double? {
-    //        let quantity = (self.ingredients.allObjects as! [MealIngredient])  // convert NSSet to [AnyObject] (via .allObjects) and then to [MealIngredient]
-    //            .filter {$0.food.valueForKeyPath(key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
-    //            .map   {($0.food.valueForKeyPath(key) as! NSNumber).doubleValue / 100.0 * $0.amount.doubleValue} // Convert to NSNumber and then Double and multiply with amount of this ingredient
-    //            .reduce (0) {$0 + $1}                                          // sum up the doubles of all meal ingredients
-    //        return quantity
-            
-            let quantities = (self.ingredients!.allObjects as! [MealIngredient])  // convert NSSet to [AnyObject] (via .allObjects) and then to [MealIngredient]
-                .filter {$0.food?.value(forKeyPath: key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
-                .map   {($0.food?.value(forKeyPath: key) as! NSNumber).doubleValue / 100.0 * ($0.amount?.doubleValue)!} // Convert to NSNumber and then Double and multiply with amount of this ingredient
+
+            guard let ingredients = self.ingredients else {return nil}
+            let quantities = ingredients.compactMap{$0 as? MealIngredient}
+            .filter {$0.food?.value(forKeyPath: key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
+            .map   {($0.food?.value(forKeyPath: key) as! NSNumber).doubleValue / 100.0 * ($0.amount?.doubleValue)!} // Convert to NSNumber and then Double and multiply with amount of this ingredient
+
+
+//            let quantities = (self.ingredients!.allObjects as! [MealIngredient])  // convert NSSet to [AnyObject] (via .allObjects) and then to [MealIngredient]
+//                .filter {$0.food?.value(forKeyPath: key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
+//                .map   {($0.food?.value(forKeyPath: key) as! NSNumber).doubleValue / 100.0 * ($0.amount?.doubleValue)!} // Convert to NSNumber and then Double and multiply with amount of this ingredient
             
             // sum up the values of all meal ingredients or return nil if no ingredients values where availabel (i.e. all foods had no entry for this nutrient)
             if quantities.isEmpty {

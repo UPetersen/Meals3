@@ -31,8 +31,11 @@ struct MealDetailView: View {
         
         let date = Binding<Date>(
             get: {self.meal.dateOfCreation ?? Date()},
-            set: {self.meal.dateOfCreation = $0}
-        )
+            set: {
+                self.meal.dateOfCreation = $0
+                self.meal.dateOfLastModification = Date()
+                HealthManager.synchronize(self.meal, withSynchronisationMode: .update)
+        })
         
         return VStack {
             Form {
@@ -45,7 +48,7 @@ struct MealDetailView: View {
                     DatePicker("Datum:", selection: date)
                 }
                 Section(header: headerView(), footer: footerView()) {
-                    MealIngredientsView(meal: meal)
+                    MealDetailIngredientsView(meal: meal)
                 }
             }
             

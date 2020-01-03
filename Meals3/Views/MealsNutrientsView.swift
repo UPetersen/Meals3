@@ -1,5 +1,5 @@
 //
-//  MealNutrientsView.swift
+//  MealsNutrientsView.swift
 //  Meals3
 //
 //  Created by Uwe Petersen on 10.11.19.
@@ -16,18 +16,21 @@ private let dateFormatter: DateFormatter = {
 }()
 
 
-struct MealNutrientsView: View {
+struct MealsNutrientsView: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var meal: Meal
     
     var body: some View {
         VStack {
-            Text("Erstellt: \(meal.dateOfCreation!, formatter: dateFormatter)")
-            Text("Geändert: \(meal.dateOfLastModification!, formatter: dateFormatter)")
+            Text("Erstellt: \(meal.dateOfCreation ?? Date(), formatter: dateFormatter)")
+            Text("Geändert: \(meal.dateOfLastModification ?? Date(), formatter: dateFormatter)")
                 .font(.footnote)
             Text(self.mealNutrientsString(meal: meal))
                 .font(.footnote)
                 .lineLimit(1)
+        }
+        .onAppear() {
+            print(self.meal.description)
         }
     }
     
@@ -72,7 +75,7 @@ struct MealNutrientsView_Previews: PreviewProvider {
     static var previews: some View {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
             
-        return MealNutrientsView(meal: Meal(context: context)).environment(\.managedObjectContext, context)
+        return MealsNutrientsView(meal: Meal(context: context)).environment(\.managedObjectContext, context)
 
     }
 }

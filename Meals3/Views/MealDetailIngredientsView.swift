@@ -1,5 +1,5 @@
 //
-//  MealIngredientsView.swift
+//  MealDetailIngredientsView.swift
 //  Meals3
 //
 //  Created by Uwe Petersen on 30.12.19.
@@ -9,7 +9,7 @@
 import SwiftUI
 
 
-struct MealIngredientsView: View {
+struct MealDetailIngredientsView: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var meal: Meal
     
@@ -29,7 +29,7 @@ struct MealIngredientsView: View {
                     }
                     if self.viewContext.hasChanges {
                         try? self.viewContext.save()
-                        //                        HealthManager.synchronize(meal, withSynchronisationMode: .update)
+                        HealthManager.synchronize(self.meal, withSynchronisationMode: .update)
                     }
                 }
             }
@@ -37,8 +37,8 @@ struct MealIngredientsView: View {
     }
 }
 
-//struct MealIngredientsView_Previews: PreviewProvider {
+//struct MealDetailIngredientsView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        MealIngredientsView()
+//        MealDetailIngredientsView()
 //    }
 //}

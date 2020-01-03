@@ -54,7 +54,7 @@ struct ContentView: View {
                     .disabled(self.showMenu ? true : false)
                     
                     if self.showMenu {
-                        MenuView(showMenu: self.$showMenu)
+                        MenuView(showThisMenu: self.$showMenu)
                             .frame(width: geometry.size.width*0.6, height: geometry.size.height)
                             .transition(.move(edge: .leading))
 //                            .gesture(drag)

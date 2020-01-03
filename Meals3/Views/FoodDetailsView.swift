@@ -117,7 +117,6 @@ struct FoodDetailsView<T>: View where T: IngredientCollection {
             }
             .environment(\.defaultMinListRowHeight, 1)
 
-
             FoodDetailViewToolbar(food: food)
             
         } // VStack

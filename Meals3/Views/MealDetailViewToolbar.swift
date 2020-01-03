@@ -14,7 +14,7 @@ struct MealDetailViewToolbar: View {
     @EnvironmentObject var currentMeal: CurrentMeal
 
     @State private var isShowingGeneralSearchView = false
-    @State private var showingDeleteAlert = false
+    @State private var isShowingDeleteAlert = false
 
     
     var body: some View {
@@ -31,10 +31,10 @@ struct MealDetailViewToolbar: View {
 
             Spacer()
             
-            Button(action: { withAnimation {self.showingDeleteAlert = true} },
+            Button(action: { withAnimation {self.isShowingDeleteAlert = true} },
                    label: { Image(systemName: "trash").padding(.horizontal)
             })
-                .alert(isPresented: $showingDeleteAlert){ self.deleteAlert() }
+                .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
 
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
@@ -50,6 +50,7 @@ struct MealDetailViewToolbar: View {
         print("delete the meal with confirmation")
         return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
               primaryButton: .destructive(Text("Delete")) {
+                HealthManager.synchronize(self.currentMeal.meal, withSynchronisationMode: .delete)
                 self.viewContext.delete(self.currentMeal.meal)
                 self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
                 try? self.viewContext.save()

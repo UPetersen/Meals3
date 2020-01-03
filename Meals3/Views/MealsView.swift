@@ -45,7 +45,7 @@ struct MealsView: View {
             ForEach(meals){ (meal: Meal) in
                 Section(header:
                     NavigationLink(destination: MealDetailView(meal: meal)) {
-                        LazyView( MealNutrientsView(meal: meal) )
+                        LazyView( MealsNutrientsView(meal: meal) )
                     }
                 ) {
                     ForEach(meal.filteredAndSortedMealIngredients()!) { (mealIngredient: MealIngredient) in
@@ -72,8 +72,8 @@ struct MealsView: View {
                          primaryButton: .destructive(Text("Delete")) {
                             if let indices = self.indicesToDelete {
                                 self.meals.delete(at: indices, from: self.viewContext)
-                                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
                                 try? self.viewContext.save()
+                                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
                             }
                 },
                          secondaryButton: .cancel())
@@ -81,7 +81,7 @@ struct MealsView: View {
     }
     
     func lazyFoodDetailsView(food: Food) -> some View {
-        LazyView(
+        return LazyView(
             FoodDetailsView(ingredientCollection: self.currentMeal.meal,
                             food: food)
                 .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))

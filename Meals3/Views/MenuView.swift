@@ -10,10 +10,14 @@ import SwiftUI
 
 struct MenuView: View {
     @Environment(\.managedObjectContext) var viewContext
-    @Binding var showMenu: Bool
-    @State private var isPresentingNewFood: Bool = false
+    @Binding var showThisMenu: Bool
     @EnvironmentObject var currentMeal: CurrentMeal
-        
+
+    @State private var isPresentingNewFood: Bool = false
+    @State private var isPresentingHealthAuthorizationConfirmationAlert: Bool = false
+    @State private var healthKitIsAuthorized: Bool = false
+
+    
     var body: some View {
         
         // small drag to remove menu
@@ -21,7 +25,7 @@ struct MenuView: View {
             .onEnded {
                 if abs($0.translation.width) > 50 || abs($0.translation.height) > 50 {
                     withAnimation {
-                        self.showMenu = false
+                        self.showThisMenu = false
                     }
                 }
         }
@@ -40,21 +44,26 @@ struct MenuView: View {
                 .onTapGesture {
                     self.currentMeal.meal = Meal(context: self.viewContext) // Creates new meal and sets it to current meal
                     try? self.viewContext.save()
-                    withAnimation { self.showMenu = false }
+                    HealthManager.synchronize(self.currentMeal.meal, withSynchronisationMode: .save)
+                    withAnimation { self.showThisMenu = false }
             }
             Text("Neues Rezept")
                 .padding()
                 .onTapGesture {
                     _ = Recipe(context: self.viewContext)
                     try? self.viewContext.save()
-                    self.showMenu = false
+                    self.showThisMenu = false
             }
             Text("Authorize Healthkit")
                 .padding()
                 .onTapGesture {
                     print("Authorize Healthkit")
-                    self.showMenu = false
+                    self.authorizeHealthKit()
+                    self.isPresentingHealthAuthorizationConfirmationAlert = true
+//                    self.showMenu = false
             }
+            .alert(isPresented: $isPresentingHealthAuthorizationConfirmationAlert, content: self.authorizeHealthAlert)
+
 
             Spacer() // Expand screen to bottom
             
@@ -73,7 +82,7 @@ struct MenuView: View {
         .gesture(drag)
         .onTapGesture {
             withAnimation {
-                self.showMenu = false
+                self.showThisMenu = false
             }
         }
     }
@@ -85,10 +94,38 @@ struct MenuView: View {
             .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
             .onDisappear(){
                 withAnimation(.easeOut(duration: 0.1)) {
-                    self.showMenu = false
+                    self.showThisMenu = false
                 }
         }
     }
+    
+    
+    func authorizeHealthAlert() -> Alert {
+        print("Authorize Health Alert")
+        if self.healthKitIsAuthorized {
+            return Alert(title: Text("Health wurde autorisiert."), message: nil,
+                         dismissButton: .default(Text("Okay")) { self.showThisMenu = false })
+        } else {
+            return Alert(title: Text("Health wurde nicht autorisiert."), message: nil,
+                         dismissButton: .destructive(Text("Okay")) {self.showThisMenu = false})
+        }
+    }
+
+    func authorizeHealthKit() {
+        HealthManager.authorizeHealthKit { (authorized,  error) -> Void in
+            if authorized {
+                print("HealthKit authorization received.")
+                self.healthKitIsAuthorized = true
+            } else {
+                print("HealthKit authorization denied!")
+                if error != nil {
+                    print("\(String(describing: error))")
+                }
+                self.healthKitIsAuthorized = false
+            }
+        }
+    }
+    
 }
 
 
@@ -97,6 +134,6 @@ struct MenuView: View {
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
         let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        return MenuView(showMenu: .constant(true)).environment(\.managedObjectContext, viewContext)
+        return MenuView(showThisMenu: .constant(true)).environment(\.managedObjectContext, viewContext)
     }
 }

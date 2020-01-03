@@ -61,6 +61,7 @@ struct AddOrChangeAmountOfFoodView: View {
                         meal.objectWillChange.send()
                         meal.dateOfLastModification = Date()
                         try? self.viewContext.save()
+                        HealthManager.synchronize(meal, withSynchronisationMode: .update)
                         self.isPresented = false // dismiss self
                         self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
                     }
@@ -69,8 +70,13 @@ struct AddOrChangeAmountOfFoodView: View {
 //                DispatchQueue.main.async {
 //                }
                 ingredient.amount = self.amount
-                (ingredient as? MealIngredient)?.meal?.dateOfLastModification? = Date()
-//                (ingredient as? MealIngredient)?.meal?.objectWillChange.send()
+                if let meal = (ingredient as? MealIngredient)?.meal {
+                    meal.dateOfLastModification? = Date()
+                    HealthManager.synchronize(meal, withSynchronisationMode: .update)
+                }
+                
+//                (ingredient as? MealIngredient)?.meal?.dateOfLastModification? = Date()
+
                 (ingredient as? RecipeIngredient)?.recipe?.dateOfLastModification? = Date()
                 try? self.viewContext.save()
                 self.isPresented = false // dismiss self

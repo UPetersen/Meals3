@@ -45,7 +45,7 @@ struct MealsViewToolbar: View {
         let meal = Meal(context: self.viewContext)
         self.currentMeal.meal = meal
         try? self.viewContext.save()
-//        HealthManager.synchronize(meal, withSynchronisationMode: .save)
+        HealthManager.synchronize(meal, withSynchronisationMode: .save)
     }
 }
 

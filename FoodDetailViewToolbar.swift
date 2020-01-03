@@ -48,6 +48,7 @@ struct FoodDetailViewToolbar: View {
     
     func copyFood() {
         let _ = Food.fromFood(self.food, inManagedObjectContext: self.viewContext)
+        try? self.viewContext.save()
         self.presentationMode.wrappedValue.dismiss()
     }
         
@@ -76,6 +77,7 @@ struct FoodDetailViewToolbar: View {
         
     func deleteFood() {
         food.managedObjectContext?.delete(food)
+        try? self.viewContext.save()
         self.showingDeleteFoodConfirmationAlert = false
         self.presentationMode.wrappedValue.dismiss()
     }
