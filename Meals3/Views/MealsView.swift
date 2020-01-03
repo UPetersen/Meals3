@@ -16,11 +16,7 @@ struct MealsView: View {
         
     @State private var showingDeleteConfirmation = false
     @State private var indicesToDelete: IndexSet? = IndexSet()
-//    @State private var meal: Meal?
-//    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection
-//    @EnvironmentObject var currentMeal: Meal
     @EnvironmentObject var currentMeal: CurrentMeal
-//    @ObservedObject var ingredients: IngredientCollection
 
     // Todo: ensure that there always exists a current meal
     

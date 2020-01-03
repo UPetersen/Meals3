@@ -18,12 +18,13 @@ private let dateFormatter: DateFormatter = {
 
 struct MealNutrientsView: View {
     @Environment(\.managedObjectContext) var viewContext
-    var meal: Meal
+    @ObservedObject var meal: Meal
     
     var body: some View {
         VStack {
             Text("Erstellt: \(meal.dateOfCreation!, formatter: dateFormatter)")
             Text("Geändert: \(meal.dateOfLastModification!, formatter: dateFormatter)")
+                .font(.footnote)
             Text(self.mealNutrientsString(meal: meal))
                 .font(.footnote)
                 .lineLimit(1)

@@ -24,7 +24,6 @@ struct MealIngredientCellView: View {
                 Text("\(mealIngredient.amount ?? NSNumber(-999), formatter: NumberFormatter()) g")
                     .foregroundColor(Color(.systemBlue))
                     .onTapGesture {
-                        // TODO: hier geht's weiter als nächstes muss die Menge noch in der aufgerufenen View übernommen werden.
                         print("tapped")
                         self.task = .changeAmountOfIngredient(self.mealIngredient as Ingredient)
                         self.showingAddOrChangeAmountOfFoodView = true

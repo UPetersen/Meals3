@@ -60,18 +60,20 @@ struct AddOrChangeAmountOfFoodView: View {
                     if let meal = ingredientCollection as? Meal {
                         meal.objectWillChange.send()
                         meal.dateOfLastModification = Date()
+                        try? self.viewContext.save()
                         self.isPresented = false // dismiss self
                         self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
                     }
                 }
             case .changeAmountOfIngredient(var ingredient):
+//                DispatchQueue.main.async {
+//                }
                 ingredient.amount = self.amount
                 (ingredient as? MealIngredient)?.meal?.dateOfLastModification? = Date()
+//                (ingredient as? MealIngredient)?.meal?.objectWillChange.send()
                 (ingredient as? RecipeIngredient)?.recipe?.dateOfLastModification? = Date()
+                try? self.viewContext.save()
                 self.isPresented = false // dismiss self
-//                DispatchQueue.main.async {
-//                    self.isPresented = false // dismiss self
-//                }
             }
         }
     }
