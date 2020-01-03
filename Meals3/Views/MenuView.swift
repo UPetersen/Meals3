@@ -30,6 +30,7 @@ struct MenuView: View {
             Text("Neues Lebensmittel")
                 .padding()
                 .onTapGesture {
+                    try? self.viewContext.save()
                     self.isPresentingNewFood = true
             }
             .padding(.top, 70)
@@ -38,15 +39,23 @@ struct MenuView: View {
                 .padding()
                 .onTapGesture {
                     self.currentMeal.meal = Meal(context: self.viewContext) // Creates new meal and sets it to current meal
+                    try? self.viewContext.save()
                     withAnimation { self.showMenu = false }
             }
             Text("Neues Rezept")
                 .padding()
                 .onTapGesture {
                     _ = Recipe(context: self.viewContext)
+                    try? self.viewContext.save()
                     self.showMenu = false
             }
-            
+            Text("Authorize Healthkit")
+                .padding()
+                .onTapGesture {
+                    print("Authorize Healthkit")
+                    self.showMenu = false
+            }
+
             Spacer() // Expand screen to bottom
             
             // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!

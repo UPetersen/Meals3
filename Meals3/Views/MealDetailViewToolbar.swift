@@ -14,7 +14,7 @@ struct MealDetailViewToolbar: View {
     @EnvironmentObject var currentMeal: CurrentMeal
 
     @State private var isShowingGeneralSearchView = false
-    @State private var showingDeleteConfirmation = false
+    @State private var showingDeleteAlert = false
 
     
     var body: some View {
@@ -31,10 +31,10 @@ struct MealDetailViewToolbar: View {
 
             Spacer()
             
-            Button(action: { withAnimation {self.showingDeleteConfirmation = true} },
+            Button(action: { withAnimation {self.showingDeleteAlert = true} },
                    label: { Image(systemName: "trash").padding(.horizontal)
             })
-                .alert(isPresented: $showingDeleteConfirmation){ self.deleteAlert() }
+                .alert(isPresented: $showingDeleteAlert){ self.deleteAlert() }
 
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
@@ -46,10 +46,6 @@ struct MealDetailViewToolbar: View {
         .padding()
     }
 
-    func deleteMeal() {
-        self.showingDeleteConfirmation = true
-    }
-    
     func deleteAlert() -> Alert {
         print("delete the meal with confirmation")
         return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),

@@ -133,8 +133,8 @@ struct FoodDetailsView<T>: View where T: IngredientCollection {
                 self.food.dateOfLastModification = Date()
                 try? self.viewContext.save()            
             }
-            // FIXME: test, this sould not be necessary
-            try? self.food.managedObjectContext?.save()
+//            // FIXME: test, this sould not be necessary
+//            try? self.food.managedObjectContext?.save()
         }
         .navigationBarHidden(false)
         .navigationBarItems(trailing: HStack {

@@ -25,6 +25,7 @@
 		C604B2BF236D7EB8006BFE9E /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C604B2BE236D7EB8006BFE9E /* Meal.swift */; };
 		C604B2C3236DEDD8006BFE9E /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C604B2C2236DEDD8006BFE9E /* HealthKit.framework */; };
 		C607D03323809C51009BA48C /* FoodNutritionStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C607D03223809C50009BA48C /* FoodNutritionStringView.swift */; };
+		C60CD80423BF63440041502C /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60CD80323BF63430041502C /* HealthManager.swift */; };
 		C60F510223A166AB009F2CDA /* MealsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60F510123A166AB009F2CDA /* MealsView.swift */; };
 		C61526A423BE58D6001A4D69 /* CurrentMeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61526A323BE58D6001A4D69 /* CurrentMeal.swift */; };
 		C61526A723BE5C9E001A4D69 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61526A623BE5C9E001A4D69 /* Task.swift */; };
@@ -139,6 +140,7 @@
 		C604B2C0236DEDD8006BFE9E /* Meals3.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Meals3.entitlements; sourceTree = "<group>"; };
 		C604B2C2236DEDD8006BFE9E /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C607D03223809C50009BA48C /* FoodNutritionStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutritionStringView.swift; sourceTree = "<group>"; };
+		C60CD80323BF63430041502C /* HealthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthManager.swift; sourceTree = "<group>"; };
 		C60F510123A166AB009F2CDA /* MealsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsView.swift; sourceTree = "<group>"; };
 		C61526A323BE58D6001A4D69 /* CurrentMeal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMeal.swift; sourceTree = "<group>"; };
 		C61526A623BE5C9E001A4D69 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 				C69F58DA23831E3B0014D330 /* FoodDetails.swift */,
 				C62BB6D123B0A6D0000132F0 /* FoodListTypes.swift */,
 				C604B2BC236C254C006BFE9E /* HasNutrients.swift */,
+				C60CD80323BF63430041502C /* HealthManager.swift */,
 				C63792B223A541E2006824E1 /* Item.swift */,
 				C604B2BE236D7EB8006BFE9E /* Meal.swift */,
 				C619E069239830E300410D8B /* NutrientSectionViewModel.swift */,
@@ -600,6 +603,7 @@
 				C604B2B6236C247A006BFE9E /* RecipeIngredientExtension.swift in Sources */,
 				C6F45B8D236B65AD00C4FAC3 /* MealIngredient+CoreDataProperties.swift in Sources */,
 				C604B2BD236C254C006BFE9E /* HasNutrients.swift in Sources */,
+				C60CD80423BF63440041502C /* HealthManager.swift in Sources */,
 				C69F58DB23831E3B0014D330 /* FoodDetails.swift in Sources */,
 				C62BB6D223B0A6D0000132F0 /* FoodListTypes.swift in Sources */,
 				C64BE90023B9F50000E41CE2 /* MealIngredientsView.swift in Sources */,

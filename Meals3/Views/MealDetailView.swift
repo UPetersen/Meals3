@@ -55,7 +55,9 @@ struct MealDetailView: View {
         .navigationBarItems(trailing: EditButton().padding())
         .onDisappear(){
             print("MealDetailView disappeared.")
-            try? self.meal.managedObjectContext?.save()
+            if self.viewContext.hasChanges {
+                try? self.meal.managedObjectContext?.save()
+            }
         }
         .onAppear() {
             print("MealDetaliView appeared.")

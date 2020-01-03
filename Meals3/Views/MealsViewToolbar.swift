@@ -19,29 +19,21 @@ struct MealsViewToolbar: View {
     
     var body: some View {
         HStack {
-            Button(action: { withAnimation{print("book")} },
-                   label: { Image(systemName: "book").padding(.horizontal) }
-            )
+            Button(action: { withAnimation{print("book")}},
+                   label: { Image(systemName: "book").padding(.horizontal) })
 
             Spacer()
             
-            Button(action: {
-//                self.currentIngredientCollection.collection = Meal.newestMeal(managedObjectContext: self.viewContext)
-                withAnimation{self.isShowingGeneralSearchView = true}
-            },
-                   label: { Image(systemName: "magnifyingglass").padding(.horizontal) }
-            )
+            Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
+                   label: { Image(systemName: "magnifyingglass").padding(.horizontal) })
 
             Spacer()
             
             Button(action: { withAnimation {self.newMeal()} },
-                   label: { Image(systemName: "plus").padding(.horizontal) }
-            )
+                   label: { Image(systemName: "plus").padding(.horizontal) })
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
             NavigationLink(destination: GeneralSearchView(ingredientCollection: self.currentMeal.meal),
-//NavigationLink(destination: GeneralSearchView(ingredientCollection: Meal.newestMeal(managedObjectContext: self.viewContext)),
-//                           NavigationLink(destination: GeneralSearchView(),
                            isActive: $isShowingGeneralSearchView,
                            label: {EmptyView()})
                 .frame(width: 0, height: 0)
@@ -52,11 +44,6 @@ struct MealsViewToolbar: View {
     func newMeal() {
         let meal = Meal(context: self.viewContext)
         self.currentMeal.meal = meal
-//        self.currentIngredientCollection.collection = meal // -> works (compliles)
-//        self.currentIngredientCollection.value = meal as IngredientCollection // -> works (compliles)
-//        self.currentIngredientCollection.value = Recipe() // -> works (compliles)
-//        self.currentIngredientCollection.value = Recipe() as IngredientCollection // -> works (compliles)
-        
         try? self.viewContext.save()
 //        HealthManager.synchronize(meal, withSynchronisationMode: .save)
     }
