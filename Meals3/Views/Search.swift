@@ -16,7 +16,7 @@ class Search: ObservableObject {
     }
     @Published var filter: SearchFilter = .Contains
     @Published var sortRule: FoodListSortRule = .NameAscending
-    @Published var foodListType: FoodListType = .All
+    @Published var foodListType: FoodListSelection = .All
     @Published var fetchLimit: Int = 50
     @Published var fetchOffset: Int = 0
 }

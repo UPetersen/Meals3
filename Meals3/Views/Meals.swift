@@ -9,7 +9,7 @@
 import SwiftUI
 import CoreData
 
-struct MealsView: View {
+struct Meals: View {
     
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var search: Search
@@ -45,11 +45,11 @@ struct MealsView: View {
             ForEach(meals){ (meal: Meal) in
                 Section(header:
                     NavigationLink(destination: MealDetailView(meal: meal)) {
-                        LazyView( MealsNutrientsView(meal: meal) )
+                        LazyView( MealsNutrients(meal: meal) )
                     }
                 ) {
                     ForEach(meal.filteredAndSortedMealIngredients()!) { (mealIngredient: MealIngredient) in
-                        NavigationLink(destination: self.lazyFoodDetailsView(food: mealIngredient.food!)) {
+                        NavigationLink(destination: self.lazyFoodDetail(food: mealIngredient.food!)) {
                                     MealIngredientCellView(mealIngredient: mealIngredient)
                         }
                     }
@@ -80,9 +80,9 @@ struct MealsView: View {
         }
     }
     
-    func lazyFoodDetailsView(food: Food) -> some View {
+    func lazyFoodDetail(food: Food) -> some View {
         return LazyView(
-            FoodDetailsView(ingredientCollection: self.currentMeal.meal,
+            FoodDetail(ingredientCollection: self.currentMeal.meal,
                             food: food)
                 .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
         )

@@ -16,7 +16,7 @@ private let dateFormatter: DateFormatter = {
 }()
 
 
-struct MealsNutrientsView: View {
+struct MealsNutrients: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var meal: Meal
     
@@ -75,7 +75,7 @@ struct MealNutrientsView_Previews: PreviewProvider {
     static var previews: some View {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
             
-        return MealsNutrientsView(meal: Meal(context: context)).environment(\.managedObjectContext, context)
+        return MealsNutrients(meal: Meal(context: context)).environment(\.managedObjectContext, context)
 
     }
 }

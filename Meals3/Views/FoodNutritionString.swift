@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct FoodNutritionStringView: View {
+struct FoodNutritionString: View {
     
     var text: String = ""
     @Binding var value: String?
@@ -42,25 +42,23 @@ struct FoodNutritionStringView_Previews: PreviewProvider {
         
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
-        let food: Food = {
-            let food = Food(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
-            food.name = "leckerer Donut"
-            food.comment = "Ein unnötiger Kommentar"
-            food.totalCarb = 12.0
-            food.totalFat = 23.0
-            food.totalProtein = 14.0
-            food.totalEnergyCals = 200.0
-            food.totalAlcohol = 4.0
-            food.totalWater = 55.0
-            food.totalDietaryFiber = 32.0
-            food.totalOrganicAcids = 0.4
-            food.totalSalt = 0.3
-            food.dateOfLastModification = Date()
-            food.carbGlucose = 12.0
-            
-            
-            return food
-        }()
+//        let food: Food = {
+//            let food = Food(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+//            food.name = "leckerer Donut"
+//            food.comment = "Ein unnötiger Kommentar"
+//            food.totalCarb = 12.0
+//            food.totalFat = 23.0
+//            food.totalProtein = 14.0
+//            food.totalEnergyCals = 200.0
+//            food.totalAlcohol = 4.0
+//            food.totalWater = 55.0
+//            food.totalDietaryFiber = 32.0
+//            food.totalOrganicAcids = 0.4
+//            food.totalSalt = 0.3
+//            food.dateOfLastModification = Date()
+//            food.carbGlucose = 12.0
+//            return food
+//        }()
         
         let _: Nutrient? = { // Store a nutrient in core data
             let nutrient = Nutrient(context: context)
@@ -75,13 +73,13 @@ struct FoodNutritionStringView_Previews: PreviewProvider {
         
         return NavigationView {
              VStack {
-                FoodNutritionStringView(text: "Name", value: $string0, editingDisabled: .constant(true))
+                FoodNutritionString(text: "Name", value: $string0, editingDisabled: .constant(true))
                  Divider()
-                 FoodNutritionStringView(text: "Detail", value: $string1, editingDisabled: .constant(true))
+                 FoodNutritionString(text: "Detail", value: $string1, editingDisabled: .constant(true))
                  Divider()
-                 FoodNutritionStringView(text: "Untergr.", value: $string2, editingDisabled: .constant(true))
+                 FoodNutritionString(text: "Untergr.", value: $string2, editingDisabled: .constant(true))
                  Divider()
-                 FoodNutritionStringView(text: "Refer.", value: $string3, editingDisabled: .constant(true))
+                 FoodNutritionString(text: "Refer.", value: $string3, editingDisabled: .constant(true))
                  Divider()
 
              }.padding()

@@ -1,5 +1,5 @@
 //
-//  FoodDetailsView.swift
+//  FoodDetail.swift
 //  Meals3
 //
 //  Created by Uwe Petersen on 10.11.19.
@@ -8,21 +8,14 @@
 
 import SwiftUI
 
-struct FoodDetailsView<T>: View where T: IngredientCollection {
-//    struct FoodDetailsView: View {
+struct FoodDetail<T>: View where T: IngredientCollection {
 
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
-//    var ingredientCollection: IngredientCollection
     @ObservedObject var food: Food
     @State private var editingDisabled = true
     @State private var showingAddOrChangeAmountOfFoodView = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-//    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection // hier kommt das an!
-
-    
-    
-//    @ObservedObject var aIngriedientCollection: T
     
     var nutrientSections = NutrientSectionViewModel.sections()
     
@@ -58,7 +51,7 @@ struct FoodDetailsView<T>: View where T: IngredientCollection {
                 
                 // Section "Allgemeine Informationen
                 Section(header: Text("ALLGEMEINE INFORMATIONEN")) {
-                    FoodNutritionStringView(text: "Name", value: $food.name, editingDisabled: $editingDisabled)
+                    FoodNutritionString(text: "Name", value: $food.name, editingDisabled: $editingDisabled)
                     HStack {
                         Text("Detail")
                         Spacer()
@@ -117,7 +110,7 @@ struct FoodDetailsView<T>: View where T: IngredientCollection {
             }
             .environment(\.defaultMinListRowHeight, 1)
 
-            FoodDetailViewToolbar(food: food)
+            FoodDetailToolbar(food: food)
             
         } // VStack
             
@@ -158,7 +151,7 @@ struct FoodDetailsView<T>: View where T: IngredientCollection {
 
 
 
-struct FoodDetailsView_Previews: PreviewProvider {
+struct FoodDetail_Previews: PreviewProvider {
     
     static var previews: some View {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -191,7 +184,7 @@ struct FoodDetailsView_Previews: PreviewProvider {
         }()
         
         return NavigationView {
-            FoodDetailsView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
+            FoodDetail(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
                 .environment(\.managedObjectContext, context)
                 .navigationBarTitle(food.name ?? "Lebensmittel")
         }

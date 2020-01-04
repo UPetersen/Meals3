@@ -45,10 +45,10 @@ struct ContentView: View {
                     VStack{
                         SearchBarView(searchText: self.$search.text)
   
-                        MealsView(search: self.search)
+                        Meals(search: self.search)
 
                         // Bottom tool bar
-                        MealsViewToolbar()
+                        MealsToolbar()
                     }
                     .offset(x: self.showMenu ? geometry.size.width*0.4 : 0)
                     .disabled(self.showMenu ? true : false)

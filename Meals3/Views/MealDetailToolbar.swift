@@ -1,5 +1,5 @@
 //
-//  MealDetailViewToolbar.swift
+//  MealDetailToolbar.swift
 //  Meals3
 //
 //  Created by Uwe Petersen on 29.12.19.
@@ -8,7 +8,9 @@
 
 import SwiftUI
 
-struct MealDetailViewToolbar: View {
+struct MealDetailToolbar: View {
+    @ObservedObject var meal: Meal
+    
     @Environment(\.managedObjectContext) var viewContext
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var currentMeal: CurrentMeal
@@ -19,11 +21,16 @@ struct MealDetailViewToolbar: View {
     
     var body: some View {
         HStack {
-            Button(action: { withAnimation{print("book")} },
-                   label: { Image(systemName: "book").padding(.horizontal)
+            Button(action: { withAnimation{ self.copyMeal() } },
+                   label: { Image(systemName: "doc.on.doc").padding(.horizontal)
             })
 
             Spacer()
+            
+//            Button(action: { withAnimation{print("book")} },
+//                   label: { Image(systemName: "book").padding(.horizontal)
+//            })
+//            Spacer()
             
             Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
                    label: { Image(systemName: "magnifyingglass").padding(.horizontal)
@@ -38,7 +45,7 @@ struct MealDetailViewToolbar: View {
 
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
-            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.currentMeal.meal),
+            NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal),
                            isActive: $isShowingGeneralSearchView,
                            label: {EmptyView()})
                 .frame(width: 0, height: 0)
@@ -58,10 +65,21 @@ struct MealDetailViewToolbar: View {
             },
               secondaryButton: .cancel())
     }
-}
-
-struct MealDetailViewToolbar_Previews: PreviewProvider {
-    static var previews: some View {
-        MealDetailViewToolbar()
+    
+    /// Create copy of this meal an dismiss the view
+    func copyMeal() {
+        debugPrint("Will copy the meal \(meal) and make it the new current meal")
+        if let newMeal = Meal.fromMeal(meal, inManagedObjectContext: viewContext) {
+            try? viewContext.save()
+            HealthManager.synchronize(newMeal, withSynchronisationMode: .save)
+            currentMeal.meal = newMeal
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
+
+//struct MealDetailViewToolbar_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MealDetailToolbar()
+//    }
+//}

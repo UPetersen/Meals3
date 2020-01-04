@@ -11,7 +11,7 @@ import CoreData
 
 
 
-struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
+struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
     @ObservedObject var search: Search
@@ -96,8 +96,8 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
                 }
                 
                 ForEach(foods) { (food: Food) in
-                    NavigationLink(destination: LazyView(self.foodDetailsView(food: food)) ) {
-                             FoodNutrientsRowView(food: food, formatter: self.formatter)
+                    NavigationLink(destination: LazyView(self.foodDetailView(food: food)) ) {
+                             FoodNutrientsRow(food: food, formatter: self.formatter)
                     }
                 }
                 
@@ -139,8 +139,8 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
         }
     }
         
-    func foodDetailsView(food: Food) -> some View {
-        FoodDetailsView(ingredientCollection: self.ingredientCollection,
+    func foodDetailView(food: Food) -> some View {
+        FoodDetail(ingredientCollection: self.ingredientCollection,
                         food: food)
             .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
     }

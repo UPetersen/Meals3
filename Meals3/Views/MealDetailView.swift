@@ -48,11 +48,11 @@ struct MealDetailView: View {
                     DatePicker("Datum:", selection: date)
                 }
                 Section(header: headerView(), footer: footerView()) {
-                    MealDetailIngredientsView(meal: meal)
+                    MealDetailIngredients(meal: meal)
                 }
             }
             
-            MealDetailViewToolbar()
+            MealDetailToolbar(meal: meal)
         }
         .navigationBarTitle("Mahlzeit-Details")
         .navigationBarItems(trailing: EditButton().padding())

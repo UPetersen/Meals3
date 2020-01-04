@@ -9,7 +9,7 @@
 import SwiftUI
 
 
-struct MealDetailIngredientsView: View {
+struct MealDetailIngredients: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var meal: Meal
     

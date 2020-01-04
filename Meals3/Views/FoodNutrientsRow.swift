@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct FoodNutrientsRowView: View {
+struct FoodNutrientsRow: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var food: Food
     var formatter: NumberFormatter
@@ -41,7 +41,7 @@ struct FoodNutrientsView_Previews: PreviewProvider {
 
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
-        var food: Food = {
+        let food: Food = {
             let food = Food(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
             food.name = "leckerer Donut"
             food.comment = "Ein unnötiger Kommentar"
@@ -71,7 +71,7 @@ struct FoodNutrientsView_Previews: PreviewProvider {
 
         return NavigationView {
             List {
-                FoodNutrientsRowView(food: food, formatter: formatter)
+                FoodNutrientsRow(food: food, formatter: formatter)
                     .environment(\.managedObjectContext, context)
                     .navigationBarTitle("Lebensmittelsuche")
             }

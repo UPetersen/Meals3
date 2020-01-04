@@ -9,7 +9,7 @@
 import SwiftUI
 
 
-struct GeneralSearchView<T>: View where T: IngredientCollection  {
+struct GeneralSearch<T>: View where T: IngredientCollection  {
 //struct GeneralSearchView: View  {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
@@ -31,7 +31,7 @@ struct GeneralSearchView<T>: View where T: IngredientCollection  {
             SearchBarView(searchText: $search.text)
                 .resignKeyboardOnDragGesture()
 
-            GeneralSearchResultsView(search: search, formatter: oneMaxDigitsNumberFormatter, ingredientCollection: self.ingredientCollection)
+            GeneralSearchResults(search: search, formatter: oneMaxDigitsNumberFormatter, ingredientCollection: self.ingredientCollection)
 
             // Bottom tool bar
             GeneralSearchToolbar(search: search)

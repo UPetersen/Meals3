@@ -1,5 +1,5 @@
 //
-//  FoodDetailViewToolbar.swift
+//  FoodDetailToolbar.swift
 //  Meals3
 //
 //  Created by Uwe Petersen on 22.12.19.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct FoodDetailViewToolbar: View {
+struct FoodDetailToolbar: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var food: Food
@@ -117,9 +117,9 @@ struct FoodDetailViewToolbar_Previews: PreviewProvider {
         }()
 
         return NavigationView {
-            return FoodDetailViewToolbar(food: food)
+            return FoodDetailToolbar(food: food)
                 .environment(\.managedObjectContext, viewContext)
-                .navigationBarTitle(food.name ?? "Toolbar for FoodDetails")
+                .navigationBarTitle(food.name ?? "Toolbar for FoodDetail")
         }
     }
 }

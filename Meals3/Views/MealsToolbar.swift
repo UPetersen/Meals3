@@ -1,5 +1,5 @@
 //
-//  MealsViewToolbar.swift
+//  MealsToolbar.swift
 //  Meals3
 //
 //  Created by Uwe Petersen on 22.12.19.
@@ -9,7 +9,7 @@
 import SwiftUI
 import CoreData
 
-struct MealsViewToolbar: View {
+struct MealsToolbar: View {
     @Environment(\.managedObjectContext) var viewContext
     @State private var isShowingGeneralSearchView = false
     
@@ -19,10 +19,10 @@ struct MealsViewToolbar: View {
     
     var body: some View {
         HStack {
-            Button(action: { withAnimation{print("book")}},
-                   label: { Image(systemName: "book").padding(.horizontal) })
-
-            Spacer()
+//            Button(action: { withAnimation{print("book")}},
+//                   label: { Image(systemName: "book").padding(.horizontal) })
+//
+//            Spacer()
             
             Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
                    label: { Image(systemName: "magnifyingglass").padding(.horizontal) })
@@ -33,7 +33,7 @@ struct MealsViewToolbar: View {
                    label: { Image(systemName: "plus").padding(.horizontal) })
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
-            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.currentMeal.meal),
+            NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal),
                            isActive: $isShowingGeneralSearchView,
                            label: {EmptyView()})
                 .frame(width: 0, height: 0)
@@ -58,7 +58,7 @@ struct MainViewToolbar_Previews: PreviewProvider {
         let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
         return NavigationView {
-            return MealsViewToolbar()
+            return MealsToolbar()
                 .environment(\.managedObjectContext, viewContext)
                 .navigationBarTitle("Main view toolbar")
         }

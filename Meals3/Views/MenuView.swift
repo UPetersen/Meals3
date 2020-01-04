@@ -69,7 +69,7 @@ struct MenuView: View {
             
             // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!
             if self.isPresentingNewFood {
-                    NavigationLink(destination: foodDetailsView(), isActive: self.$isPresentingNewFood, label: { EmptyView() })
+                    NavigationLink(destination: foodDetail(), isActive: self.$isPresentingNewFood, label: { EmptyView() })
                         .hidden()
             }
         }
@@ -87,8 +87,8 @@ struct MenuView: View {
         }
     }
     
-    func foodDetailsView() -> some View {
-        return FoodDetailsView(ingredientCollection: self.currentMeal.meal,
+    func foodDetail() -> some View {
+        return FoodDetail(ingredientCollection: self.currentMeal.meal,
                                food: Food(context: viewContext)
         )
             .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))

@@ -10,7 +10,7 @@ import Foundation
 
 /// Holds the (current) meal, to which a food will be added.
 ///
-/// Convention: Each view that has the possiibility to call `GeneralSearchView` or `FoodDetailsView` (both of which can be used to add foods as ingredients to the current meal or reciple) has to set the current meal accordingly. This should be done in `.onAppear()`. Further more, if a meal is deleted or a meal is created, the current meal has to be updated. Generally, if a meal is not selected directle, the current meal is the newest meal available.
+/// Convention: Each view that has the possiibility to call `GeneralSearch` or `FoodDetail` (both of which can be used to add foods as ingredients to the current meal or reciple) has to set the current meal accordingly. This should be done in `.onAppear()`. Further more, if a meal is deleted or a meal is created, the current meal has to be updated. Generally, if a meal is not selected directle, the current meal is the newest meal available.
 
 class CurrentMeal: ObservableObject {
     @Published var meal: Meal {
