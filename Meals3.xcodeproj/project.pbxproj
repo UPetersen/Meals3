@@ -30,6 +30,7 @@
 		C61526A423BE58D6001A4D69 /* CurrentMeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61526A323BE58D6001A4D69 /* CurrentMeal.swift */; };
 		C61526A723BE5C9E001A4D69 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61526A623BE5C9E001A4D69 /* Task.swift */; };
 		C619E06A239830E300410D8B /* NutrientSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C619E069239830E300410D8B /* NutrientSectionViewModel.swift */; };
+		C625776223C086EC0040CBE1 /* GeneralSearchToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C625776123C086EC0040CBE1 /* GeneralSearchToolbar.swift */; };
 		C62BB6CC23B003D0000132F0 /* MealsViewToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6CB23B003D0000132F0 /* MealsViewToolbar.swift */; };
 		C62BB6CE23B00700000132F0 /* GeneralSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6CD23B00700000132F0 /* GeneralSearchView.swift */; };
 		C62BB6D023B0A603000132F0 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6CF23B0A603000132F0 /* Search.swift */; };
@@ -145,6 +146,7 @@
 		C61526A323BE58D6001A4D69 /* CurrentMeal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMeal.swift; sourceTree = "<group>"; };
 		C61526A623BE5C9E001A4D69 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		C619E069239830E300410D8B /* NutrientSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutrientSectionViewModel.swift; sourceTree = "<group>"; };
+		C625776123C086EC0040CBE1 /* GeneralSearchToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSearchToolbar.swift; sourceTree = "<group>"; };
 		C62BB6CB23B003D0000132F0 /* MealsViewToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsViewToolbar.swift; sourceTree = "<group>"; };
 		C62BB6CD23B00700000132F0 /* GeneralSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSearchView.swift; sourceTree = "<group>"; };
 		C62BB6CF23B0A603000132F0 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Search.swift; path = Meals3/Views/Search.swift; sourceTree = SOURCE_ROOT; };
@@ -304,6 +306,7 @@
 				C6D58A7423B7CB9A0037A589 /* FoodNutrientsRowView.swift */,
 				C607D03223809C50009BA48C /* FoodNutritionStringView.swift */,
 				C62BB6D323B0AC2E000132F0 /* GeneralSearchResultsView.swift */,
+				C625776123C086EC0040CBE1 /* GeneralSearchToolbar.swift */,
 				C62BB6CD23B00700000132F0 /* GeneralSearchView.swift */,
 				C64BE8FF23B9F50000E41CE2 /* MealDetailIngredientsView.swift */,
 				C648803E23B8593C00294EFD /* MealDetailView.swift */,
@@ -616,6 +619,7 @@
 				C61526A723BE5C9E001A4D69 /* Task.swift in Sources */,
 				C607D03323809C51009BA48C /* FoodNutritionStringView.swift in Sources */,
 				C62BB6D023B0A603000132F0 /* Search.swift in Sources */,
+				C625776223C086EC0040CBE1 /* GeneralSearchToolbar.swift in Sources */,
 				C6F45B8B236B65AD00C4FAC3 /* Favorite+CoreDataProperties.swift in Sources */,
 				C64F34782393B5C3001C9511 /* FoodNumberFieldWithKey.swift in Sources */,
 				C604B2B5236C247A006BFE9E /* RecipeExtension.swift in Sources */,

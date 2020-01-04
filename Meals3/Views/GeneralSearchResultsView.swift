@@ -40,7 +40,7 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
         self.formatter = formatter
         self.ingredientCollection = ingredientCollection
         
-        let searchFilter = SearchFilter.Contains
+        let searchFilter = search.filter
         let predicates = [search.foodListType.predicate, searchFilter.predicateForSearchText(search.text)].compactMap{$0}
         
         let request = NSFetchRequest<Food>(entityName: "Food")

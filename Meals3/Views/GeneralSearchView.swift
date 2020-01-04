@@ -13,7 +13,9 @@ struct GeneralSearchView<T>: View where T: IngredientCollection  {
 //struct GeneralSearchView: View  {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
-    
+
+    @ObservedObject var search = Search()
+
     let oneMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
@@ -22,8 +24,6 @@ struct GeneralSearchView<T>: View where T: IngredientCollection  {
         numberFormatter.zeroSymbol = "0"
         return numberFormatter
     }()
-
-    @ObservedObject var search = Search()
 
     var body: some View {
         
@@ -34,7 +34,7 @@ struct GeneralSearchView<T>: View where T: IngredientCollection  {
             GeneralSearchResultsView(search: search, formatter: oneMaxDigitsNumberFormatter, ingredientCollection: self.ingredientCollection)
 
             // Bottom tool bar
-//            GeneralSearchViewToolbar()
+            GeneralSearchToolbar(search: search)
          }
     }
 }
