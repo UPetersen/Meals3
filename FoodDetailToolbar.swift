@@ -53,27 +53,28 @@ struct FoodDetailToolbar: View {
     }
         
     func deleteFoodConfirmationAlert() -> Alert {
-        return Alert(title: Text("Lebensmittel löschen?"), message: confirmationText(),
+        return Alert(title: Text("Lebensmittel löschen?"), message: Text(self.food.deletionConfirmation()),
+//                     return Alert(title: Text("Lebensmittel löschen?"), message: confirmationText(),
                      primaryButton: .destructive(Text("Löschen")) {
                         self.deleteFood()
             },
                      secondaryButton: .cancel())
     }
     
-    func confirmationText() -> Text? {
-        if self.food.isMealAndRecipeIngredient() {
-            let uniqueMeals = Set(food.mealIngredients!.compactMap{ ($0 as AnyObject).meal })
-            let uniqueRecipes = Set (food.recipeIngredients!.compactMap{ ($0 as AnyObject).recipe })
-            return Text("Dieses Lebensmittel wird \(food.mealIngredients!.count) mal in insgesamt \(uniqueMeals.count) Mahlzeit(en) verwendet und wird aus diesen gelöscht.\n\nDieses Lebensmittel wird außerdem \(food.recipeIngredients!.count) mal in insgesamt \(uniqueRecipes.count) Rezept(en) verwendet und wird auch aus diesen gelöscht. ")
-        } else if self.food.isMealIngredient() {
-            let uniqueMeals = Set(food.mealIngredients!.compactMap{ ($0 as AnyObject).meal })
-            return Text("Dieses Lebensmittel wird \(food.mealIngredients!.count) mal in insgesamt \(uniqueMeals.count) Mahlzeit(en) verwendet und wird diesen gelöscht.")
-        } else if self.food.isRecipeIngredient() {
-            let uniqueRecipes = Set (food.recipeIngredients!.compactMap{ ($0 as AnyObject).recipe })
-            return Text("Dieses Lebensmittel wird \(food.recipeIngredients!.count) mal in insgesamt \(uniqueRecipes.count) Rezept(en) verwendet und wird diesen gelöscht.")
-        }
-        return Text("Dieses Lebensmitttel wird bisher in keiner Mahlzeit und keinem Rezept genutzt.")
-    }
+//    func confirmationText() -> Text? {
+//        if self.food.isMealAndRecipeIngredient() {
+//            let uniqueMeals = Set(food.mealIngredients!.compactMap{ ($0 as AnyObject).meal })
+//            let uniqueRecipes = Set (food.recipeIngredients!.compactMap{ ($0 as AnyObject).recipe })
+//            return Text("Dieses Lebensmittel wird \(food.mealIngredients!.count) mal in insgesamt \(uniqueMeals.count) Mahlzeit(en) verwendet und wird aus diesen gelöscht.\n\nDieses Lebensmittel wird außerdem \(food.recipeIngredients!.count) mal in insgesamt \(uniqueRecipes.count) Rezept(en) verwendet und wird auch aus diesen gelöscht. ")
+//        } else if self.food.isMealIngredient() {
+//            let uniqueMeals = Set(food.mealIngredients!.compactMap{ ($0 as AnyObject).meal })
+//            return Text("Dieses Lebensmittel wird \(food.mealIngredients!.count) mal in insgesamt \(uniqueMeals.count) Mahlzeit(en) verwendet und wird diesen gelöscht.")
+//        } else if self.food.isRecipeIngredient() {
+//            let uniqueRecipes = Set (food.recipeIngredients!.compactMap{ ($0 as AnyObject).recipe })
+//            return Text("Dieses Lebensmittel wird \(food.recipeIngredients!.count) mal in insgesamt \(uniqueRecipes.count) Rezept(en) verwendet und wird diesen gelöscht.")
+//        }
+//        return Text("Dieses Lebensmitttel wird bisher in keiner Mahlzeit und keinem Rezept genutzt.")
+//    }
         
     func deleteFood() {
         food.managedObjectContext?.delete(food)

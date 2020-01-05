@@ -64,15 +64,23 @@ struct AddOrChangeAmountOfFoodView: View {
                         HealthManager.synchronize(meal, withSynchronisationMode: .update)
                         self.isPresented = false // dismiss self
                         self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
+                    } else if let recipe = ingredientCollection as? Recipe {
+                        recipe.objectWillChange.send()
+                        recipe.dateOfLastModification = Date()
+                        recipe.food?.updateNutrients(managedObjectContext: self.viewContext)
+                        try? self.viewContext.save()
+                        self.isPresented = false // dismiss self
+                        self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
                     }
                 }
             case .changeAmountOfIngredient(var ingredient):
-//                DispatchQueue.main.async {
-//                }
                 ingredient.amount = self.amount
                 if let meal = (ingredient as? MealIngredient)?.meal {
-                    meal.dateOfLastModification? = Date()
+                    meal.dateOfLastModification = Date()
                     HealthManager.synchronize(meal, withSynchronisationMode: .update)
+                } else if let recipe = (ingredient as? RecipeIngredient)?.recipe {
+                    recipe.dateOfLastModification = Date()
+                    recipe.food?.updateNutrients(managedObjectContext: self.viewContext)
                 }
                 
 //                (ingredient as? MealIngredient)?.meal?.dateOfLastModification? = Date()

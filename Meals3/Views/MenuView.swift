@@ -50,7 +50,9 @@ struct MenuView: View {
             Text("Neues Rezept")
                 .padding()
                 .onTapGesture {
-                    _ = Recipe(context: self.viewContext)
+                    let recipe = Recipe(context: self.viewContext)
+                    recipe.food = Food.fromRecipe(recipe, inManagedObjectContext: self.viewContext)
+
                     try? self.viewContext.save()
                     self.showThisMenu = false
             }
@@ -60,7 +62,6 @@ struct MenuView: View {
                     print("Authorize Healthkit")
                     self.authorizeHealthKit()
                     self.isPresentingHealthAuthorizationConfirmationAlert = true
-//                    self.showMenu = false
             }
             .alert(isPresented: $isPresentingHealthAuthorizationConfirmationAlert, content: self.authorizeHealthAlert)
 

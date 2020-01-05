@@ -7,14 +7,17 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct FoodDetail<T>: View where T: IngredientCollection {
 
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
     @ObservedObject var food: Food
+    
     @State private var editingDisabled = true
     @State private var showingAddOrChangeAmountOfFoodView = false
+    @State private var showingRecipeDetail = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var nutrientSections = NutrientSectionViewModel.sections()
@@ -112,25 +115,31 @@ struct FoodDetail<T>: View where T: IngredientCollection {
 
             FoodDetailToolbar(food: food)
             
+            // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!
+            if self.showingRecipeDetail && self.food.recipe != nil {
+                NavigationLink(destination: RecipeDetail(recipe: self.food.recipe!), isActive: self.$showingRecipeDetail, label: { EmptyView() })
+                        .hidden()
+            }
+
+            
         } // VStack
             
-            
-            .onAppear() {
-                print("foodDetail appears")
-                print(self.viewContext.description)
-        }
         .onDisappear() {
             print("foodDetail disappears")
             if self.viewContext.hasChanges {
                 self.food.dateOfLastModification = Date()
                 try? self.viewContext.save()            
             }
-//            // FIXME: test, this sould not be necessary
-//            try? self.food.managedObjectContext?.save()
         }
         .navigationBarHidden(false)
         .navigationBarItems(trailing: HStack {
-            Button(self.editingDisabled ? "Edit" : "Done") { self.editingDisabled.toggle() }.padding()
+            Button(self.editingDisabled ? "Edit" : "Done") {
+                if self.food.recipe != nil {
+                    self.showingRecipeDetail = true
+                } else {
+                    self.editingDisabled.toggle()  // edit food data
+                }
+            }.padding()
             Button(action: {
                 print("Plus button was tapped")
                 self.showingAddOrChangeAmountOfFoodView = true

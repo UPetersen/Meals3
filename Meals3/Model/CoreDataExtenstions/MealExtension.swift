@@ -165,11 +165,6 @@ extension Meal: HasNutrients {
             let quantities = ingredients.compactMap{$0 as? MealIngredient}
             .filter {$0.food?.value(forKeyPath: key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
             .map   {($0.food?.value(forKeyPath: key) as! NSNumber).doubleValue / 100.0 * ($0.amount?.doubleValue)!} // Convert to NSNumber and then Double and multiply with amount of this ingredient
-
-
-//            let quantities = (self.ingredients!.allObjects as! [MealIngredient])  // convert NSSet to [AnyObject] (via .allObjects) and then to [MealIngredient]
-//                .filter {$0.food?.value(forKeyPath: key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
-//                .map   {($0.food?.value(forKeyPath: key) as! NSNumber).doubleValue / 100.0 * ($0.amount?.doubleValue)!} // Convert to NSNumber and then Double and multiply with amount of this ingredient
             
             // sum up the values of all meal ingredients or return nil if no ingredients values where availabel (i.e. all foods had no entry for this nutrient)
             if quantities.isEmpty {

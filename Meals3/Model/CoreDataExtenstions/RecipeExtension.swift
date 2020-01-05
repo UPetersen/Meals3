@@ -43,7 +43,8 @@ extension Recipe {
     /// sum of the content of one nutrient (e.g. "totalCarb") in a meal. Thus one has to sum over all (recipe) ingredients
     /// Example: (sum [totalCarb content of each ingredient] / 100)
     func doubleForKey(_ key: String) -> Double? {
-        let quantities = (self.ingredients?.allObjects as! [RecipeIngredient])  // convert NSSet to [AnyObject] (via .allObjects) and then to [MealIngredient]
+        guard let ingredients = self.ingredients else {return nil}
+        let quantities = ingredients.compactMap{$0 as? RecipeIngredient}  // convert NSSet to [AnyObject] (via .allObjects) and then to [MealIngredient]
             .filter {$0.food?.value(forKeyPath: key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
             .map   {($0.food?.value(forKeyPath: key) as! NSNumber).doubleValue / 100.0 * ($0.amount?.doubleValue)!} // Convert to NSNumber and then Double and multiply with amount of this ingredient
         
@@ -75,9 +76,6 @@ extension Recipe {
             }
         }
         recipe.comment = meal.comment
-//        if let comment = meal.comment {
-//            recipe.comment = comment
-//        }
         recipe.amount = NSNumber(value: recipe.amountOfAllIngredients as Double)
         recipe.food = Food.fromRecipe(recipe, inManagedObjectContext: context)
         

@@ -26,12 +26,13 @@ struct MealDetailToolbar: View {
             })
 
             Spacer()
-            
-//            Button(action: { withAnimation{print("book")} },
-//                   label: { Image(systemName: "book").padding(.horizontal)
-//            })
-//            Spacer()
-            
+
+            Button(action: { withAnimation{ self.createRecipeFromMeal() } },
+                   label: { Text("Rezept hieraus").padding(.horizontal)
+            })
+
+            Spacer()
+
             Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
                    label: { Image(systemName: "magnifyingglass").padding(.horizontal)
             })
@@ -75,6 +76,11 @@ struct MealDetailToolbar: View {
             currentMeal.meal = newMeal
             presentationMode.wrappedValue.dismiss()
         }
+    }
+    
+    func createRecipeFromMeal() {
+        presentationMode.wrappedValue.dismiss()
+        _ = Recipe.fromMeal(meal, inManagedObjectContext: viewContext)
     }
 }
 

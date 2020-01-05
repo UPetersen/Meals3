@@ -87,9 +87,9 @@ extension Food {
     }
     
     func updateNutrients(managedObjectContext context: NSManagedObjectContext) {
-        
         if let recipe = self.recipe {
-            let recipeAmount = recipe.amount?.doubleValue ?? 0.0
+            let recipeAmount = recipe.amountOfAllIngredients
+            recipe.amount = NSNumber(value: recipeAmount) // Reset all manual changes if the nutrients are updated
             if let nutrients = Nutrient.fetchAllNutrients(managedObjectContext: context) {
                 for nutrient in nutrients {
                     if let value = recipe.doubleForNutrient(nutrient) {
@@ -98,7 +98,7 @@ extension Food {
                     }
                 }
             }
-            self.dateOfLastModification = Date() as NSDate as Date
+            self.dateOfLastModification = Date()
         }
     }
     
@@ -199,6 +199,20 @@ extension Food {
     }
 
 
+    func deletionConfirmation() -> String {
+        if self.isMealAndRecipeIngredient() {
+            let uniqueMeals = Set(self.mealIngredients!.compactMap{ ($0 as AnyObject).meal })
+            let uniqueRecipes = Set (self.recipeIngredients!.compactMap{ ($0 as AnyObject).recipe })
+            return "Dieses Lebensmittel wird \(self.mealIngredients!.count) mal in insgesamt \(uniqueMeals.count) Mahlzeit(en) verwendet und wird aus diesen gelöscht.\n\nDieses Lebensmittel wird außerdem \(self.recipeIngredients!.count) mal in insgesamt \(uniqueRecipes.count) Rezept(en) verwendet und wird auch aus diesen gelöscht. "
+        } else if self.isMealIngredient() {
+            let uniqueMeals = Set(self.mealIngredients!.compactMap{ ($0 as AnyObject).meal })
+            return "Dieses Lebensmittel wird \(self.mealIngredients!.count) mal in insgesamt \(uniqueMeals.count) Mahlzeit(en) verwendet und wird diesen gelöscht."
+        } else if self.isRecipeIngredient() {
+            let uniqueRecipes = Set (self.recipeIngredients!.compactMap{ ($0 as AnyObject).recipe })
+            return "Dieses Lebensmittel wird \(self.recipeIngredients!.count) mal in insgesamt \(uniqueRecipes.count) Rezept(en) verwendet und wird diesen gelöscht."
+        }
+        return "Dieses Lebensmitttel wird bisher in keiner Mahlzeit und keinem Rezept genutzt."
+    }
 
 
 }

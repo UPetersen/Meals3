@@ -19,15 +19,11 @@ private let dateFormatter: DateFormatter = {
 
 struct MealDetailView: View {
     @ObservedObject var meal: Meal
-    @State private var birthDate: Date = Date()
     
     @EnvironmentObject var currentMeal: CurrentMeal
     @Environment(\.managedObjectContext) var viewContext
     
     var body: some View {
-        
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full
         
         let date = Binding<Date>(
             get: {self.meal.dateOfCreation ?? Date()},

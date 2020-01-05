@@ -19,3 +19,8 @@ extension RecipeIngredient {
         return nil
     }
 }
+
+
+extension RecipeIngredient: Ingredient, Identifiable {
+    
+}
