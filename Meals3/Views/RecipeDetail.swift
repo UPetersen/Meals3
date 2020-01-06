@@ -14,7 +14,7 @@ struct RecipeDetail: View {
     @ObservedObject var recipe: Recipe
     @Environment(\.managedObjectContext) var viewContext
     
-    let explanationString = "Beim Zubereiten eines Rezeptes kann sich das Gewicht durch erhitzen (und einhergehendem Verdampfen von Wasseranteilen) verringern und dadurch der Nährwertanteil pro 100g erhöhen. Geben sie hier das Gewicht des fertig zubereiteten Gerichts an, damit dies bei der Nährwertberechnung entsprechend berücksichtigt wird.\nBeachten Sie dass, dieser Werte mit jeder Änderung von Zutaten überschrieben wird."
+    let explanationString = "Beim Zubereiten eines Rezeptes kann sich das Gewicht durch erhitzen (und einhergehendem Verdampfen von Wasseranteilen) verringern und dadurch der Nährwertanteil pro 100g erhöhen. Geben sie hier das Gewicht des fertig zubereiteten Gerichts an, damit dies bei der Nährwertberechnung entsprechend berücksichtigt wird.\nBeachten Sie dass, dieser Wert mit jeder Änderung von Zutaten überschrieben wird."
     
     var body: some View {
     
@@ -47,7 +47,9 @@ struct RecipeDetail: View {
             }
             RecipeDetailToolbar(recipe: recipe)
         }
-    .resignKeyboardOnDragGesture()
+            .navigationBarTitle("Rezept-Details")
+            .navigationBarItems(trailing: EditButton().padding())
+        .resignKeyboardOnDragGesture()
     }
     
     func headerView() -> some View {

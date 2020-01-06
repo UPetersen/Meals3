@@ -11,7 +11,7 @@ import SwiftUI
 struct RecipeDetailIngredients: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var recipe: Recipe
-
+    
     var body: some View {
         return List {
             if recipe.filteredAndSortedIngredients() == nil {
