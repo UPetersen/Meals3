@@ -26,7 +26,6 @@ struct MealsNutrients: View {
             Text("Geändert: \(meal.dateOfLastModification ?? Date(), formatter: dateFormatter)")
                 .font(.footnote)
             Text(self.mealNutrientsString(meal: meal))
-                .font(.footnote)
                 .lineLimit(1)
         }
 //        .onAppear() {

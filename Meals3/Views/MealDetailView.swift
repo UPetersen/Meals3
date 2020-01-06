@@ -39,10 +39,17 @@ struct MealDetailView: View {
                         footer: HStack {
                             Spacer()
                             Text("Letzte Änderung am \(self.dateString(date: self.meal.dateOfLastModification))")
-                    })
-                            {
-                    DatePicker("Datum:", selection: date)
+                    }) { DatePicker("Datum:", selection: date) }
+                
+                Section {
+                    HStack {
+                        Spacer()
+                        Text("\(reducedNutrientString(meal: meal))")
+                            .font(.headline)
+                        Spacer()
+                    }
                 }
+                
                 Section(header: headerView(), footer: footerView()) {
                     MealDetailIngredients(meal: meal)
                 }
@@ -75,6 +82,16 @@ struct MealDetailView: View {
         }
     }
     
+    let formatter: NumberFormatter =  {() -> NumberFormatter in
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        numberFormatter.maximumFractionDigits = 1
+        numberFormatter.roundingMode = NumberFormatter.RoundingMode.halfUp
+        numberFormatter.zeroSymbol = "0"
+        return numberFormatter
+    }()
+
+    
      var calsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.none
@@ -93,6 +110,19 @@ struct MealDetailView: View {
     func amountString(meal: Meal) -> String {
         if let amount = meal.amount {
             return zeroMaxDigitsNumberFormatter.string(from: amount) ?? ""
+        }
+        return ""
+    }
+    
+    func reducedNutrientString(meal: Meal?) -> String {
+        if let meal = meal {
+            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"),    formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
+            var fpu = 0.0
+            if let protein = meal.doubleForKey("totalProtein"), let fat = meal.doubleForKey("totalFat") {
+                fpu = (9.0 * protein + 4.0 * fat) / 100.0 / 1000.0
+            }
+
+            return String("\(totalCarb) KH  und   \(formatter.string(from: NSNumber(value: fpu)) ?? "") FPE")
         }
         return ""
     }

@@ -28,7 +28,7 @@ struct MealDetailToolbar: View {
             Spacer()
 
             Button(action: { withAnimation{ self.createRecipeFromMeal() } },
-                   label: { Text("Rezept hieraus").padding(.horizontal)
+                   label: { VStack { Text("Rezept"); Text("hieraus") }.font(.caption)
             })
 
             Spacer()

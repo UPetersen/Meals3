@@ -46,17 +46,24 @@ struct NSNumberTextField : View {
                 self.value = self.formatter.number(from: newValue)
         })
 
-        return TextField(label, text: b, onEditingChanged: { inFocus in
-//            print("onEditingChanged")
-            if !inFocus {
-                self.lastFormattedValue = self.formatter.number(from: b.wrappedValue)
-                if self.lastFormattedValue != nil {
-                    DispatchQueue.main.async {
-                        b.wrappedValue = self.formatter.string(for: self.lastFormattedValue!) ?? ""
+        return HStack {
+            TextField(label, text: b, onEditingChanged: { inFocus in
+                if !inFocus {
+                    self.lastFormattedValue = self.formatter.number(from: b.wrappedValue)
+                    if self.lastFormattedValue != nil {
+                        DispatchQueue.main.async {
+                            b.wrappedValue = self.formatter.string(for: self.lastFormattedValue!) ?? ""
+                        }
                     }
                 }
-            }
-        })
+            })
+//            // Clear button
+//            Button(action: {
+//                b.wrappedValue = ""
+//            }) {
+//                Image(systemName: "xmark.circle.fill").opacity((displayedText == nil || displayedText == "") ? 0 : 1)
+//            }
+        }
             .onAppear(){ // Otherwise textfield is empty when view appears
 //                print(self.value?.description ?? "no value")
                 if let value = self.value, let valueString =  self.formatter.string(from: value) {
