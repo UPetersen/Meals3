@@ -145,7 +145,7 @@ struct MealDetailView: View {
         guard let date = date else { return "no date avaiable" }
         
         let aFormatter = DateFormatter()
-        aFormatter.timeStyle = .short
+        aFormatter.timeStyle = .medium
         aFormatter.dateStyle = .full
         aFormatter.doesRelativeDateFormatting = true // "E.g. yesterday
         //        aFormatter.locale = Locale(identifier: "de_DE")

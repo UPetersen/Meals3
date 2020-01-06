@@ -11,7 +11,7 @@ import SwiftUI
 private let dateFormatter: DateFormatter = {
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .medium
-    dateFormatter.timeStyle = .medium
+    dateFormatter.timeStyle = .short
     return dateFormatter
 }()
 
@@ -21,12 +21,16 @@ struct MealsNutrients: View {
     @ObservedObject var meal: Meal
     
     var body: some View {
-        VStack {
-            Text("Erstellt: \(meal.dateOfCreation ?? Date(), formatter: dateFormatter)")
-            Text("Geändert: \(meal.dateOfLastModification ?? Date(), formatter: dateFormatter)")
-                .font(.footnote)
-            Text(self.mealNutrientsString(meal: meal))
-                .lineLimit(1)
+        HStack {
+            Spacer()
+            VStack {
+                Text("\(meal.dateOfCreation ?? Date(), formatter: dateFormatter)")
+                    .padding(.bottom, 4)
+                Text("\(reducedNutrientString(meal: meal))")
+            }
+            .font(.headline)
+            .padding(.vertical, 3)
+            Spacer()
         }
 //        .onAppear() {
 //            print(self.meal.description)
@@ -63,6 +67,24 @@ struct MealsNutrients: View {
         }
         return ""
     }
+    
+    func reducedNutrientString(meal: Meal?) -> String {
+        let formatter = NumberFormatter()
+        if let meal = meal {
+            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"),    formatter: NumberFormatter(), inManagedObjectContext: viewContext) ?? ""
+            var fpu = 0.0
+            if let protein = meal.doubleForKey("totalProtein"), let fat = meal.doubleForKey("totalFat") {
+                fpu = (9.0 * protein + 4.0 * fat) / 100.0 / 1000.0
+            }
+
+            return String("\(totalCarb) KH  und   \(formatter.string(from: NSNumber(value: fpu)) ?? "") FPE")
+        }
+        return ""
+    }
+    
+
+
+    
 }
 
 
