@@ -19,7 +19,7 @@ struct GeneralSearchToolbar: View {
     var body: some View {
         HStack {
             Button(action: { self.showingSelection.toggle() }) {
-                Text(search.foodListType.rawValue)
+                Text(search.selection.rawValue)
                 
             }
             .actionSheet(isPresented: $showingSelection) { selectionActionSheet() }
@@ -59,13 +59,13 @@ struct GeneralSearchToolbar: View {
     }
     func selectionActionSheet() -> ActionSheet {
         ActionSheet(title: Text("Welche Lebensmittel sollen genutzt werden?"), message: nil, buttons: [
-            .default(Text(FoodListSelection.Favorites.rawValue)){ self.search.foodListType = .Favorites },
-            .default(Text(FoodListSelection.Recipes.rawValue)){ self.search.foodListType = .Recipes },
-            .default(Text(FoodListSelection.LastWeek.rawValue)){ self.search.foodListType = .LastWeek },
-            .default(Text(FoodListSelection.OwnEntries.rawValue)){ self.search.foodListType = .OwnEntries },
-            .default(Text(FoodListSelection.MealIngredients.rawValue)){ self.search.foodListType = .MealIngredients },
-            .default(Text(FoodListSelection.BLS.rawValue)){ self.search.foodListType = .BLS },
-            .default(Text(FoodListSelection.All.rawValue)){ self.search.foodListType = .All },
+            .default(Text(FoodListSelection.Favorites.rawValue)){ self.search.selection = .Favorites },
+            .default(Text(FoodListSelection.Recipes.rawValue)){ self.search.selection = .Recipes },
+            .default(Text(FoodListSelection.LastWeek.rawValue)){ self.search.selection = .LastWeek },
+            .default(Text(FoodListSelection.OwnEntries.rawValue)){ self.search.selection = .OwnEntries },
+            .default(Text(FoodListSelection.MealIngredients.rawValue)){ self.search.selection = .MealIngredients },
+            .default(Text(FoodListSelection.BLS.rawValue)){ self.search.selection = .BLS },
+            .default(Text(FoodListSelection.All.rawValue)){ self.search.selection = .All },
             .cancel(Text("Zurück"))
             ]
         )

@@ -71,6 +71,9 @@ struct AddOrChangeAmountOfFoodView: View {
                         try? self.viewContext.save()
                         self.isPresented = false // dismiss self
                         self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
+//                        print("Recipestuff")
+//                        print(recipe.amount ?? "")
+//                        print(recipe.amountOfAllIngredients)
                     }
                 }
             case .changeAmountOfIngredient(var ingredient):
@@ -81,11 +84,10 @@ struct AddOrChangeAmountOfFoodView: View {
                 } else if let recipe = (ingredient as? RecipeIngredient)?.recipe {
                     recipe.dateOfLastModification = Date()
                     recipe.food?.updateNutrients(managedObjectContext: self.viewContext)
+//                    print("Recipestuff")
+//                    print(recipe.amount ?? "")
+//                    print(recipe.amountOfAllIngredients)
                 }
-                
-//                (ingredient as? MealIngredient)?.meal?.dateOfLastModification? = Date()
-
-                (ingredient as? RecipeIngredient)?.recipe?.dateOfLastModification? = Date()
                 try? self.viewContext.save()
                 self.isPresented = false // dismiss self
             }

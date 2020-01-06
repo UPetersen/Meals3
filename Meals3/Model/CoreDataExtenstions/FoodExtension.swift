@@ -180,6 +180,20 @@ extension Food {
         return nil
     }
     
+    func nutrientStringForFood(formatter: NumberFormatter) -> String {
+        if let context = self.managedObjectContext {
+            let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: self.doubleForKey("totalEnergyCals"), formatter: formatter, inManagedObjectContext: context) ?? ""
+            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: self.doubleForKey("totalCarb"),    formatter: formatter, inManagedObjectContext: context) ?? ""
+            let totalProtein = Nutrient.dispStringForNutrientWithKey("totalProtein", value: self.doubleForKey("totalProtein"), formatter: formatter, inManagedObjectContext: context) ?? ""
+            let totalFat     = Nutrient.dispStringForNutrientWithKey("totalFat",     value: self.doubleForKey("totalFat"),     formatter: formatter, inManagedObjectContext: context) ?? ""
+            let carbFructose = Nutrient.dispStringForNutrientWithKey("carbFructose", value: self.doubleForKey("carbFructose"), formatter: formatter, inManagedObjectContext: context) ?? ""
+            let carbGlucose   = Nutrient.dispStringForNutrientWithKey("carbGlucose", value: self.doubleForKey("carbGlucose"),  formatter: formatter, inManagedObjectContext: context) ?? ""
+            return totalEnergyCals + ", " + totalCarb + " KH, " + totalProtein + " P, " + totalFat + " F, " + carbFructose + " Fr., " + carbGlucose + " Gl."
+        }
+        return "no data"
+    }
+
+    
     
     // MARK: - transient properties
 

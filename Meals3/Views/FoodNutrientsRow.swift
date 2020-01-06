@@ -17,22 +17,10 @@ struct FoodNutrientsRow: View {
         
         VStack(alignment: .leading) {
             Text(food.name ?? "")
-            Text(self.nutrientStringForFood(food: food))
+            Text(food.nutrientStringForFood(formatter: formatter))
+//            Text(self.nutrientStringForFood(food: food))
                 .font(.footnote)
         }
-    }
-    
-    func nutrientStringForFood(food: Food?) -> String {
-        if let food = food {
-            let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: food.doubleForKey("totalEnergyCals"), formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: food.doubleForKey("totalCarb"),    formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            let totalProtein = Nutrient.dispStringForNutrientWithKey("totalProtein", value: food.doubleForKey("totalProtein"), formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            let totalFat     = Nutrient.dispStringForNutrientWithKey("totalFat",     value: food.doubleForKey("totalFat"),     formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            let carbFructose = Nutrient.dispStringForNutrientWithKey("carbFructose", value: food.doubleForKey("carbFructose"), formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            let carbGlucose   = Nutrient.dispStringForNutrientWithKey("carbGlucose", value: food.doubleForKey("carbGlucose"),  formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-            return totalEnergyCals + ", " + totalCarb + " KH, " + totalProtein + " P, " + totalFat + " F, " + carbFructose + " Fr., " + carbGlucose + " Gl."
-        }
-        return "no data"
     }
 }
 

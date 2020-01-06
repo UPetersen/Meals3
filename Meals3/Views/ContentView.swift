@@ -24,7 +24,7 @@ struct ContentView: View {
 //    @EnvironmentObject var search: Search
     
     let oneMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
-        print("in Numberformatter")
+//        print("in Numberformatter")
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
         numberFormatter.maximumFractionDigits = 1

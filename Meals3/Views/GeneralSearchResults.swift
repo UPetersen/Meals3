@@ -34,14 +34,14 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     @State private var footerDisAppeared = false
 
     init(search: Search, formatter: NumberFormatter, ingredientCollection: T) {
-        print("initialization of search results")
+//        print("initialization of search results")
         
         self.search = search
         self.formatter = formatter
         self.ingredientCollection = ingredientCollection
         
         let searchFilter = search.filter
-        let predicates = [search.foodListType.predicate, searchFilter.predicateForSearchText(search.text)].compactMap{$0}
+        let predicates = [search.selection.predicate, searchFilter.predicateForSearchText(search.text)].compactMap{$0}
         
         let request = NSFetchRequest<Food>(entityName: "Food")
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
@@ -112,10 +112,6 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
                     self.footerDisAppeared = true
                 }
             }
-                    .onAppear() {
-                        print("GeneralSearchResultsView appears")
-                        print(self.viewContext.description)
-                }
                 .environment(\.defaultMinListRowHeight, 1) // for invisible header and footer, which keep this space unfortunately
                 .resignKeyboardOnDragGesture() // must be outside of the list
 
@@ -134,9 +130,6 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
 //                    print("limit: \(self.search.fetchLimit)")
 //            }
         }
-        .onAppear() {
-            print(self.formatter.description)
-        }
     }
         
     func foodDetailView(food: Food) -> some View {
@@ -146,7 +139,7 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     }
     
     func shouldLoadNextPage() {
-        print("should load next page")
+//        print("should load next page")
         let newOffset = max ( 0, min(self.search.fetchOffset + 30, self.totalFoodsCount - self.search.fetchLimit) )
         if self.search.fetchOffset != newOffset {
             self.search.fetchOffset = newOffset
@@ -154,7 +147,7 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     }
         
     func shouldLoadPreviousPage() {
-        print("should load previous page")
+//        print("should load previous page")
         guard self.search.fetchOffset > 0 && self.didScrollDown else {
             return
         }

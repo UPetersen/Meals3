@@ -36,6 +36,8 @@ struct GeneralSearch<T>: View where T: IngredientCollection  {
             // Bottom tool bar
             GeneralSearchToolbar(search: search)
          }
+         .onAppear() {
+        }
     }
 }
 

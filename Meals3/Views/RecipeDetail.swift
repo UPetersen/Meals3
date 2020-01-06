@@ -10,21 +10,11 @@ import SwiftUI
 import CoreData
 
 
-private let dateFormatter: DateFormatter = {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateStyle = .medium
-    dateFormatter.timeStyle = .medium
-    return dateFormatter
-}()
-
-
 struct RecipeDetail: View {
     @ObservedObject var recipe: Recipe
-    
     @Environment(\.managedObjectContext) var viewContext
-
     
-    let explanationString = "Beim Zubereiten eines Rezeptes kann sich das Gewicht durch erhitzen verringern und dadurch der Nährwertanteil pro 100g erhöhen. Geben sie hier das Gewicht des fertig zubereiteten Gerichts an, damit dies bei der Nährwertberechnung entsprechend berücksichtigt wird."
+    let explanationString = "Beim Zubereiten eines Rezeptes kann sich das Gewicht durch erhitzen (und einhergehendem Verdampfen von Wasseranteilen) verringern und dadurch der Nährwertanteil pro 100g erhöhen. Geben sie hier das Gewicht des fertig zubereiteten Gerichts an, damit dies bei der Nährwertberechnung entsprechend berücksichtigt wird.\nBeachten Sie dass, dieser Werte mit jeder Änderung von Zutaten überschrieben wird."
     
     var body: some View {
     
@@ -40,9 +30,15 @@ struct RecipeDetail: View {
         return VStack {
             
             Form {
-                Section(header: Text("Name und Kommentar"), footer: Text("Gewicht der Rohzutaten")) {
+                Section(header: Text("Name und Kommentar"), footer: Text("Letzte Änderung am \(self.dateString(date: self.recipe.dateOfLastModification))")) {
                     // TODO: make this a multiline TextField, there are various solutions on stackoverflow
                     TextField("Name des erzeugten Rezepts bzw. Lebensmittels", text: name)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                }
+
+                Section(footer: Text(explanationString)) {
+                    // TODO: make this a multiline TextField, there are various solutions on stackoverflow
+                    RecipeAmountRow(recipe: recipe, numberFormatter: zeroMaxDigitsNumberFormatter)
                 }
 
                 Section(header: headerView(), footer: footerView()) {
@@ -51,16 +47,29 @@ struct RecipeDetail: View {
             }
             RecipeDetailToolbar(recipe: recipe)
         }
+    .resignKeyboardOnDragGesture()
     }
     
     func headerView() -> some View {
-        Text("Some Headerview with nutrient information")
+        Text("Zutaten")
     }
     
     func footerView() -> some View {
         HStack {
             Spacer()
             VStack(alignment: .trailing) {
+                HStack {
+                    Text("Nährwerte pro 100 g:")
+                    Spacer()
+                }
+                if recipe.food != nil {
+                    Text(recipe.food!.nutrientStringForFood(formatter: zeroMaxDigitsNumberFormatter))
+                }
+                Text("")
+                HStack {
+                    Text("Nährwerte des Rezepts ingesamt:")
+                    Spacer()
+                }
                 Text(recipeNutrientsString(recipe: recipe))
                 Text("\(recipe.ingredients?.count ?? 0) Zutaten, insgesamt \(amountOfAllIngredientsString(recipe: recipe)) g")
             }
@@ -108,7 +117,7 @@ struct RecipeDetail: View {
         guard let date = date else { return "no date avaiable" }
         
         let aFormatter = DateFormatter()
-        aFormatter.timeStyle = .short
+        aFormatter.timeStyle = .medium
         aFormatter.dateStyle = .full
         aFormatter.doesRelativeDateFormatting = true // "E.g. yesterday
         //        aFormatter.locale = Locale(identifier: "de_DE")

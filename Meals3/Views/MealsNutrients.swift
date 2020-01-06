@@ -29,9 +29,9 @@ struct MealsNutrients: View {
                 .font(.footnote)
                 .lineLimit(1)
         }
-        .onAppear() {
-            print(self.meal.description)
-        }
+//        .onAppear() {
+//            print(self.meal.description)
+//        }
     }
     
      var calsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in

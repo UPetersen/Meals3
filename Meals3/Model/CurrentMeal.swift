@@ -15,7 +15,7 @@ import Foundation
 class CurrentMeal: ObservableObject {
     @Published var meal: Meal {
         willSet {
-            debugPrint("Will set current Meal to \(newValue.description)")
+//            debugPrint("Will set current Meal to \(newValue.description)")
         }
     }
     init(_ meal: Meal) {

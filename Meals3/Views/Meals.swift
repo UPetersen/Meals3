@@ -10,17 +10,14 @@ import SwiftUI
 import CoreData
 
 struct Meals: View {
-    
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var search: Search
+    private var ingredientsPredicate: NSPredicate?
         
     @State private var showingDeleteConfirmation = false
     @State private var indicesToDelete: IndexSet? = IndexSet()
     @EnvironmentObject var currentMeal: CurrentMeal
 
-    // Todo: ensure that there always exists a current meal
-    
-//    @Binding var searchText: String
     @FetchRequest var meals: FetchedResults<Meal>
     
     init(search: Search) {
@@ -38,6 +35,8 @@ struct Meals: View {
         request.relationshipKeyPathsForPrefetching = ["ingredients", "food"]
         request.sortDescriptors = [NSSortDescriptor(keyPath: \Meal.dateOfCreation, ascending: false)]
         self._meals = FetchRequest(fetchRequest: request)
+        
+        self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(search.text)
     }
     
     var body: some View {
@@ -48,7 +47,7 @@ struct Meals: View {
                         LazyView( MealsNutrients(meal: meal) )
                     }
                 ) {
-                    ForEach(meal.filteredAndSortedMealIngredients()!) { (mealIngredient: MealIngredient) in
+                    ForEach(meal.filteredAndSortedMealIngredients(predicate: self.ingredientsPredicate)!) { (mealIngredient: MealIngredient) in
                         NavigationLink(destination: self.lazyFoodDetail(food: mealIngredient.food!)) {
                                     MealIngredientCellView(mealIngredient: mealIngredient)
                         }
@@ -63,7 +62,6 @@ struct Meals: View {
             }
         }
         .onAppear() {
-            print("Mealsview appeared.")
             self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
         }
         .resignKeyboardOnDragGesture() // must be outermost
@@ -89,9 +87,9 @@ struct Meals: View {
     }
     
     func move (from source: IndexSet, to destination: Int) {
-        print("Outer move")
-        print("From: \(source.indices.endIndex.description)")
-        print("To: \(destination)")
+//        print("Outer move")
+//        print("From: \(source.indices.endIndex.description)")
+//        print("To: \(destination)")
     }
 }
 
