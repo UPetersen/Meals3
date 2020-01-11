@@ -15,7 +15,6 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
     @ObservedObject var search: Search
-    var formatter: NumberFormatter
         
     private var nsFetchRequest: NSFetchRequest<Food> // used to derive the number of fetched foods without actually fetching any
     @FetchRequest var foods: FetchedResults<Food> // result of the fetch
@@ -33,11 +32,11 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     @State private var footerAppeared = false
     @State private var footerDisAppeared = false
 
-    init(search: Search, formatter: NumberFormatter, ingredientCollection: T) {
+    init(search: Search, ingredientCollection: T) {
+//init(search: Search, formatter: NumberFormatter, ingredientCollection: T) {
 //        print("initialization of search results")
         
         self.search = search
-        self.formatter = formatter
         self.ingredientCollection = ingredientCollection
         
         let searchFilter = search.filter
@@ -97,7 +96,7 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
                 
                 ForEach(foods) { (food: Food) in
                     NavigationLink(destination: LazyView(self.foodDetailView(food: food)) ) {
-                             FoodNutrientsRow(food: food, formatter: self.formatter)
+                             FoodNutrientsRow(food: food)
                     }
                 }
                 

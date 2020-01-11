@@ -16,22 +16,13 @@ struct GeneralSearch<T>: View where T: IngredientCollection  {
 
     @ObservedObject var search = Search()
 
-    let oneMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        numberFormatter.maximumFractionDigits = 1
-        numberFormatter.roundingMode = NumberFormatter.RoundingMode.halfUp
-        numberFormatter.zeroSymbol = "0"
-        return numberFormatter
-    }()
-
     var body: some View {
         
          VStack{
             SearchBarView(searchText: $search.text)
                 .resignKeyboardOnDragGesture()
 
-            GeneralSearchResults(search: search, formatter: oneMaxDigitsNumberFormatter, ingredientCollection: self.ingredientCollection)
+            GeneralSearchResults(search: search, ingredientCollection: self.ingredientCollection)
 
             // Bottom tool bar
             GeneralSearchToolbar(search: search)

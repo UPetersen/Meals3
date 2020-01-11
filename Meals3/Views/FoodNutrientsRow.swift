@@ -8,17 +8,36 @@
 
 import SwiftUI
 
+
+fileprivate let numberFormatter: NumberFormatter =  {() -> NumberFormatter in
+    print("the one max digits")
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = NumberFormatter.Style.decimal
+    numberFormatter.maximumFractionDigits = 1
+    numberFormatter.roundingMode = NumberFormatter.RoundingMode.halfUp
+    numberFormatter.zeroSymbol = "0"
+    return numberFormatter
+}()
+
+
+/// Shows nutrient comrpehenstion data for a food.
+///
+/// Used in food search result list. Example data is
+///
+/// ` "Kuhmilch 3,5% Fett"`
+///
+/// `"65 kcal, 4,7 g KH, 3,4 g P, 3,6 g F, 0 g Fr., 0 g Gl."`
+
 struct FoodNutrientsRow: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var food: Food
-    var formatter: NumberFormatter
+//    var formatter: NumberFormatter
 
     var body: some View {
         
         VStack(alignment: .leading) {
             Text(food.name ?? "")
-            Text(food.nutrientStringForFood(formatter: formatter))
-//            Text(self.nutrientStringForFood(food: food))
+            Text(food.nutrientStringForFood(formatter: numberFormatter))
                 .font(.footnote)
         }
     }
@@ -59,7 +78,7 @@ struct FoodNutrientsView_Previews: PreviewProvider {
 
         return NavigationView {
             List {
-                FoodNutrientsRow(food: food, formatter: formatter)
+                FoodNutrientsRow(food: food)
                     .environment(\.managedObjectContext, context)
                     .navigationBarTitle("Lebensmittelsuche")
             }

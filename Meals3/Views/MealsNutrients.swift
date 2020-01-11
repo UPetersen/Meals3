@@ -29,9 +29,9 @@ fileprivate let numberFormatter: NumberFormatter = {
 ///
 /// Example data is
 ///
-/// `   11. Jan 2020 at 13:51`
+/// `"11. Jan 2020 at 13:51"`
 ///
-/// `35 g KH  und 2 FPE`
+/// `"35 g KH  und 2 FPE"`
 struct MealsNutrients: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var meal: Meal

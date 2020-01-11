@@ -9,6 +9,22 @@
 import SwiftUI
 
 
+// Formatters only created once by putting them here
+
+fileprivate let numberFormatter: NumberFormatter = {
+//    print("numberFormatter")
+    return NumberFormatter()
+}()
+
+
+/// Shows nutrient compremension data for an ingredient in a meal.
+///
+/// Example data is
+///
+/// ` "Kuhmilch 3,5% Fett"`
+///
+/// `"156 kcal, 11g KH, 8 g Prot, 9 g Fett, 0 g Fruct., 0 g Gluc."`
+
 struct MealIngredientCellView: View {
     @Environment(\.managedObjectContext) var viewContext
     var mealIngredient: MealIngredient
@@ -48,18 +64,14 @@ struct MealIngredientCellView: View {
     }
     
     // TODO: put formatter into environment or pass it along as parameter
+    /// Returns a String like "44 kcal, 10 g, KH, ..."
     func contentFor(mealIngredient: MealIngredient) -> String {
-        // Returns a String like "44 kcal, 10 g, KH, ..."
-        //        let formatter = oneMaxDigitsNumberFormatter
-        let formatter = NumberFormatter()
-        
-        let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: mealIngredient.doubleForKey("totalEnergyCals"), formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-        let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: mealIngredient.doubleForKey("totalCarb"),    formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-        let totalProtein = Nutrient.dispStringForNutrientWithKey("totalProtein", value: mealIngredient.doubleForKey("totalProtein"), formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-        let totalFat     = Nutrient.dispStringForNutrientWithKey("totalFat",     value: mealIngredient.doubleForKey("totalFat"),     formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-        let carbFructose = Nutrient.dispStringForNutrientWithKey("carbFructose", value: mealIngredient.doubleForKey("carbFructose"), formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-        let carbGlucose  = Nutrient.dispStringForNutrientWithKey("carbGlucose", value: mealIngredient.doubleForKey("carbGlucose"),  formatter: formatter, inManagedObjectContext: viewContext) ?? ""
-        
+        let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: mealIngredient.doubleForKey("totalEnergyCals"), formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
+        let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: mealIngredient.doubleForKey("totalCarb"),    formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
+        let totalProtein = Nutrient.dispStringForNutrientWithKey("totalProtein", value: mealIngredient.doubleForKey("totalProtein"), formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
+        let totalFat     = Nutrient.dispStringForNutrientWithKey("totalFat",     value: mealIngredient.doubleForKey("totalFat"),     formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
+        let carbFructose = Nutrient.dispStringForNutrientWithKey("carbFructose", value: mealIngredient.doubleForKey("carbFructose"), formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
+        let carbGlucose  = Nutrient.dispStringForNutrientWithKey("carbGlucose", value: mealIngredient.doubleForKey("carbGlucose"),  formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
         return totalEnergyCals + ", " + totalCarb + " KH, " + totalProtein + " Prot., " + totalFat + " Fett, " + carbFructose + " Fruct., " + carbGlucose + " Gluc."
     }
 }
