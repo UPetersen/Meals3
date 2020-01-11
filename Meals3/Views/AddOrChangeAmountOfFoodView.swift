@@ -8,6 +8,10 @@
 
 import SwiftUI
 
+fileprivate let formatter: NumberFormatter = {
+    return NumberFormatter()
+    }()
+
 struct AddOrChangeAmountOfFoodView: View {
     @Environment(\.managedObjectContext) var viewContext
     var food: Food
@@ -25,7 +29,7 @@ struct AddOrChangeAmountOfFoodView: View {
                     HStack {
                         Text("Menge")
                         Spacer()
-                        NSNumberTextField(label: "g", value: $amount, formatter: NumberFormatter())
+                        NSNumberTextField(label: "g", value: $amount, formatter: formatter)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
                 }

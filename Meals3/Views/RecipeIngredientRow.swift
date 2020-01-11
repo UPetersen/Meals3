@@ -8,10 +8,11 @@
 
 import SwiftUI
 
+fileprivate let formatter = NumberFormatter()
+
 struct RecipeIngredientRow: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredient: RecipeIngredient
-//    var ingredient: RecipeIngredient
 
     @State private var task: Task?
     @State private var showingAddOrChangeAmountOfFoodView = false
@@ -48,11 +49,8 @@ struct RecipeIngredientRow: View {
         return (formatter.string(from: NSNumber(value: number.doubleValue / divisor)) ?? "nan")
     }
     
-    // TODO: put formatter into environment or pass it along as parameter
     func contentFor(ingredient: RecipeIngredient) -> String {
         // Returns a String like "44 kcal, 10 g, KH, ..."
-        //        let formatter = oneMaxDigitsNumberFormatter
-        let formatter = NumberFormatter()
         
         let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: ingredient.doubleForKey("totalEnergyCals"), formatter: formatter, inManagedObjectContext: viewContext) ?? ""
         let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: ingredient.doubleForKey("totalCarb"),    formatter: formatter, inManagedObjectContext: viewContext) ?? ""

@@ -23,16 +23,6 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
 //    @EnvironmentObject var search: Search
     
-    let oneMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
-//        print("in Numberformatter")
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        numberFormatter.maximumFractionDigits = 1
-        numberFormatter.roundingMode = NumberFormatter.RoundingMode.halfUp
-        numberFormatter.zeroSymbol = "0"
-        return numberFormatter
-    }()
-
     @ObservedObject var search = Search()
 
     @State private var showMenu: Bool = false

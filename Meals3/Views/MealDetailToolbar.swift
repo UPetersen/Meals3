@@ -44,7 +44,6 @@ struct MealDetailToolbar: View {
             })
                 .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
 
-            
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
             NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal),
                            isActive: $isShowingGeneralSearchView,

@@ -67,15 +67,6 @@ struct FoodNutrientsView_Previews: PreviewProvider {
             return food
         }()
         
-        let formatter: NumberFormatter =  {() -> NumberFormatter in
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = NumberFormatter.Style.decimal
-            numberFormatter.maximumFractionDigits = 1
-            numberFormatter.roundingMode = NumberFormatter.RoundingMode.halfUp
-            numberFormatter.zeroSymbol = "0"
-            return numberFormatter
-        }()
-
         return NavigationView {
             List {
                 FoodNutrientsRow(food: food)

@@ -12,7 +12,6 @@ import SwiftUI
 // Formatters only created once by putting them here
 
 fileprivate let numberFormatter: NumberFormatter = {
-//    print("numberFormatter")
     return NumberFormatter()
 }()
 
@@ -38,7 +37,7 @@ struct MealIngredientCellView: View {
                 Text(mealIngredient.food?.name ?? "-")
                     .lineLimit(1)
                 Spacer()
-                Text("\(mealIngredient.amount ?? NSNumber(-999), formatter: NumberFormatter()) g")
+                Text("\(mealIngredient.amount ?? NSNumber(-999), formatter: numberFormatter) g")
                     .foregroundColor(Color(.systemBlue))
                     .onTapGesture {
                         print("tapped")

@@ -8,10 +8,11 @@
 
 import SwiftUI
 
+fileprivate let numberFormatter = NumberFormatter()
+
 struct RecipeAmountRow: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var recipe: Recipe
-    var numberFormatter: NumberFormatter = NumberFormatter()
     
     var body: some View {
         

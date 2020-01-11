@@ -9,6 +9,23 @@
 import SwiftUI
 import CoreData
 
+
+fileprivate let numberFormatter: NumberFormatter =  {() -> NumberFormatter in
+    let numberFormatter = NumberFormatter()
+    numberFormatter.zeroSymbol = "0"
+    numberFormatter.usesSignificantDigits = true
+    return numberFormatter
+}()
+
+fileprivate let dateFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .medium
+    dateFormatter.timeStyle = .medium
+    return dateFormatter
+}()
+
+
+
 struct FoodDetail<T>: View where T: IngredientCollection {
 
     @Environment(\.managedObjectContext) var viewContext
@@ -22,20 +39,6 @@ struct FoodDetail<T>: View where T: IngredientCollection {
     
     var nutrientSections = NutrientSectionViewModel.sections()
     
-    let numberFormatter: NumberFormatter =  {() -> NumberFormatter in
-        let numberFormatter = NumberFormatter()
-        numberFormatter.zeroSymbol = "0"
-        numberFormatter.usesSignificantDigits = true
-        return numberFormatter
-    }()
-    
-    private let dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .medium
-        return dateFormatter
-    }()
-    
     //    var editingDisabled: Bool = true
     private let noDate = Date(timeIntervalSince1970: 0)
     
@@ -48,7 +51,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                 // Section "Grundnährwerte je 100g"
                 Section(header: Text(nutrientSections[0].header)) {
                     ForEach(nutrientSections[0].keys, id: \.self) { (key: String) in
-                        return FoodNumberFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: self.numberFormatter)
+                        return FoodNumberFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: numberFormatter)
                     }
                 }
                 
@@ -103,7 +106,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                     //          ForEach(nutrientSections.dropFirst(), id: \.self) {nutrientSection in
                     Section(header: Text(nutrientSection.header)) {
                         ForEach(nutrientSection.keys, id: \.self) { (key: String) in
-                            return FoodNumberFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: self.numberFormatter)
+                            return FoodNumberFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: numberFormatter)
                         }
                     }
                 }

@@ -33,7 +33,6 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     @State private var footerDisAppeared = false
 
     init(search: Search, ingredientCollection: T) {
-//init(search: Search, formatter: NumberFormatter, ingredientCollection: T) {
 //        print("initialization of search results")
         
         self.search = search

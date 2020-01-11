@@ -10,6 +10,23 @@ import SwiftUI
 import CoreData
 
 
+ fileprivate let calsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
+    
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = NumberFormatter.Style.none
+    numberFormatter.zeroSymbol = "0"
+    return numberFormatter
+}()
+
+ fileprivate let zeroMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = NumberFormatter.Style.none
+    numberFormatter.zeroSymbol = "0"
+    return numberFormatter
+}()
+
+
+
 struct RecipeDetail: View {
     @ObservedObject var recipe: Recipe
     @Environment(\.managedObjectContext) var viewContext
@@ -38,7 +55,7 @@ struct RecipeDetail: View {
 
                 Section(footer: Text(explanationString)) {
                     // TODO: make this a multiline TextField, there are various solutions on stackoverflow
-                    RecipeAmountRow(recipe: recipe, numberFormatter: zeroMaxDigitsNumberFormatter)
+                    RecipeAmountRow(recipe: recipe)
                 }
 
                 Section(header: headerView(), footer: footerView()) {
@@ -78,28 +95,9 @@ struct RecipeDetail: View {
         }
     }
     
-    
-     var calsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
-        
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = NumberFormatter.Style.none
-        numberFormatter.zeroSymbol = "0"
-        return numberFormatter
-    }()
-    
-     var zeroMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = NumberFormatter.Style.none
-        numberFormatter.zeroSymbol = "0"
-        return numberFormatter
-    }()
-    
-
     func amountOfAllIngredientsString(recipe: Recipe) -> String {
         let amount = NSNumber(value: recipe.amountOfAllIngredients)
             return zeroMaxDigitsNumberFormatter.string(from: amount) ?? ""
-//        }
-//        return ""
     }
     
     func recipeNutrientsString(recipe: Recipe?) -> String {

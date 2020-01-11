@@ -8,11 +8,34 @@
 
 import SwiftUI
 
-private let dateFormatter: DateFormatter = {
+fileprivate let dateFormatter: DateFormatter = {
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .medium
     dateFormatter.timeStyle = .medium
     return dateFormatter
+}()
+
+fileprivate let formatter: NumberFormatter =  {() -> NumberFormatter in
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = NumberFormatter.Style.decimal
+    numberFormatter.maximumFractionDigits = 1
+    numberFormatter.roundingMode = NumberFormatter.RoundingMode.halfUp
+    numberFormatter.zeroSymbol = "0"
+    return numberFormatter
+}()
+
+fileprivate let calsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = NumberFormatter.Style.none
+    numberFormatter.zeroSymbol = "0"
+    return numberFormatter
+}()
+
+fileprivate let zeroMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = NumberFormatter.Style.none
+    numberFormatter.zeroSymbol = "0"
+    return numberFormatter
 }()
 
 
@@ -82,31 +105,6 @@ struct MealDetailView: View {
         }
     }
     
-    let formatter: NumberFormatter =  {() -> NumberFormatter in
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        numberFormatter.maximumFractionDigits = 1
-        numberFormatter.roundingMode = NumberFormatter.RoundingMode.halfUp
-        numberFormatter.zeroSymbol = "0"
-        return numberFormatter
-    }()
-
-    
-     var calsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = NumberFormatter.Style.none
-        numberFormatter.zeroSymbol = "0"
-        return numberFormatter
-    }()
-    
-     var zeroMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = NumberFormatter.Style.none
-        numberFormatter.zeroSymbol = "0"
-        return numberFormatter
-    }()
-    
-
     func amountString(meal: Meal) -> String {
         if let amount = meal.amount {
             return zeroMaxDigitsNumberFormatter.string(from: amount) ?? ""
@@ -142,14 +140,8 @@ struct MealDetailView: View {
 
     
     func dateString(date: Date?) -> String {
-        guard let date = date else { return "no date avaiable" }
-        
-        let aFormatter = DateFormatter()
-        aFormatter.timeStyle = .medium
-        aFormatter.dateStyle = .full
-        aFormatter.doesRelativeDateFormatting = true // "E.g. yesterday
-        //        aFormatter.locale = Locale(identifier: "de_DE")
-        return aFormatter.string(from: date)
+        guard let date = date else { return "no date avaiable" }        
+        return dateFormatter.string(from: date)
     }
 }
 
