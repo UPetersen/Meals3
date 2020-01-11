@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+
 struct MealIngredientCellView: View {
     @Environment(\.managedObjectContext) var viewContext
     var mealIngredient: MealIngredient

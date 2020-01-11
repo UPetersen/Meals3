@@ -52,9 +52,11 @@ struct Meals: View {
                                     MealIngredientCellView(mealIngredient: mealIngredient)
                         }
                     }
+//                    .onMove(perform: self.moveInner)
                 }
+//                .resignKeyboardOnDragGesture() // works also, when placed here, but now moving also is possible.
             }
-            .onMove(perform: self.move)
+//            .onMove(perform: self.move)
             .onDelete { indices in
                 print("onDelete")
                 self.indicesToDelete = indices
@@ -64,7 +66,7 @@ struct Meals: View {
         .onAppear() {
             self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
         }
-        .resignKeyboardOnDragGesture() // must be outermost
+        .resignKeyboardOnDragGesture() // works when place here
         .alert(isPresented: self.$showingDeleteConfirmation){
             return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
                          primaryButton: .destructive(Text("Delete")) {
@@ -86,11 +88,16 @@ struct Meals: View {
         )
     }
     
-    func move (from source: IndexSet, to destination: Int) {
+//    func move (from source: IndexSet, to destination: Int) {
 //        print("Outer move")
 //        print("From: \(source.indices.endIndex.description)")
 //        print("To: \(destination)")
-    }
+//    }
+//    func moveInner (from source: IndexSet, to destination: Int) {
+//        print("Inner move")
+//        print("From: \(source.indices.endIndex.description)")
+//        print("To: \(destination)")
+//    }
 }
 
 //struct MealsView_Previews: PreviewProvider {

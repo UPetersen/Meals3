@@ -77,11 +77,16 @@ extension UIApplication {
 }
 
 struct ResignKeyboardOnDragGesture: ViewModifier {
-    var gesture = DragGesture().onChanged{_ in
-        UIApplication.shared.endEditing(true)
+    var gesture = DragGesture()
+        .onChanged{_ in
+            UIApplication.shared.endEditing(true)
+    }
+    .onChanged() { _ in
+        print("dragging and resigning searchbar")
     }
     func body(content: Content) -> some View {
-        content.gesture(gesture)
+//        content.gesture(gesture)
+        content.simultaneousGesture(gesture)
     }
 }
 

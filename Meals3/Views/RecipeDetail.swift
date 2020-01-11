@@ -80,6 +80,7 @@ struct RecipeDetail: View {
     
     
      var calsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
+        
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.none
         numberFormatter.zeroSymbol = "0"

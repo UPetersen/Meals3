@@ -8,14 +8,30 @@
 
 import SwiftUI
 
-private let dateFormatter: DateFormatter = {
+
+// Formatters only created once by putting them here
+
+fileprivate let dateFormatter: DateFormatter = {
+//    print("DateFormatter")
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .medium
     dateFormatter.timeStyle = .short
     return dateFormatter
 }()
 
+fileprivate let numberFormatter: NumberFormatter = {
+//    print("numberFormatter")
+    return NumberFormatter()
+}()
 
+
+/// Shows nutrient compremension data for a meal.
+///
+/// Example data is
+///
+/// `   11. Jan 2020 at 13:51`
+///
+/// `35 g KH  und 2 FPE`
 struct MealsNutrients: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var meal: Meal
@@ -37,54 +53,17 @@ struct MealsNutrients: View {
 //        }
     }
     
-     var calsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = NumberFormatter.Style.none
-        numberFormatter.zeroSymbol = "0"
-        return numberFormatter
-    }()
-    
-     var zeroMaxDigitsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = NumberFormatter.Style.none
-        numberFormatter.zeroSymbol = "0"
-        return numberFormatter
-    }()
-    
-    func mealNutrientsString(meal: Meal?) -> String {
-        if let meal = meal {
-            let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: meal.doubleForKey("totalEnergyCals"), formatter: calsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
-            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"),    formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
-            let totalProtein = Nutrient.dispStringForNutrientWithKey("totalProtein", value: meal.doubleForKey("totalProtein"), formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
-            let totalFat     = Nutrient.dispStringForNutrientWithKey("totalFat",     value: meal.doubleForKey("totalFat"),     formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
-            let carbFructose = Nutrient.dispStringForNutrientWithKey("carbFructose", value: meal.doubleForKey("carbFructose"), formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
-            let carbGlucose   = Nutrient.dispStringForNutrientWithKey("carbGlucose", value: meal.doubleForKey("carbGlucose"),  formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
-            var totalAmount = ""
-            if let amount = meal.amount {
-                totalAmount = zeroMaxDigitsNumberFormatter.string(from: amount) ?? ""
-            }
-            return totalEnergyCals + ", " + totalCarb + " KH, " + totalProtein + " Prot., " + totalFat + " Fett, " + carbFructose + " F, " + carbGlucose + " G, " + totalAmount + " g insg."
-        }
-        return ""
-    }
-    
     func reducedNutrientString(meal: Meal?) -> String {
-        let formatter = NumberFormatter()
         if let meal = meal {
-            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"),    formatter: NumberFormatter(), inManagedObjectContext: viewContext) ?? ""
+            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"),    formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
             var fpu = 0.0
             if let protein = meal.doubleForKey("totalProtein"), let fat = meal.doubleForKey("totalFat") {
                 fpu = (9.0 * protein + 4.0 * fat) / 100.0 / 1000.0
             }
-
-            return String("\(totalCarb) KH  und   \(formatter.string(from: NSNumber(value: fpu)) ?? "") FPE")
+            return String("\(totalCarb) KH  und   \(numberFormatter.string(from: NSNumber(value: fpu)) ?? "") FPE")
         }
         return ""
     }
-    
-
-
-    
 }
 
 
