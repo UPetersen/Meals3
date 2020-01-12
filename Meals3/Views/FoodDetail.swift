@@ -35,6 +35,8 @@ struct FoodDetail<T>: View where T: IngredientCollection {
     @State private var editingDisabled = true
     @State private var showingAddOrChangeAmountOfFoodView = false
     @State private var showingRecipeDetail = false
+    @State private var showingDeleteFoodConfirmationAlert = false
+
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var nutrientSections = NutrientSectionViewModel.sections()
@@ -116,7 +118,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
             }
             .environment(\.defaultMinListRowHeight, 1)
 
-            FoodDetailToolbar(food: food)
+            FoodDetailToolbar(food: food, ingredientCollection: ingredientCollection)
             
             // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!
             if self.showingRecipeDetail && self.food.recipe != nil {
@@ -135,19 +137,23 @@ struct FoodDetail<T>: View where T: IngredientCollection {
             }
         }
         .navigationBarHidden(false)
-        .navigationBarItems(trailing: HStack {
-            Button(self.editingDisabled ? "Edit" : "Done") {
-                if self.food.recipe != nil {
-                    self.showingRecipeDetail = true
-                } else {
-                    self.editingDisabled.toggle()  // edit food data
+        .navigationBarItems(trailing:
+            HStack {
+                Button(action: {
+                    self.showingDeleteFoodConfirmationAlert = true
+                }) {
+                    Image(systemName: "trash").padding(.horizontal)
                 }
-            }.padding()
-            Button(action: {
-                print("Plus button was tapped")
-                self.showingAddOrChangeAmountOfFoodView = true
-            }) { Image(systemName: "plus").padding() }
-        }
+                .alert(isPresented: $showingDeleteFoodConfirmationAlert){ deleteFoodConfirmationAlert() }
+
+                Button(self.editingDisabled ? "Edit" : "Done") {
+                    if self.food.recipe != nil {
+                        self.showingRecipeDetail = true
+                    } else {
+                        self.editingDisabled.toggle()  // edit food data
+                    }
+                }.padding()
+            }
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
             AddOrChangeAmountOfFoodView(food: self.food,
                                         task: .addAmountOfFoodToIngredientCollection(self.ingredientCollection),
@@ -159,6 +165,26 @@ struct FoodDetail<T>: View where T: IngredientCollection {
             .resignKeyboardOnDragGesture()
         
     } // body
+    
+    func deleteFoodConfirmationAlert() -> Alert {
+        return Alert(title: Text("Lebensmittel löschen?"), message: Text(self.food.deletionConfirmation()),
+                     primaryButton: .destructive(Text("Löschen")) {
+                        self.deleteFood()
+            },
+                     secondaryButton: .cancel())
+    }
+    
+    func deleteFood() {
+        food.managedObjectContext?.delete(food)
+        try? self.viewContext.save()
+        self.showingDeleteFoodConfirmationAlert = false
+        self.presentationMode.wrappedValue.dismiss()
+    }
+    
+
+    
+    
+    
 }
 
 

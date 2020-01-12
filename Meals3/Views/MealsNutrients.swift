@@ -32,7 +32,7 @@ fileprivate let numberFormatter: NumberFormatter = {
 /// `"11. Jan 2020 at 13:51"`
 ///
 /// `"35 g KH  und 2 FPE"`
-struct MealsNutrients: View {
+struct MealsNutrients: View, Equatable {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var meal: Meal
     
@@ -52,6 +52,12 @@ struct MealsNutrients: View {
 //            print(self.meal.description)
 //        }
     }
+    
+    static func == (lhs: MealsNutrients, rhs: MealsNutrients) -> Bool {
+//        print("Using equatable on MealNutriensView")
+        return lhs.meal.dateOfCreation == rhs.meal.dateOfCreation && lhs.meal.dateOfLastModification == rhs.meal.dateOfLastModification
+    }
+
     
     func reducedNutrientString(meal: Meal?) -> String {
         if let meal = meal {

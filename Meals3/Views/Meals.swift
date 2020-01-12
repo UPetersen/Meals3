@@ -44,12 +44,12 @@ struct Meals: View {
             ForEach(meals){ (meal: Meal) in
                 Section(header:
                     NavigationLink(destination: MealDetailView(meal: meal)) {
-                        LazyView( MealsNutrients(meal: meal) )
+                        LazyView( MealsNutrients(meal: meal).equatable() )
                     }
                 ) {
                     ForEach(meal.filteredAndSortedMealIngredients(predicate: self.ingredientsPredicate)!) { (mealIngredient: MealIngredient) in
                         NavigationLink(destination: self.lazyFoodDetail(food: mealIngredient.food!)) {
-                                    MealIngredientCellView(mealIngredient: mealIngredient)
+                            MealIngredientCellView(mealIngredient: mealIngredient).equatable()
                         }
                     }
 //                    .onMove(perform: self.moveInner)

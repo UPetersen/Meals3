@@ -24,7 +24,7 @@ fileprivate let numberFormatter: NumberFormatter = {
 ///
 /// `"156 kcal, 11g KH, 8 g Prot, 9 g Fett, 0 g Fruct., 0 g Gluc."`
 
-struct MealIngredientCellView: View {
+struct MealIngredientCellView: View, Equatable {
     @Environment(\.managedObjectContext) var viewContext
     var mealIngredient: MealIngredient
     @State private var task: Task?
@@ -56,6 +56,13 @@ struct MealIngredientCellView: View {
                                          isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
                 .environment(\.managedObjectContext, self.viewContext)
         })
+    }
+    
+    static func == (lhs: MealIngredientCellView, rhs: MealIngredientCellView) -> Bool {
+//        print("Using equatable on MealIngredientCellView")
+        return lhs.mealIngredient.food?.name == rhs.mealIngredient.food?.name &&
+            lhs.mealIngredient.amount == rhs.mealIngredient.amount &&
+            lhs.mealIngredient.meal?.dateOfLastModification == rhs.mealIngredient.meal?.dateOfLastModification
     }
     
     func stringForNumber (_ number: NSNumber, formatter: NumberFormatter, divisor: Double) -> String {
