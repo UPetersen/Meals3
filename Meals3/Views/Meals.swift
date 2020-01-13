@@ -37,6 +37,18 @@ struct Meals: View {
         self._meals = FetchRequest(fetchRequest: request)
         
         self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(search.text)
+        
+//        let keypathExpression = NSExpression(forKeyPath: "totalCarb")
+//        let expression = NSExpression(forFunction: "sum", arguments: [keypathExpression])
+//        let sumDescription = NSExpressionDescription()
+//        sumDescription.expression = expression
+//        sumDescription.name = "sum"
+//        sumDescription.expressionResultType = .integer64AttributeType
+//        
+//        let sumRequest = NSFetchRequest<Int64>(entityName: "Meal")
+//        sumRequest.propertiesToFetch = [sumDescription]
+//        request.resultType = .dictionaryResultType
+//        let result = try? viewContext.fetch(sumRequest) as? Int64
     }
     
     var body: some View {

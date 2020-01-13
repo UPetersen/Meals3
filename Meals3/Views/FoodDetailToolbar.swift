@@ -21,12 +21,12 @@ struct FoodDetailToolbar<T>: View where T: IngredientCollection{
 
     var body: some View {
         HStack {
-
+            
             Button(action: {
                 self.copyFood()
                 self.showingCopyFoodConfirmationAlert = true
             }) {
-                Image(systemName: "doc.on.doc").padding(.horizontal)
+                Image(systemName: "doc.on.doc").padding()
             }
             
             Spacer()
@@ -34,7 +34,7 @@ struct FoodDetailToolbar<T>: View where T: IngredientCollection{
             Button(action: {
                 self.toggleFavoriteBookmark()
             }) {
-                Image(systemName: food.favoriteListItem != nil ? "bookmark.fill" : "bookmark").padding(.horizontal)
+                Image(systemName: food.favoriteListItem != nil ? "bookmark.fill" : "bookmark").padding()
             }
             
             Spacer()
@@ -43,14 +43,14 @@ struct FoodDetailToolbar<T>: View where T: IngredientCollection{
                 print("Plus button was tapped")
                 self.showingAddOrChangeAmountOfFoodView = true
             }) { Image(systemName: "plus").padding() }
-            .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
-                AddOrChangeAmountOfFoodView(food: self.food,
-                                            task: .addAmountOfFoodToIngredientCollection(self.ingredientCollection),
-                                            isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
-                    .environment(\.managedObjectContext, self.viewContext)}
-                )
+                .sheet(isPresented: $showingAddOrChangeAmountOfFoodView,
+                       content:{ AddOrChangeAmountOfFoodView(food: self.food,
+                                                             task: .addAmountOfFoodToIngredientCollection(self.ingredientCollection),
+                                                             isPresented: self.$showingAddOrChangeAmountOfFoodView,
+                                                             presentationModeOfParentView: self.presentationMode)
+                        .environment(\.managedObjectContext, self.viewContext)}
+            )
         }
-        .padding()
     }
     
     func copyFood() {

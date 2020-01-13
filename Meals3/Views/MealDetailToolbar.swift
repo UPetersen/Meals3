@@ -50,7 +50,7 @@ struct MealDetailToolbar: View {
                            label: {EmptyView()})
                 .frame(width: 0, height: 0)
         }
-        .padding()
+        .padding(.bottom, 10)
     }
 
     func deleteAlert() -> Alert {

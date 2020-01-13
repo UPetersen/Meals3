@@ -25,7 +25,6 @@ fileprivate let dateFormatter: DateFormatter = {
 }()
 
 
-
 struct FoodDetail<T>: View where T: IngredientCollection {
 
     @Environment(\.managedObjectContext) var viewContext

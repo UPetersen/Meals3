@@ -89,10 +89,8 @@ struct MenuView: View {
     }
     
     func foodDetail() -> some View {
-        return FoodDetail(ingredientCollection: self.currentMeal.meal,
-                               food: Food(context: viewContext)
-        )
-            .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
+        return FoodDetail(ingredientCollection: self.currentMeal.meal, food: Food(context: viewContext))
+            .environmentObject(Meal.newestMeal(managedObjectContext: self.viewContext))
             .onDisappear(){
                 withAnimation(.easeOut(duration: 0.1)) {
                     self.showThisMenu = false
