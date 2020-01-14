@@ -37,23 +37,25 @@ struct NSNumberTextField : View {
     let formatter: NumberFormatter
     @State var displayedText: String? = nil
     @State var lastFormattedValue: NSNumber? = nil
+
+    private var b: Binding<String> {
+        Binding<String> ( get: {
+            self.displayedText ?? ""
+        }, set: {
+            newValue in
+            self.displayedText = newValue
+            self.value = self.formatter.number(from: newValue)
+        })
+    }
     
     var body: some View {
-        let b = Binding<String>(
-            get: { return self.displayedText ?? "" },
-            set: { newValue in
-                self.displayedText = newValue
-                self.value = self.formatter.number(from: newValue)
-        })
 
-        return HStack {
+        HStack {
             TextField(label, text: b, onEditingChanged: { inFocus in
                 if !inFocus {
-                    self.lastFormattedValue = self.formatter.number(from: b.wrappedValue)
+                    self.lastFormattedValue = self.formatter.number(from: self.b.wrappedValue)
                     if self.lastFormattedValue != nil {
-                        DispatchQueue.main.async {
-                            b.wrappedValue = self.formatter.string(for: self.lastFormattedValue!) ?? ""
-                        }
+                        self.b.wrappedValue = self.formatter.string(for: self.lastFormattedValue!) ?? ""
                     }
                 }
             })
@@ -65,14 +67,10 @@ struct NSNumberTextField : View {
 //            }
         }
             .onAppear(){ // Otherwise textfield is empty when view appears
-//                print(self.value?.description ?? "no value")
                 if let value = self.value, let valueString =  self.formatter.string(from: value) {
-                    DispatchQueue.main.async {
-                        b.wrappedValue = valueString
-                    }
+                    self.b.wrappedValue = valueString
                 }
         }
-//        .textFieldStyle(RoundedBorderTextFieldStyle())
         .keyboardType(.decimalPad)
         .multilineTextAlignment(.trailing)
         .scaledToFit()
