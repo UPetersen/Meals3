@@ -35,6 +35,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
     @State private var showingAddOrChangeAmountOfFoodView = false
     @State private var showingRecipeDetail = false
     @State private var showingDeleteFoodConfirmationAlert = false
+    @State private var showingAllIngredients = false
 
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -100,14 +101,23 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                     }
                     DatePicker("Erstellt", selection: .constant(food.dateOfCreation ?? noDate)).disabled(editingDisabled)
                     DatePicker("Letzte Änderung", selection: .constant(food.dateOfLastModification ?? noDate)).disabled(true)
-                }
+                }.lineLimit(nil)
                 
-                // Remaining sections
-                ForEach(nutrientSections.dropFirst()) {nutrientSection in
-                    //          ForEach(nutrientSections.dropFirst(), id: \.self) {nutrientSection in
-                    Section(header: Text(nutrientSection.header)) {
-                        ForEach(nutrientSection.keys, id: \.self) { (key: String) in
-                            return FoodNumberFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: numberFormatter)
+                // Remaining sections, Button to ask user if he wants to see all nutrients
+                if !showingAllIngredients {
+                    HStack {
+                        Spacer()
+                        Button("Alle Nährwertdaten anzeigen") { self.showingAllIngredients = true }.padding()
+                        Spacer()
+                    }
+                }
+                if showingAllIngredients {
+                    ForEach(nutrientSections.dropFirst()) {nutrientSection in
+                        //          ForEach(nutrientSections.dropFirst(), id: \.self) {nutrientSection in
+                        Section(header: Text(nutrientSection.header)) {
+                            ForEach(nutrientSection.keys, id: \.self) { (key: String) in
+                                return FoodNumberFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: numberFormatter)
+                            }
                         }
                     }
                 }

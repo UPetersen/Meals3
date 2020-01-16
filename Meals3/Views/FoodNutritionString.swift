@@ -24,9 +24,16 @@ struct FoodNutritionString: View {
         return HStack {
             Text(text)
             Spacer()
-            TextField(text, text: valueAsString)
-                .multilineTextAlignment(.trailing)
-            .foodInputFieldEditingModifier(editingDisabled: editingDisabled)
+            
+            if editingDisabled {
+                Text(valueAsString.wrappedValue)
+                    .lineLimit(nil)
+            } else {
+                TextField(text, text: valueAsString)
+                    .multilineTextAlignment(.trailing)
+                .foodInputFieldEditingModifier(editingDisabled: editingDisabled)
+            }
+            
         }
     }
 }
