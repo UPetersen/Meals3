@@ -33,6 +33,13 @@ struct AddOrChangeAmountOfFoodView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
                 }
+                HStack {
+                    Spacer()
+                    Button("Übernehmen", action:{ self.save() })
+                        .padding()
+                    Spacer()
+                }
+
             }
             .onAppear() {
                 switch self.task {
@@ -49,9 +56,10 @@ struct AddOrChangeAmountOfFoodView: View {
                     self.save()
                 }.padding()
             )
+
         }
-            .onTapGesture(count: 2) {
-                self.save()
+        .onTapGesture(count: 2) {
+            self.save()
         }
 
     }

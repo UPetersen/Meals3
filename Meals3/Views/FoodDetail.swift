@@ -36,13 +36,23 @@ struct FoodDetail<T>: View where T: IngredientCollection {
     @State private var showingRecipeDetail = false
     @State private var showingDeleteFoodConfirmationAlert = false
     @State private var showingAllIngredients = false
+    
+    @State private var groupSelection: Int = 0
 
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var nutrientSections = NutrientSectionViewModel.sections()
     
+    @FetchRequest(
+        entity: Group.entity(),
+        sortDescriptors: [
+            NSSortDescriptor(keyPath: \Group.name, ascending: true),
+        ]
+    ) var groups: FetchedResults<Group>
+    
     //    var editingDisabled: Bool = true
     private let noDate = Date(timeIntervalSince1970: 0)
+    
     
     var body: some View {
         
@@ -50,6 +60,27 @@ struct FoodDetail<T>: View where T: IngredientCollection {
         VStack {
             
             Form {
+
+                Section {
+                    Picker("The Picker", selection: $groupSelection, content: {
+                        ForEach(0 ..< self.groups.count, id: \.self) {
+                            Text(self.groups[$0].name ?? "no name")
+                        }
+                    })
+                    Picker("The Picker", selection: $groupSelection, content: {
+                        ForEach(0 ..< self.groups.count, id: \.self) {
+                            Text(self.groups[$0].name ?? "no name")
+                        }
+                    })
+                }
+
+//                Section(content: {
+//                    ForEach(groups, id: \.self, content: {
+//                        group in Text(group.name ?? "unknown")
+//                    })
+//                })
+
+
                 // Section "Grundnährwerte je 100g"
                 Section(header: Text(nutrientSections[0].header)) {
                     ForEach(nutrientSections[0].keys, id: \.self) { (key: String) in
@@ -59,17 +90,29 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                 
                 // Section "Allgemeine Informationen
                 Section(header: Text("ALLGEMEINE INFORMATIONEN")) {
+
                     FoodNutritionString(text: "Name", value: $food.name, editingDisabled: $editingDisabled)
                     HStack {
                         Text("Detail")
                         Spacer()
                         Text(food.detail?.name ?? "")
                     }
+
                     HStack {
                         Text("Gruppe")
                         Spacer()
                         Text(food.group?.name ?? "")
+//                        Picker(selection: $groupSelection, label: Text("Thegroup"), content: {
+//                            let fetchRequest = Group.fetchRequest()
+//                            return Text("hugo")
+//                            let groups = viewContext.execute(FetchRequest<Group(context: viewContext))
+//                            List(groups) {group in Text(group.name)}
+//                        })
                     }
+//                    List(groups, id: \.self) { group in
+//                        Text(group.name ?? "Unknown")
+//                    }
+                    
                     HStack {
                         Text("Untergr.")
                         Spacer()
