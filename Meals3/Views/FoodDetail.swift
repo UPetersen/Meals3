@@ -274,10 +274,11 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                 .environment(\.managedObjectContext, self.viewContext)}
             )
         )
-            .navigationBarTitle(self.food.name ?? "no name given")
+            .navigationBarTitle(food.recipe == nil ? "Lebensmittel" : "Rezept")
             .resignKeyboardOnDragGesture()
         
     } // body
+    
     
     func deleteFoodConfirmationAlert() -> Alert {
         return Alert(title: Text("Lebensmittel löschen?"), message: Text(self.food.deletionConfirmation()),
