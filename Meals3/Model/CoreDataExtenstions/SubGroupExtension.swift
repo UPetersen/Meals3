@@ -43,3 +43,7 @@ extension SubGroup {
         return nil
     }
 }
+
+extension SubGroup: Identifiable {
+    
+}

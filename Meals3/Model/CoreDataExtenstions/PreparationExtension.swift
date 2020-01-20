@@ -27,6 +27,8 @@ extension Preparation {
             print("Error fetching preparation from csv-file for key '\(key)' and group key '\(groupKey)': Corresponding preparation not found.'")
             return nil
         }
-    }    
+    }
+}
+extension Preparation: Identifiable {
     
 }

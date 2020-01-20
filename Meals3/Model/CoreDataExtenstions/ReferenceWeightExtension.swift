@@ -29,6 +29,9 @@ extension ReferenceWeight {
             print("Error fetching referenceWeights from csv-file for key '\(key)': Corresponding referenceWeights not found.'")
             return nil
         }
-    }    
+    }
+}
+
+extension ReferenceWeight: Identifiable {
     
 }

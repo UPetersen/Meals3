@@ -31,24 +31,68 @@ struct FoodDetail<T>: View where T: IngredientCollection {
     @ObservedObject var ingredientCollection: T
     @ObservedObject var food: Food
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     @State private var editingDisabled = true
     @State private var showingAddOrChangeAmountOfFoodView = false
     @State private var showingRecipeDetail = false
     @State private var showingDeleteFoodConfirmationAlert = false
     @State private var showingAllIngredients = false
     
-    @State private var groupSelection: Int = 0
+    @FetchRequest(entity: Group.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Group.key, ascending: true)]) var groups: FetchedResults<Group>
+    private var selectedGroup: Binding<Group?> {
+        Binding<Group?> ( get: { self.food.group },
+                          set: { newValue in self.food.group = newValue })
+    }
 
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    var fetchedSubGroups: [SubGroup]? {
+        let request = NSFetchRequest<SubGroup>(entityName: "SubGroup")
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \SubGroup.key, ascending: true)]
+        request.predicate = NSPredicate(format: "key contains %@", food.group?.key ?? "999")
+        let fetchedSubGroups = try? viewContext.fetch(request)
+        return fetchedSubGroups
+    }
+    private var selectedSubGroup: Binding<SubGroup?> {
+        Binding<SubGroup?> ( get: { self.food.subGroup },
+                             set: { newValue in self.food.subGroup = newValue })
+    }
+
+    var fetchedDetails: [Detail]? {
+        let request = NSFetchRequest<Detail>(entityName: "Detail")
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Detail.key, ascending: true)]
+        request.predicate = NSPredicate(format: "subGroupKeysString contains %@", food.subGroup?.key ?? "999")
+        let fetchedSubDetails = try? viewContext.fetch(request)
+        return fetchedSubDetails
+    }
+    private var selectedDetail: Binding<Detail?> {
+        Binding<Detail?> ( get: { self.food.detail },
+                          set: { newValue in self.food.detail = newValue })
+    }
+//    @FetchRequest(entity: Detail.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Detail.key, ascending: true)]) var details: FetchedResults<Detail>
+
+    
+    var fetchedPreparations: [Preparation]? {
+        let request = NSFetchRequest<Preparation>(entityName: "Preparation")
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Preparation.key, ascending: true)]
+        request.predicate = NSPredicate(format: "groupKeysString contains %@", food.group?.key ?? "999")
+        let fetchedPreparations = try? viewContext.fetch(request)
+        return fetchedPreparations
+    }
+    private var selectedPreparation: Binding<Preparation?> {
+        Binding<Preparation?> ( get: { self.food.preparation },
+                          set: { newValue in self.food.preparation = newValue })
+    }
+
+    @FetchRequest(entity: ReferenceWeight.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \ReferenceWeight.key, ascending: true)]) var referenceWeight: FetchedResults<ReferenceWeight>
+    private var selectedReferenceWeight: Binding<ReferenceWeight?> {
+        Binding<ReferenceWeight?> ( get: { self.food.referenceWeight },
+                          set: { newValue in self.food.referenceWeight = newValue })
+    }
+
+    
     
     var nutrientSections = NutrientSectionViewModel.sections()
     
-    @FetchRequest(
-        entity: Group.entity(),
-        sortDescriptors: [
-            NSSortDescriptor(keyPath: \Group.name, ascending: true),
-        ]
-    ) var groups: FetchedResults<Group>
     
     //    var editingDisabled: Bool = true
     private let noDate = Date(timeIntervalSince1970: 0)
@@ -62,24 +106,43 @@ struct FoodDetail<T>: View where T: IngredientCollection {
             Form {
 
                 Section {
-                    Picker("The Picker", selection: $groupSelection, content: {
-                        ForEach(0 ..< self.groups.count, id: \.self) {
-                            Text(self.groups[$0].name ?? "no name")
+                    Picker("Gruppe", selection: selectedGroup, content: {
+                        Text("").tag(nil as Group?)
+                        ForEach(self.groups) { (group: Group) in
+                            Text("\(group.key ?? "") \(group.name ?? "")").tag(group as Group?)
                         }
                     })
-                    Picker("The Picker", selection: $groupSelection, content: {
-                        ForEach(0 ..< self.groups.count, id: \.self) {
-                            Text(self.groups[$0].name ?? "no name")
+                    if self.fetchedSubGroups != nil {
+                        Picker("Untergruppe", selection: selectedSubGroup, content: {
+                            Text("").tag(nil as SubGroup?)
+                            ForEach(self.fetchedSubGroups!) { (subGroup: SubGroup) in
+                                Text("\(subGroup.key ?? "") \(subGroup.name ?? "")").tag(subGroup as SubGroup?)
+                            }
+                        })
+                    }
+                    if self.fetchedDetails != nil {
+                        Picker("Detail", selection: selectedDetail, content: {
+                            Text("").tag(nil as Detail?)
+                            ForEach(self.fetchedDetails!) { (detail: Detail) in
+                                Text("\(detail.key ?? "") \(detail.name ?? "")").tag(detail as Detail?)
+                            }
+                        })
+                    }
+                    if self.fetchedPreparations != nil {
+                        Picker("Zubereitung", selection: selectedPreparation, content: {
+                            Text("").tag(nil as Preparation?)
+                            ForEach(self.fetchedPreparations!) { (preparation: Preparation) in
+                                Text("\(preparation.key ?? "") \(preparation.name ?? "")").tag(preparation as Preparation?)
+                            }
+                        })
+                    }
+                    Picker("Ref.-Gew.", selection: selectedReferenceWeight, content: {
+                        Text("").tag(nil as ReferenceWeight?)
+                        ForEach(self.referenceWeight) { (referenceWeight: ReferenceWeight) in
+                            Text("\(referenceWeight.key ?? "") \(referenceWeight.name ?? "")").tag(referenceWeight as ReferenceWeight?)
                         }
                     })
                 }
-
-//                Section(content: {
-//                    ForEach(groups, id: \.self, content: {
-//                        group in Text(group.name ?? "unknown")
-//                    })
-//                })
-
 
                 // Section "Grundnährwerte je 100g"
                 Section(header: Text(nutrientSections[0].header)) {
@@ -102,16 +165,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                         Text("Gruppe")
                         Spacer()
                         Text(food.group?.name ?? "")
-//                        Picker(selection: $groupSelection, label: Text("Thegroup"), content: {
-//                            let fetchRequest = Group.fetchRequest()
-//                            return Text("hugo")
-//                            let groups = viewContext.execute(FetchRequest<Group(context: viewContext))
-//                            List(groups) {group in Text(group.name)}
-//                        })
                     }
-//                    List(groups, id: \.self) { group in
-//                        Text(group.name ?? "Unknown")
-//                    }
                     
                     HStack {
                         Text("Untergr.")
@@ -180,6 +234,13 @@ struct FoodDetail<T>: View where T: IngredientCollection {
 
             
         } // VStack
+//            .onAppear() {
+//                print(self.food.detail ?? "detail")
+//                print(self.food.group ?? "group")
+//                print(self.food.subGroup ?? "subGroup")
+//                print(self.food.referenceWeight ?? "referenceWeight")
+//                print(self.food.preparation ?? "preparation")
+//        }
             
         .onDisappear() {
             print("foodDetail disappears")

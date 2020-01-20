@@ -28,3 +28,7 @@ extension Detail {
         }
     }
 }
+
+extension Detail: Identifiable {
+    
+}

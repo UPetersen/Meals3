@@ -65,3 +65,7 @@ extension Group {
         return success(nil)
     }
 }
+
+extension Group: Identifiable {
+
+}
