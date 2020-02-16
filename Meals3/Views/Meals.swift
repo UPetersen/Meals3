@@ -21,6 +21,8 @@ struct Meals: View {
     @FetchRequest var meals: FetchedResults<Meal>
     
     init(search: Search) {
+        
+//        print("Meals init")
         self.search = search
         let searchFilter = SearchFilter.Contains
         

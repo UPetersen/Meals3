@@ -14,8 +14,11 @@ import SwiftUI
 fileprivate let dateFormatter: DateFormatter = {
 //    print("DateFormatter")
     let dateFormatter = DateFormatter()
-    dateFormatter.dateStyle = .medium
-    dateFormatter.timeStyle = .short
+//    dateFormatter.dateStyle = .medium
+//    dateFormatter.timeStyle = .short    
+    let template = "EEEEyMMMMdHHmm"
+    dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: template, options: 0, locale: Locale.current)!
+
     return dateFormatter
 }()
 
@@ -60,6 +63,7 @@ struct MealsNutrients: View, Equatable {
 
     
     func reducedNutrientString(meal: Meal?) -> String {
+        print("MealNutrients viev func reducedutrientString(meal:): \(meal?.description)")
         if let meal = meal {
             let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"),    formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
             var fpu = 0.0

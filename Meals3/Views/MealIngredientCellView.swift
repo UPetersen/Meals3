@@ -72,6 +72,7 @@ struct MealIngredientCellView: View, Equatable {
     // TODO: put formatter into environment or pass it along as parameter
     /// Returns a String like "44 kcal, 10 g, KH, ..."
     func contentFor(mealIngredient: MealIngredient) -> String {
+//        print("MealIngredientCellView func contentFor(MealIngredient:): \(mealIngredient.description)")
         let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: mealIngredient.doubleForKey("totalEnergyCals"), formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
         let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: mealIngredient.doubleForKey("totalCarb"),    formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
         let totalProtein = Nutrient.dispStringForNutrientWithKey("totalProtein", value: mealIngredient.doubleForKey("totalProtein"), formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""

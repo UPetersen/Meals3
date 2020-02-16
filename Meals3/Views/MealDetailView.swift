@@ -53,6 +53,7 @@ struct MealDetailView: View {
             set: {
                 self.meal.dateOfCreation = $0
                 self.meal.dateOfLastModification = Date()
+//                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
                 HealthManager.synchronize(self.meal, withSynchronisationMode: .update)
         })
         
@@ -86,6 +87,7 @@ struct MealDetailView: View {
 //            print("MealDetailView disappeared.")
             if self.viewContext.hasChanges {
                 try? self.meal.managedObjectContext?.save()
+//                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
             }
         }
         .onAppear() {
