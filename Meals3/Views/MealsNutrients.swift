@@ -36,9 +36,11 @@ fileprivate let numberFormatter: NumberFormatter = {
 ///
 /// `"35 g KH  und 2 FPE"`
 struct MealsNutrients: View, Equatable {
-    @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var meal: Meal
     
+    @Environment(\.managedObjectContext) var viewContext
+    @EnvironmentObject var currentMeal: CurrentMeal
+
     var body: some View {
         HStack {
             Spacer()
@@ -50,10 +52,12 @@ struct MealsNutrients: View, Equatable {
             .font(.headline)
             .padding(.vertical, 3)
             Spacer()
+            
+            Button(action: { withAnimation{ self.copyMeal() } },
+                   label: { Image(systemName: "doc.on.doc").padding(.leading)
+            })
+
         }
-//        .onAppear() {
-//            print(self.meal.description)
-//        }
     }
     
     static func == (lhs: MealsNutrients, rhs: MealsNutrients) -> Bool {
@@ -74,6 +78,20 @@ struct MealsNutrients: View, Equatable {
         }
         return ""
     }
+    
+    /// Create copy of this meal an dismiss the view
+    func copyMeal() {
+        debugPrint("Will copy the meal \(meal) and make it the new current meal")
+        if let newMeal = Meal.fromMeal(meal, inManagedObjectContext: viewContext) {
+            HealthManager.synchronize(newMeal, withSynchronisationMode: .save)
+            self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
+            try? viewContext.save()
+        }
+    }
+    
+
+    
+    
 }
 
 

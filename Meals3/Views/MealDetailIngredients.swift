@@ -27,10 +27,8 @@ struct MealDetailIngredients: View {
                         //                        print (self.meal.filteredAndSortedMealIngredients()![index].description)
                         self.viewContext.delete(self.meal.filteredAndSortedMealIngredients()![index])
                     }
-                    if self.viewContext.hasChanges {
-                        try? self.viewContext.save()
-                        HealthManager.synchronize(self.meal, withSynchronisationMode: .update)
-                    }
+                    HealthManager.synchronize(self.meal, withSynchronisationMode: .update)
+                    try? self.viewContext.save()
                 }
             }
         }
