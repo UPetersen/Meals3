@@ -33,7 +33,7 @@ struct MealsToolbar: View {
                    label: { Image(systemName: "plus").padding(.horizontal) })
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
-            NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal),
+            NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal).environment(\.managedObjectContext, viewContext),
                            isActive: $isShowingGeneralSearchView,
                            label: {EmptyView()})
                 .frame(width: 0, height: 0)

@@ -57,7 +57,10 @@ struct Meals: View {
         List {
             ForEach(meals){ (meal: Meal) in
                 Section(header:
-                    NavigationLink(destination: MealDetailView(meal: meal)) {
+                    NavigationLink(destination: MealDetailView(meal: meal)
+                        .environment(\.managedObjectContext, self.viewContext)
+                        .environmentObject(self.currentMeal)
+                    ) {
                         LazyView( MealsNutrients(meal: meal).equatable() )
                     }
                 ) {
@@ -70,7 +73,7 @@ struct Meals: View {
                 }
 //                .resignKeyboardOnDragGesture() // works also, when placed here, but now moving also is possible.
             }
-//            .onMove(perform: self.move)
+            .onMove(perform: self.move)
             .onDelete { indices in
                 print("onDelete")
                 self.indicesToDelete = indices
@@ -102,11 +105,11 @@ struct Meals: View {
         )
     }
     
-//    func move (from source: IndexSet, to destination: Int) {
-//        print("Outer move")
-//        print("From: \(source.indices.endIndex.description)")
-//        print("To: \(destination)")
-//    }
+    func move (from source: IndexSet, to destination: Int) {
+        print("Outer move")
+        print("From: \(source.indices.endIndex.description)")
+        print("To: \(destination)")
+    }
 //    func moveInner (from source: IndexSet, to destination: Int) {
 //        print("Inner move")
 //        print("From: \(source.indices.endIndex.description)")

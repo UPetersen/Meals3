@@ -38,7 +38,7 @@ struct ContentView: View {
                         Meals(search: self.search)
 
                         // Bottom tool bar
-                        MealsToolbar()
+                        MealsToolbar() //‚.environment(\.managedObjectContext, self.viewContext)
                     }
                     .offset(x: self.showMenu ? geometry.size.width*0.4 : 0)
                     .disabled(self.showMenu ? true : false)

@@ -228,7 +228,7 @@ extension Food {
         return "Dieses Lebensmitttel wird bisher in keiner Mahlzeit und keinem Rezept genutzt."
     }
 
-
+    
 }
 
 

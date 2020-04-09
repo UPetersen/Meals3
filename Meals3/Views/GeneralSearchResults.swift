@@ -17,12 +17,15 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     @ObservedObject var search: Search
         
     private var nsFetchRequest: NSFetchRequest<Food> // used to derive the number of fetched foods without actually fetching any
-    @FetchRequest var foods: FetchedResults<Food> // result of the fetch
-    // Alternatively
+    @FetchRequest var foods: FetchedResults<Food>    // result of the fetch
+    // Alternatively those two lines:
     //    private var fetchRequest: FetchRequest<Food>
     //    private var foods: FetchedResults<Food> { fetchRequest.wrappedValue }
 
-    private var totalFoodsCount: Int { (try? viewContext.count(for: self.nsFetchRequest)) ?? -1 }
+    private var totalFoodsCount: Int {
+//        print ("Calculate total foods count")
+        return (try? viewContext.count(for: self.nsFetchRequest)) ?? -1
+    }
 
     @State private var didScrollDown = false
     @State private var didScrollUp = false
@@ -33,25 +36,12 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     @State private var footerDisAppeared = false
 
     init(search: Search, ingredientCollection: T) {
-//        print("initialization of search results")
+        print("initialization of search results")
         
         self.search = search
         self.ingredientCollection = ingredientCollection
         
-        let searchFilter = search.filter
-        let predicates = [search.selection.predicate, searchFilter.predicateForSearchText(search.text)].compactMap{$0}
-        
-        let request = NSFetchRequest<Food>(entityName: "Food")
-        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-        request.sortDescriptors = search.sortRule.sortDescriptors
-        request.returnsObjectsAsFaults = true   // objects are only loaded, when needed/used -> faster but more frequent disk reads
-        request.includesPropertyValues = true   // usefull only, when only relevant properties are read
-        
-        request.fetchBatchSize = 50
-        request.fetchOffset = search.fetchOffset // needed for paging throuhg results
-        request.fetchLimit = search.fetchLimit // Speeds up a lot, especially inital loading of this view controller, but needs care
-        request.propertiesToFetch = ["name", "totalEnergyCals", "totalCarb", "totalProtein", "totalFat", "carbFructose", "carbGlucose"]   // read only certain properties (others are fetched automatically on demand)
-        
+        let request = search.foodsFetchRequest()
         self._foods = FetchRequest(fetchRequest: request)
         // Alternatively
         //        self.fetchRequest = FetchRequest(fetchRequest: request) // request for displaying foods
@@ -59,12 +49,6 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
         request.fetchLimit = 0
         request.fetchOffset = 0
         self.nsFetchRequest = request // request for displaying count of foods with fetchOffest = 0 and fetchLimit = 0
-
-        // TODO: avoid the need of the following lines and fix the error with the "Ä" in the name
-        //        var sectionNameKeyPath = search.sortRule.sectionNameKeyPath
-        //        if search.sortRule == FoodListSortRule.NameAscending && (search.foodListType == FoodListType.All || search.foodListType == FoodListType.BLS) {
-        //            sectionNameKeyPath = nil
-        //        }
     }
     
     
