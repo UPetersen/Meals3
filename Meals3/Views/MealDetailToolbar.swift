@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MealDetailToolbar: View {
     @ObservedObject var meal: Meal
-    
+
     @Environment(\.managedObjectContext) var viewContext
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var currentMeal: CurrentMeal
@@ -45,7 +45,7 @@ struct MealDetailToolbar: View {
                 .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
 
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
-            NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal),
+            NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal).environment(\.managedObjectContext, viewContext),
                            isActive: $isShowingGeneralSearchView,
                            label: {EmptyView()})
                 .frame(width: 0, height: 0)
@@ -70,9 +70,9 @@ struct MealDetailToolbar: View {
     func copyMeal() {
         debugPrint("Will copy the meal \(meal) and make it the new current meal")
         if let newMeal = Meal.fromMeal(meal, inManagedObjectContext: viewContext) {
-            try? viewContext.save()
             HealthManager.synchronize(newMeal, withSynchronisationMode: .save)
-            currentMeal.meal = newMeal
+            self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
+            try? viewContext.save()
             presentationMode.wrappedValue.dismiss()
         }
     }

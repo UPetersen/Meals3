@@ -78,7 +78,6 @@ struct MealDetailView: View {
                     MealDetailIngredients(meal: meal)
                 }
             }
-            
             MealDetailToolbar(meal: meal)
         }
         .navigationBarTitle("Mahlzeit-Details")

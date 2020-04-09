@@ -21,15 +21,16 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     // Alternatively those two lines:
     //    private var fetchRequest: FetchRequest<Food>
     //    private var foods: FetchedResults<Food> { fetchRequest.wrappedValue }
-
+    
+    // Number of foods in database that match the fetch request.
     private var totalFoodsCount: Int {
 //        print ("Calculate total foods count")
         return (try? viewContext.count(for: self.nsFetchRequest)) ?? -1
     }
-
+    
+    // Handling of paging and displaying corresponding information in small header line.
     @State private var didScrollDown = false
     @State private var didScrollUp = false
-    
     @State private var headerAppeared = false
     @State private var headerDisAppeared = false
     @State private var footerAppeared = false
@@ -56,7 +57,7 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
         VStack {
             HStack {  // Header row with count information, e.g. "0 bis 49 von 166"
                 Spacer()
-                Text("\(self.search.fetchOffset) bis \(self.search.fetchOffset + self.foods.endIndex-1) von \(self.totalFoodsCount), h: \(self.headerAppeared.description)|\(self.headerDisAppeared.description), f: \(self.footerAppeared.description)| \(self.footerDisAppeared.description)")
+                pagingText()
                 Spacer()
             }
             .font(.footnote)
@@ -112,6 +113,10 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
 //                    print("limit: \(self.search.fetchLimit)")
 //            }
         }
+    }
+    
+    func pagingText() -> Text {
+        Text("\(self.search.fetchOffset) bis \(self.search.fetchOffset + self.foods.endIndex-1) von \(self.totalFoodsCount), h: \(self.headerAppeared.description)|\(self.headerDisAppeared.description), f: \(self.footerAppeared.description)| \(self.footerDisAppeared.description)")
     }
         
     func foodDetailView(food: Food) -> some View {

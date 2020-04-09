@@ -14,7 +14,7 @@ struct MealDetailIngredients: View {
     @ObservedObject var meal: Meal
     
     var body: some View {
-        return List {
+        List {
             if meal.filteredAndSortedMealIngredients() == nil {
                 Text("Leere Mahlzeit").foregroundColor(Color(.placeholderText))
             } else {
@@ -24,7 +24,7 @@ struct MealDetailIngredients: View {
                 .onDelete() { IndexSet in
                     print("Deleting meal ingredient from food.")
                     for index in IndexSet {
-//                        print (self.meal.filteredAndSortedMealIngredients()![index].description)
+                        //                        print (self.meal.filteredAndSortedMealIngredients()![index].description)
                         self.viewContext.delete(self.meal.filteredAndSortedMealIngredients()![index])
                     }
                     if self.viewContext.hasChanges {

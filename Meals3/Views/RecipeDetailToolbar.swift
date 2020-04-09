@@ -39,7 +39,7 @@ struct RecipeDetailToolbar: View {
 
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
-            NavigationLink(destination: GeneralSearch(ingredientCollection: self.recipe),
+            NavigationLink(destination: GeneralSearch(ingredientCollection: self.recipe).environment(\.managedObjectContext, viewContext),
                            isActive: $isShowingGeneralSearchView,
                            label: {EmptyView()})
                 .frame(width: 0, height: 0)
