@@ -15,14 +15,10 @@ struct MealsToolbar: View {
     
 //    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection
     @EnvironmentObject var currentMeal: CurrentMeal
-
     
     var body: some View {
         HStack {
-//            Button(action: { withAnimation{print("book")}},
-//                   label: { Image(systemName: "book").padding(.horizontal) })
-//
-//            Spacer()
+            Spacer()
             
             Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
                    label: { Image(systemName: "magnifyingglass").padding(.horizontal) })
@@ -39,6 +35,7 @@ struct MealsToolbar: View {
                 .frame(width: 0, height: 0)
         }
         .padding()
+
     }
     
     func newMeal() {

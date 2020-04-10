@@ -20,6 +20,11 @@ struct Meals: View {
 
     @FetchRequest var meals: FetchedResults<Meal>
     
+//    private let scrollingProxy = ListScrollingProxy() // proxy helper
+    @State private var scrollingProxy: ListScrollingProxy = ListScrollingProxy() // proxy helper
+    private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
+
+    
     init(search: Search) {
         
 //        print("Meals init")
@@ -63,27 +68,42 @@ struct Meals: View {
                     ) {
                         LazyView( MealsNutrients(meal: meal).equatable() )
                     }
+                    .background(ListScrollingHelper(proxy: self.scrollingProxy)) // injection for scroll to top
                 ) {
                     ForEach(meal.filteredAndSortedMealIngredients(predicate: self.ingredientsPredicate)!) { (mealIngredient: MealIngredient) in
                         NavigationLink(destination: self.lazyFoodDetail(food: mealIngredient.food!)) {
                             MealIngredientCellView(mealIngredient: mealIngredient).equatable()
                         }
                     }
+                    .onDelete { indices in
+                        print("onDelete")
+                        self.indicesToDelete = indices
+                        self.showingDeleteConfirmation = true
+                    }
 //                    .onMove(perform: self.moveInner)
                 }
+
 //                .resignKeyboardOnDragGesture() // works also, when placed here, but now moving also is possible.
             }
             .onMove(perform: self.move)
-            .onDelete { indices in
-                print("onDelete")
-                self.indicesToDelete = indices
-                self.showingDeleteConfirmation = true
-            }
+//            .onDelete { indices in
+//                print("onDelete")
+//                self.indicesToDelete = indices
+//                self.showingDeleteConfirmation = true
+//            }
         }
+        .onReceive(self.didSave) { _ in
+            self.scrollingProxy.scrollTo(.top)
+//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+//                self.scrollingProxy.scrollTo(.top)
+//            }
+        }
+
         .onAppear() {
             self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
         }
-        .resignKeyboardOnDragGesture() // works when place here
+            
+        .resignKeyboardOnDragGesture() // works when place here, but .onDelete and other stuff does not.
         .alert(isPresented: self.$showingDeleteConfirmation){
             return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
                          primaryButton: .destructive(Text("Delete")) {

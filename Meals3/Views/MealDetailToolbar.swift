@@ -21,9 +21,10 @@ struct MealDetailToolbar: View {
     
     var body: some View {
         HStack {
-            Button(action: { withAnimation{ self.copyMeal() } },
-                   label: { Image(systemName: "doc.on.doc").padding(.horizontal)
+            Button(action: { withAnimation {self.isShowingDeleteAlert = true} },
+                   label: { Image(systemName: "trash").padding(.horizontal)
             })
+                .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
 
             Spacer()
 
@@ -39,10 +40,9 @@ struct MealDetailToolbar: View {
 
             Spacer()
             
-            Button(action: { withAnimation {self.isShowingDeleteAlert = true} },
-                   label: { Image(systemName: "trash").padding(.horizontal)
+            Button(action: { withAnimation{ self.copyMeal() } },
+                   label: { Image(systemName: "doc.on.doc").padding(.horizontal)
             })
-                .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
 
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
             NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal).environment(\.managedObjectContext, viewContext),

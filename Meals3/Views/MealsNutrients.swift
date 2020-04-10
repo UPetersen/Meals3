@@ -40,7 +40,7 @@ struct MealsNutrients: View, Equatable {
     
     @Environment(\.managedObjectContext) var viewContext
     @EnvironmentObject var currentMeal: CurrentMeal
-
+    
     var body: some View {
         HStack {
             Spacer()
@@ -56,7 +56,6 @@ struct MealsNutrients: View, Equatable {
             Button(action: { withAnimation{ self.copyMeal() } },
                    label: { Image(systemName: "doc.on.doc").padding(.leading)
             })
-
         }
     }
     
@@ -65,7 +64,6 @@ struct MealsNutrients: View, Equatable {
         return lhs.meal.dateOfCreation == rhs.meal.dateOfCreation && lhs.meal.dateOfLastModification == rhs.meal.dateOfLastModification
     }
 
-    
     func reducedNutrientString(meal: Meal?) -> String {
         print("MealNutrients viev func reducedutrientString(meal:): \(String(describing: meal?.description))")
         if let meal = meal {
@@ -85,12 +83,9 @@ struct MealsNutrients: View, Equatable {
         if let newMeal = Meal.fromMeal(meal, inManagedObjectContext: viewContext) {
             HealthManager.synchronize(newMeal, withSynchronisationMode: .save)
             self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
-            try? viewContext.save()
+            try? self.viewContext.save()
         }
     }
-    
-
-    
     
 }
 
