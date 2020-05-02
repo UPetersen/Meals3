@@ -10,13 +10,18 @@ import Foundation
 import CoreData
 
 
+/// Dircets how the amount (weight) of a recipe will be determined, when its preparation is finished.
 enum RecipeAmount {
+    /// Amount (weight) will be calculated as the sum of the amounts (weights) of all its ingredients.
     case sumOfAmountsOfRecipeIngredients
+    /// Amount (weight) will be taken from user input.
+    ///
+    /// This is for the case when there was a loss in weight during the preparation of the recipe, e.g. because of water vaporization when cooking or baking. The assumption is that water was lost during preparation.
     case asInputByUser(amount: Double?)
 }
 
 extension Recipe {
-    
+
     public override func awakeFromInsert() {
         // Set date automatically when object ist created
         super.awakeFromInsert()
