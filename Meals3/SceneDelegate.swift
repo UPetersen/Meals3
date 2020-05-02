@@ -51,12 +51,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             // Speed up all animations (view transitions)
             window.layer.speed = 2.0
+            
+            // Resign keyboard on pan gesture, modified version of https://stackoverflow.com/a/60010955/3687284
+//            let panGesture = AnyPanGestureRecognizer(target: self, action: nil)
+            let panGesture = AnyPanGestureRecognizer(target: self, action:#selector(handlePan(sender:)))
+            panGesture.requiresExclusiveTouchType = false
+            panGesture.cancelsTouchesInView = false
+            panGesture.delegate = self //I don't use window as delegate to minimize possible side effects
+            window.addGestureRecognizer(panGesture)
 
             self.window = window
             window.makeKeyAndVisible()
         }
     }
-
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
@@ -87,7 +95,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Save changes in the application's managed object context when the application transitions to the background.
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
+}
 
-
+// Resign keyboard on pan gesture, modified version of https://stackoverflow.com/a/60010955/3687284
+extension SceneDelegate: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    @objc func handlePan(sender: UIPanGestureRecognizer) {
+        if sender.state == .changed {
+            print("handle pan, changed")
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            sender.state = .ended // Job is done, gesture can be ended.
+        }
+    }
 }
 

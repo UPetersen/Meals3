@@ -9,6 +9,12 @@
 import Foundation
 import CoreData
 
+
+enum RecipeAmount {
+    case sumOfAmountsOfRecipeIngredients
+    case asInputByUser(amount: Double?)
+}
+
 extension Recipe {
     
     public override func awakeFromInsert() {

@@ -86,23 +86,53 @@ extension Food {
         return newFood
     }
     
-    func updateNutrients(managedObjectContext context: NSManagedObjectContext) {
+//    func updateNutrients(managedObjectContext context: NSManagedObjectContext) {
+//        if let recipe = self.recipe {
+//            let recipeAmount = recipe.amountOfAllIngredients
+//            recipe.amount = NSNumber(value: recipeAmount) // Reset all manual changes if the nutrients are updated
+//            if let nutrients = Nutrient.fetchAllNutrients(managedObjectContext: context) {
+//                for nutrient in nutrients {
+//                    if let value = recipe.doubleForNutrient(nutrient) {
+//                        let valuePer100g = value / recipeAmount * 100.0
+//                        self.setValue(valuePer100g, forKey: nutrient.key!)
+//                    }
+//                }
+//            }
+//            self.dateOfLastModification = Date()
+//        }
+//    }
+    
+    private func updateNutrients(amount: Double, managedObjectContext context: NSManagedObjectContext) {
         if let recipe = self.recipe {
-            let recipeAmount = recipe.amountOfAllIngredients
-            recipe.amount = NSNumber(value: recipeAmount) // Reset all manual changes if the nutrients are updated
+            recipe.amount = NSNumber(value: amount)
             if let nutrients = Nutrient.fetchAllNutrients(managedObjectContext: context) {
                 for nutrient in nutrients {
                     if let value = recipe.doubleForNutrient(nutrient) {
-                        let valuePer100g = value / recipeAmount * 100.0
+                        let valuePer100g = value / amount * 100.0
                         self.setValue(valuePer100g, forKey: nutrient.key!)
                     }
+                }
+            }
+        }
+    }
+    
+    func updateNutrients(amount: RecipeAmount, managedObjectContext context: NSManagedObjectContext) {
+        if let recipe = self.recipe {
+            switch amount {
+            case .sumOfAmountsOfRecipeIngredients: // use sum of ingredient amounts as overall amount (no weight loss  due to heating)
+                updateNutrients(amount: recipe.amountOfAllIngredients, managedObjectContext: context)
+            case .asInputByUser(let amount):
+                if let amount = amount, amount >= 0.1 {
+                    updateNutrients(amount: amount, managedObjectContext: context) // Reset all manual changes if non-valid value
+                } else {
+                    updateNutrients(amount: recipe.amountOfAllIngredients, managedObjectContext: context)
                 }
             }
             self.dateOfLastModification = Date()
         }
     }
     
-    
+
     class func fetchAllFoods(managedObjectContext context: NSManagedObjectContext) -> [Food]? {
 
         let request: NSFetchRequest<Food> = Food.fetchRequest()

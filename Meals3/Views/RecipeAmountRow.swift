@@ -21,7 +21,7 @@ struct RecipeAmountRow: View {
             set: {
 //                print(self.recipe.amount)
 //                print(self.recipe.amountOfAllIngredients)
-                self.recipe.amount = $0
+                self.recipe.food?.updateNutrients(amount: .asInputByUser(amount: $0?.doubleValue), managedObjectContext: self.viewContext)
 //                print(self.recipe.amount)
 //                print(self.recipe.amountOfAllIngredients)
 //                self.recipe.food?.updateNutrients(managedObjectContext: self.viewContext)

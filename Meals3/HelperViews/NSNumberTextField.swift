@@ -40,9 +40,11 @@ struct NSNumberTextField : View {
 
     private var b: Binding<String> {
         Binding<String> ( get: {
-            self.displayedText ?? ""
+//            print("get value")
+            return self.displayedText ?? ""
         }, set: {
             newValue in
+//            print("set value")
             self.displayedText = newValue
             self.value = self.formatter.number(from: newValue)
         })
@@ -67,6 +69,7 @@ struct NSNumberTextField : View {
 //            }
         }
             .onAppear(){ // Otherwise textfield is empty when view appears
+                print(".onAppear")
                 if let value = self.value, let valueString =  self.formatter.string(from: value) {
                     self.b.wrappedValue = valueString
                 }

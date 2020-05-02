@@ -66,7 +66,7 @@ struct RecipeDetail: View {
         }
             .navigationBarTitle("Rezept-Details")
             .navigationBarItems(trailing: EditButton().padding())
-        .resignKeyboardOnDragGesture()
+//        .resignKeyboardOnDragGesture()
     }
     
     func headerView() -> some View {

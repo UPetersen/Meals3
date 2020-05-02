@@ -75,15 +75,24 @@ struct Meals: View {
                             MealIngredientCellView(mealIngredient: mealIngredient).equatable()
                         }
                     }
-                    .onDelete { indices in
-                        print("onDelete")
-                        self.indicesToDelete = indices
-                        self.showingDeleteConfirmation = true
+                    .onDelete() { IndexSet in
+                        print("Deleting meal ingredient from food.")
+                        for index in IndexSet {
+//                            print (meal.filteredAndSortedMealIngredients()![index].description)
+                            self.viewContext.delete(meal.filteredAndSortedMealIngredients()![index])
+                        }
+                        HealthManager.synchronize(meal, withSynchronisationMode: .update)
+                        try? self.viewContext.save()
                     }
-//                    .onMove(perform: self.moveInner)
+
+//                    .onDelete { indices in
+//                        print("onDelete")
+//                        self.indicesToDelete = indices
+//                        self.showingDeleteConfirmation = true
+//                    }
+                    //                    .onMove(perform: self.moveInner)
                 }
 
-//                .resignKeyboardOnDragGesture() // works also, when placed here, but now moving also is possible.
             }
             .onMove(perform: self.move)
 //            .onDelete { indices in
@@ -94,16 +103,12 @@ struct Meals: View {
         }
         .onReceive(self.didSave) { _ in
             self.scrollingProxy.scrollTo(.top)
-//            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-//                self.scrollingProxy.scrollTo(.top)
-//            }
         }
 
         .onAppear() {
             self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
         }
             
-        .resignKeyboardOnDragGesture() // works when place here, but .onDelete and other stuff does not.
         .alert(isPresented: self.$showingDeleteConfirmation){
             return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
                          primaryButton: .destructive(Text("Delete")) {

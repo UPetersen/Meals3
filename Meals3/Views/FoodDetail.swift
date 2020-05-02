@@ -275,7 +275,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
             )
         )
             .navigationBarTitle(food.recipe == nil ? "Lebensmittel" : "Rezept")
-            .resignKeyboardOnDragGesture()
+//            .resignKeyboardOnDragGesture()
         
     } // body
     

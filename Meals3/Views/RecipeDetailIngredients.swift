@@ -26,7 +26,9 @@ struct RecipeDetailIngredients: View {
                         print (self.recipe.filteredAndSortedIngredients()![index].description)
                         self.viewContext.delete(self.recipe.filteredAndSortedIngredients()![index])
                     }
-                    self.recipe.food?.updateNutrients(managedObjectContext: self.viewContext)
+//                    self.recipe.food?.updateNutrients(managedObjectContext: self.viewContext)
+                    self.recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: self.viewContext)
+                    self.recipe.dateOfLastModification = Date()
                     if self.viewContext.hasChanges {
                         try? self.viewContext.save()
                     }

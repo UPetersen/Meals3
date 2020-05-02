@@ -65,7 +65,7 @@ struct SearchBarView_Previews: PreviewProvider {
 }
 
 
-// MARK: - For resgning keyboard on drag gesture
+//// MARK: - For resgning keyboard on drag gesture
 
 extension UIApplication {
     func endEditing(_ force: Bool) {
@@ -76,22 +76,22 @@ extension UIApplication {
     }
 }
 
-struct ResignKeyboardOnDragGesture: ViewModifier {
-    var gesture = DragGesture()
-        .onChanged{_ in
-            UIApplication.shared.endEditing(true)
-    }
-    .onChanged() { _ in
-        print("dragging and resigning searchbar")
-    }
-    func body(content: Content) -> some View {
-//        content.gesture(gesture)
-        content.simultaneousGesture(gesture)
-    }
-}
-
-extension View {
-    func resignKeyboardOnDragGesture() -> some View {
-        modifier(ResignKeyboardOnDragGesture())
-    }
-}
+//struct ResignKeyboardOnDragGesture: ViewModifier {
+//    var gesture = DragGesture()
+//        .onChanged{_ in
+//            UIApplication.shared.endEditing(true)
+//    }
+////    .onChanged() { _ in
+////        print("dragging and resigning searchbar")
+////    }
+//    func body(content: Content) -> some View {
+////        content.gesture(gesture)
+//        content.simultaneousGesture(gesture)
+//    }
+//}
+//
+//extension View {
+//    func resignKeyboardOnDragGesture() -> some View {
+//        modifier(ResignKeyboardOnDragGesture())
+//    }
+//}

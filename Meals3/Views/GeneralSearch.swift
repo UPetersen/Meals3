@@ -20,7 +20,7 @@ struct GeneralSearch<T>: View where T: IngredientCollection  {
         
          VStack{
             SearchBarView(searchText: $search.text)
-                .resignKeyboardOnDragGesture()
+//                .resignKeyboardOnDragGesture()
 
             GeneralSearchResults(search: search, ingredientCollection: self.ingredientCollection)
 

@@ -96,7 +96,7 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
                 }
             }
                 .environment(\.defaultMinListRowHeight, 1) // for invisible header and footer, which keep this space unfortunately
-                .resignKeyboardOnDragGesture() // must be outside of the list
+//                .resignKeyboardOnDragGesture() // must be outside of the list
 
 //                .onTapGesture(count: 2) {
 //                    print("double tap")

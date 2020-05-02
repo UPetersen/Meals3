@@ -34,8 +34,9 @@ struct ContentView: View {
                 ZStack(alignment: .leading)  {
                     VStack{
                         SearchBarView(searchText: self.$search.text)
+                        .padding(.top, 9)
+
                         Meals(search: self.search)
-                        
 
                         // Bottom tool bar
                         MealsToolbar() //‚.environment(\.managedObjectContext, self.viewContext)
