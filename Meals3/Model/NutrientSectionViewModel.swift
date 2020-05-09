@@ -13,7 +13,7 @@ struct NutrientSectionViewModel: Hashable, Identifiable {
     var keys: [String]
     
     var id: String {
-        self.header
+        header
     }
     
 //    func hash(into hasher: inout Hasher) {

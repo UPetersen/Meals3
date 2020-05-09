@@ -89,8 +89,8 @@ struct MenuView: View {
     }
     
     func foodDetail() -> some View {
-        return FoodDetail(ingredientCollection: self.currentMeal.meal, food: Food(context: viewContext))
-            .environmentObject(Meal.newestMeal(managedObjectContext: self.viewContext))
+        return FoodDetail(ingredientCollection: currentMeal.meal, food: Food(context: viewContext))
+            .environmentObject(Meal.newestMeal(managedObjectContext: viewContext))
             .onDisappear(){
                 withAnimation(.easeOut(duration: 0.1)) {
                     self.showThisMenu = false
@@ -101,7 +101,7 @@ struct MenuView: View {
     
     func authorizeHealthAlert() -> Alert {
         print("Authorize Health Alert")
-        if self.healthKitIsAuthorized {
+        if healthKitIsAuthorized {
             return Alert(title: Text("Health wurde autorisiert."), message: nil,
                          dismissButton: .default(Text("Okay")) { self.showThisMenu = false })
         } else {
@@ -111,7 +111,7 @@ struct MenuView: View {
     }
 
     func authorizeHealthKit() {
-        HealthManager.authorizeHealthKit { (authorized,  error) -> Void in
+        HealthManager.authorizeHealthKit {(authorized, error) -> Void in
             if authorized {
                 print("HealthKit authorization received.")
                 self.healthKitIsAuthorized = true

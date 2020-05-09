@@ -57,6 +57,7 @@ struct RecipeDetail: View {
                     // TODO: make this a multiline TextField, there are various solutions on stackoverflow
                     RecipeAmountRow(recipe: recipe)
                     Text("Amount is \(recipe.amount ?? NSNumber(value: -999))")
+//                    TextField(<#T##title: StringProtocol##StringProtocol#>, value: <#T##Binding<T>#>, formatter: <#T##Formatter#>, onEditingChanged: <#T##(Bool) -> Void#>, onCommit: <#T##() -> Void#>)
                 }
 
                 Section(header: headerView(), footer: footerView()) {

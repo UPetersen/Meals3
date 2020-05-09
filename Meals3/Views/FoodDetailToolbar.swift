@@ -54,16 +54,16 @@ struct FoodDetailToolbar<T>: View where T: IngredientCollection{
     }
     
     func copyFood() {
-        let _ = Food.fromFood(self.food, inManagedObjectContext: self.viewContext)
-        try? self.viewContext.save()
-        self.presentationMode.wrappedValue.dismiss()
+        let _ = Food.fromFood(food, inManagedObjectContext: viewContext)
+        try? viewContext.save()
+        presentationMode.wrappedValue.dismiss()
     }
         
     func toggleFavoriteBookmark() {
-        if self.food.favoriteListItem != nil {
-            self.food.favoriteListItem = nil
+        if food.favoriteListItem != nil {
+            food.favoriteListItem = nil
         } else {
-            self.food.addToFavorites(managedObjectContext: self.viewContext)
+            food.addToFavorites(managedObjectContext: viewContext)
         }
     }
 }

@@ -94,7 +94,7 @@ struct Meals: View {
                 }
 
             }
-            .onMove(perform: self.move)
+            .onMove(perform: move)
 //            .onDelete { indices in
 //                print("onDelete")
 //                self.indicesToDelete = indices

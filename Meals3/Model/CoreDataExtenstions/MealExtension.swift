@@ -19,8 +19,8 @@ extension Meal {
         
         // Set date automatically when object ist created
         super.awakeFromInsert()
-        self.dateOfCreation = Date() as NSDate as Date
-        self.dateOfLastModification = Date() as NSDate as Date
+        dateOfCreation = Date() as NSDate as Date
+        dateOfLastModification = Date() as NSDate as Date
     }
     
 //    override public func didChange(_ changeKind: NSKeyValueChange, valuesAt indexes: IndexSet, forKey key: String) {
@@ -32,11 +32,11 @@ extension Meal {
     
     
     func doubleForNutrient(_ nutrient: Nutrient) -> Double? {
-        return self.doubleForKey(nutrient.key!)
+        return doubleForKey(nutrient.key!)
     }
     
     func hasFood(_ food: Food) -> Bool {
-        for mealIngredient in self.ingredients?.allObjects as! [MealIngredient] {
+        for mealIngredient in ingredients?.allObjects as! [MealIngredient] {
             if mealIngredient.food == food {
                 return true
             }
@@ -129,10 +129,10 @@ extension Meal {
     
     
     public override var description: String {
-        var string = String("Meal from \(String(describing: self.dateOfCreation)), last change: \(String(describing: self.dateOfLastModification))\n")
+        var string = String("Meal from \(String(describing: dateOfCreation)), last change: \(String(describing: dateOfLastModification))\n")
         string.append(String("   with comment: \(String(describing: comment)))\n"))
         string.append(String("   and \(String(describing: ingredients?.count ?? 0)) ingredients.\n"))
-        if let ingredients = self.ingredients, let mealIngredients = ingredients.allObjects as? [MealIngredient] {
+        if let ingredients = ingredients, let mealIngredients = ingredients.allObjects as? [MealIngredient] {
             for mealIngredient in mealIngredients {
                 string.append("\(mealIngredient.description)\n")
             }
@@ -161,7 +161,7 @@ extension Meal: HasNutrients {
         /// Example: (sum [totalCarb content of each ingredient] / 100)
         func doubleForKey(_ key: String) -> Double? {
 
-            guard let ingredients = self.ingredients else {return nil}
+            guard let ingredients = ingredients else {return nil}
             let quantities = ingredients.compactMap{$0 as? MealIngredient}
             .filter {$0.food?.value(forKeyPath: key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
             .map   {($0.food?.value(forKeyPath: key) as! NSNumber).doubleValue / 100.0 * ($0.amount?.doubleValue)!} // Convert to NSNumber and then Double and multiply with amount of this ingredient
@@ -181,8 +181,8 @@ extension Meal: IngredientCollection {
         let mealIngredient = MealIngredient(context: managedObjectContext)
         mealIngredient.food = food
         mealIngredient.amount = amount
-        self.addToIngredients(mealIngredient)
-        self.dateOfLastModification = Date()
+        addToIngredients(mealIngredient)
+        dateOfLastModification = Date()
         try? managedObjectContext.save()
         
 //            // Save and sync to HealthKit

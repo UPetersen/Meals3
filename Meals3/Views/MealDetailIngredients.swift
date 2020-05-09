@@ -21,17 +21,20 @@ struct MealDetailIngredients: View {
                 ForEach(meal.filteredAndSortedMealIngredients()!, id: \.self) { (mealIngredient: MealIngredient) in
                     MealIngredientCellView(mealIngredient: mealIngredient)
                 }
-                .onDelete() { IndexSet in
-                    print("Deleting meal ingredient from food.")
-                    for index in IndexSet {
-                        //                        print (self.meal.filteredAndSortedMealIngredients()![index].description)
-                        self.viewContext.delete(self.meal.filteredAndSortedMealIngredients()![index])
-                    }
-                    HealthManager.synchronize(self.meal, withSynchronisationMode: .update)
-                    try? self.viewContext.save()
+                .onDelete() {
+                    self.deleteMealIngredients(indexSet: $0)
                 }
             }
         }
+    }
+
+    func deleteMealIngredients (indexSet: IndexSet) -> () {
+        print("Deleting meal ingredient from food.")
+        for index in indexSet {
+            viewContext.delete(self.meal.filteredAndSortedMealIngredients()![index])
+        }
+        HealthManager.synchronize(self.meal, withSynchronisationMode: .update)
+        try? viewContext.save()
     }
 }
 

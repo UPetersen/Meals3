@@ -71,7 +71,7 @@ struct MealDetailToolbar: View {
         debugPrint("Will copy the meal \(meal) and make it the new current meal")
         if let newMeal = Meal.fromMeal(meal, inManagedObjectContext: viewContext) {
             HealthManager.synchronize(newMeal, withSynchronisationMode: .save)
-            self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
+            currentMeal.meal = Meal.newestMeal(managedObjectContext: viewContext)
             try? viewContext.save()
             presentationMode.wrappedValue.dismiss()
         }

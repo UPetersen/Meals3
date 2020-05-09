@@ -280,7 +280,7 @@ struct AddOrChangeAmountOfFoodView: View {
     }
     func save() {
         if let amount = self.amount {
-            switch self.task {
+            switch task {
             case .addAmountOfFoodToIngredientCollection(let ingredientCollection):
                 DispatchQueue.main.async {
                     ingredientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
@@ -314,16 +314,16 @@ struct AddOrChangeAmountOfFoodView: View {
                     recipe.objectWillChange.send()
 
                     recipe.dateOfLastModification = Date()
-//                    recipe.food?.updateNutrients(managedObjectContext: self.viewContext)
-                    recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: self.viewContext)
+//                    recipe.food?.updateNutrients(managedObjectContext: viewContext)
+                    recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
 //                    recipe.objectWillChange.send()
 
 //                    print("Recipestuff")
 //                    print(recipe.amount ?? "")
 //                    print(recipe.amountOfAllIngredients)
                 }
-                try? self.viewContext.save()
-                self.isPresented = false // dismiss self
+                try? viewContext.save()
+                isPresented = false // dismiss self
             }
         }
     }

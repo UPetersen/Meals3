@@ -69,7 +69,7 @@ final class HealthManager {
         
         // Deletion and saving is handled asynchronosly. Meanwhile with a lot of date in health deletion takes some time and often performed after storing the new data. Thus new data ist deleted just after having been stored. Not what we want. Temporary solution: delay saving.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.saveMeal(meal) // store the new data of the meal in health store
+            saveMeal(meal) // store the new data of the meal in health store
         }
     }
     
@@ -154,14 +154,14 @@ final class HealthManager {
                     for foodCorrelation in foodCorrelations {
                         // delete the food correlation objects
                         for object in foodCorrelation.objects {
-                            self.healthKitStore.delete(object, withCompletion: {(success, error) -> Void in
+                            healthKitStore.delete(object, withCompletion: {(success, error) -> Void in
                                 if success {
                                     return
                                 }
                             })
                         }
                         // delete the food correlation itself
-                        self.healthKitStore.delete(foodCorrelation, withCompletion: {(success, error) -> Void in
+                        healthKitStore.delete(foodCorrelation, withCompletion: {(success, error) -> Void in
                             if success {
                                 print("Deleted a food correlation.")
                                 return
@@ -169,19 +169,19 @@ final class HealthManager {
                             print("Error. Could not delete a food correlation.")
                         })
                     }
-                    //                    self.saveMeal(meal)
+                    //                    saveMeal(meal)
                     print("This is where I want to create the food data")
                 }
                 if sychronisationMode == .update {
-                    self.saveMeal(meal)
+                    saveMeal(meal)
                 }
             })
             // 5. Execute the Query
-            self.healthKitStore.execute(sampleQuery)
+            healthKitStore.execute(sampleQuery)
         } else {
             // No corresponding meal found
             if sychronisationMode == .update {
-                self.saveMeal(meal)
+                saveMeal(meal)
             }
         }
     }
@@ -206,14 +206,14 @@ final class HealthManager {
                     for foodCorrelation in foodCorrelations {
                         // delete the food correlation objects
                         for object in foodCorrelation.objects {
-                            self.healthKitStore.delete(object, withCompletion: {(success, error) -> Void in
+                            healthKitStore.delete(object, withCompletion: {(success, error) -> Void in
                                 if success {
                                     return
                                 }
                             })
                         }
                         // delete the food correlation itself
-                        self.healthKitStore.delete(foodCorrelation, withCompletion: {(success, error) -> Void in
+                        healthKitStore.delete(foodCorrelation, withCompletion: {(success, error) -> Void in
                             if success {
                                 print("Deleted a food correlation.")
                                 return
@@ -226,7 +226,7 @@ final class HealthManager {
                 print("Executed health delete query")
             })
             // 5. Execute the Query
-            self.healthKitStore.execute(sampleQuery)
+            healthKitStore.execute(sampleQuery)
         } else {
             // No corresponding meal found
             print("The second place I want to create the food data")

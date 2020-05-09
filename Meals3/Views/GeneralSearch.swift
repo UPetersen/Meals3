@@ -18,7 +18,7 @@ struct GeneralSearch<T>: View where T: IngredientCollection  {
 
     var body: some View {
         
-         VStack{
+         VStack {
             SearchBarView(searchText: $search.text)
 //                .resignKeyboardOnDragGesture()
 

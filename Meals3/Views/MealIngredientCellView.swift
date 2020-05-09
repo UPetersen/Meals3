@@ -45,7 +45,7 @@ struct MealIngredientCellView: View, Equatable {
                         self.showingAddOrChangeAmountOfFoodView = true
                 }
             }
-            Text(self.contentFor(mealIngredient: mealIngredient))
+            Text(contentFor(mealIngredient: mealIngredient))
                 .lineLimit(1)
                 .font(.footnote)
         }

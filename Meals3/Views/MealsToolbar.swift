@@ -39,9 +39,9 @@ struct MealsToolbar: View {
     }
     
     func newMeal() {
-        let meal = Meal(context: self.viewContext)
-        self.currentMeal.meal = meal
-        try? self.viewContext.save()
+        let meal = Meal(context: viewContext)
+        currentMeal.meal = meal
+        try? viewContext.save()
         HealthManager.synchronize(meal, withSynchronisationMode: .save)
     }
 }

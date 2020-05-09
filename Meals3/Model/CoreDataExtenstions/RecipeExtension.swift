@@ -25,8 +25,8 @@ extension Recipe {
     public override func awakeFromInsert() {
         // Set date automatically when object ist created
         super.awakeFromInsert()
-        self.dateOfCreation = Date() as NSDate as Date
-        self.dateOfLastModification = Date() as NSDate as Date
+        dateOfCreation = Date() as NSDate as Date
+        dateOfLastModification = Date() as NSDate as Date
     }
     
     /// Overall amount of all meal ingredients in gram
@@ -54,7 +54,7 @@ extension Recipe {
     /// sum of the content of one nutrient (e.g. "totalCarb") in a meal. Thus one has to sum over all (recipe) ingredients
     /// Example: (sum [totalCarb content of each ingredient] / 100)
     func doubleForKey(_ key: String) -> Double? {
-        guard let ingredients = self.ingredients else {return nil}
+        guard let ingredients = ingredients else {return nil}
         let quantities = ingredients.compactMap{$0 as? RecipeIngredient}  // convert NSSet to [AnyObject] (via .allObjects) and then to [MealIngredient]
             .filter {$0.food?.value(forKeyPath: key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
             .map   {($0.food?.value(forKeyPath: key) as! NSNumber).doubleValue / 100.0 * ($0.amount?.doubleValue)!} // Convert to NSNumber and then Double and multiply with amount of this ingredient
@@ -68,7 +68,7 @@ extension Recipe {
     }
     
     func doubleForNutrient(_ nutrient: Nutrient) -> Double? {
-        return self.doubleForKey(nutrient.key!)
+        return doubleForKey(nutrient.key!)
     }
     
     /// Creates a new meal by from the given meal.The new meal will have the same meal ingredients and that is it.
@@ -101,8 +101,8 @@ extension Recipe: IngredientCollection {
         let recipeIngredient = RecipeIngredient(context: managedObjectContext)
         recipeIngredient.food = food
         recipeIngredient.amount = amount
-        self.addToIngredients(recipeIngredient)
-        self.dateOfLastModification = Date()
+        addToIngredients(recipeIngredient)
+        dateOfLastModification = Date()
         try? managedObjectContext.save()
         
 //            // Save and sync to HealthKit

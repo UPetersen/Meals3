@@ -14,17 +14,17 @@ import HealthKit
 extension Nutrient {
 
     var hkUnit: HKUnit {
-        return HKUnit(from: self.unit!)
+        return HKUnit(from: unit!)
     }
     
     
     // TODO: make dispUnit non-optional. Uwe, this is mandatory
     var hkDispUnit: HKUnit {
-        return HKUnit(from: self.dispUnit!)
+        return HKUnit(from: dispUnit!)
     }
     
     var hkDispUnitText: String {
-        return self.hkDispUnit.description.replacingOccurrences(of: "mc", with: "µ", options: [], range: nil)
+        return hkDispUnit.description.replacingOccurrences(of: "mc", with: "µ", options: [], range: nil)
     }
     
     
@@ -62,7 +62,7 @@ extension Nutrient {
     /// If something fails, either nil or an empty unit string (e.g. "g") is returned, depending on showUnit
     func valueForDisp(_ dispString: String, formatter: NumberFormatter) -> Double? {
         if let dispValue = formatter.number(from: dispString)?.doubleValue {
-            return HKQuantity(unit: self.hkDispUnit, doubleValue: dispValue).doubleValue(for: self.hkUnit)
+            return HKQuantity(unit: hkDispUnit, doubleValue: dispValue).doubleValue(for: hkUnit)
 //            return HKQuantity(unit: self.hkDispUnit, doubleValue: dispValue).doubleValueForUnit(self.hkUnit) ?? nil
         }
         return nil
@@ -79,16 +79,16 @@ extension Nutrient {
     func dispStringForValue(_ value: Double?, formatter: NumberFormatter, showUnit: Bool = true) -> String? {
         
         if let value = value {
-            let quantity = HKQuantity(unit: self.hkUnit, doubleValue: value).doubleValue(for: self.hkDispUnit)
+            let quantity = HKQuantity(unit: hkUnit, doubleValue: value).doubleValue(for: hkDispUnit)
             if let text = formatter.string(from: NSNumber(value: quantity as Double)) {
                 if showUnit {
-                    return text + " " + self.hkDispUnitText
+                    return text + " " + hkDispUnitText
                 } else {
                     return text
                 }
             }
         }
-        return showUnit ? self.hkDispUnitText : nil
+        return showUnit ? hkDispUnitText : nil
     }
     
     /// Returns a String for a given value of the Nutrient with a given key in the unit specified by the dispUnit property of the nutrient, e.g. returns "12.3 µg"

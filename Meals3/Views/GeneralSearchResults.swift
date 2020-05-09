@@ -25,7 +25,7 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     // Number of foods in database that match the fetch request.
     private var totalFoodsCount: Int {
 //        print ("Calculate total foods count")
-        return (try? viewContext.count(for: self.nsFetchRequest)) ?? -1
+        return (try? viewContext.count(for: nsFetchRequest)) ?? -1
     }
     
     // Handling of paging and displaying corresponding information in small header line.
@@ -43,13 +43,13 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
         self.ingredientCollection = ingredientCollection
         
         let request = search.foodsFetchRequest()
-        self._foods = FetchRequest(fetchRequest: request)
+        _foods = FetchRequest(fetchRequest: request)
         // Alternatively
         //        self.fetchRequest = FetchRequest(fetchRequest: request) // request for displaying foods
         
         request.fetchLimit = 0
         request.fetchOffset = 0
-        self.nsFetchRequest = request // request for displaying count of foods with fetchOffest = 0 and fetchLimit = 0
+        nsFetchRequest = request // request for displaying count of foods with fetchOffest = 0 and fetchLimit = 0
     }
     
     
@@ -116,29 +116,29 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     }
     
     func pagingText() -> Text {
-        Text("\(self.search.fetchOffset) bis \(self.search.fetchOffset + self.foods.endIndex-1) von \(self.totalFoodsCount), h: \(self.headerAppeared.description)|\(self.headerDisAppeared.description), f: \(self.footerAppeared.description)| \(self.footerDisAppeared.description)")
+        Text("\(search.fetchOffset) bis \(search.fetchOffset + foods.endIndex-1) von \(totalFoodsCount), h: \(headerAppeared.description)|\(headerDisAppeared.description), f: \(footerAppeared.description)| \(footerDisAppeared.description)")
     }
         
     func foodDetailView(food: Food) -> some View {
-        FoodDetail(ingredientCollection: self.ingredientCollection,
+        FoodDetail(ingredientCollection: ingredientCollection,
                         food: food)
-            .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
+            .environmentObject( Meal.newestMeal(managedObjectContext: viewContext))
     }
     
     func shouldLoadNextPage() {
 //        print("should load next page")
-        let newOffset = max ( 0, min(self.search.fetchOffset + 30, self.totalFoodsCount - self.search.fetchLimit) )
-        if self.search.fetchOffset != newOffset {
-            self.search.fetchOffset = newOffset
+        let newOffset = max ( 0, min(search.fetchOffset + 30, totalFoodsCount - search.fetchLimit) )
+        if search.fetchOffset != newOffset {
+            search.fetchOffset = newOffset
         }
     }
         
     func shouldLoadPreviousPage() {
 //        print("should load previous page")
-        guard self.search.fetchOffset > 0 && self.didScrollDown else {
+        guard search.fetchOffset > 0 && didScrollDown else {
             return
         }
-        self.search.fetchOffset = max(0, self.search.fetchOffset - self.foods.count)
+        search.fetchOffset = max(0, search.fetchOffset - foods.count)
     }
 }
 

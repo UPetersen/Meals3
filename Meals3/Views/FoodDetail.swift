@@ -108,37 +108,37 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                 Section {
                     Picker("Gruppe", selection: selectedGroup, content: {
                         Text("").tag(nil as Group?)
-                        ForEach(self.groups) { (group: Group) in
+                        ForEach(groups) { (group: Group) in
                             Text("\(group.key ?? "") \(group.name ?? "")").tag(group as Group?)
                         }
                     })
-                    if self.fetchedSubGroups != nil {
+                    if fetchedSubGroups != nil {
                         Picker("Untergruppe", selection: selectedSubGroup, content: {
                             Text("").tag(nil as SubGroup?)
-                            ForEach(self.fetchedSubGroups!) { (subGroup: SubGroup) in
+                            ForEach(fetchedSubGroups!) { (subGroup: SubGroup) in
                                 Text("\(subGroup.key ?? "") \(subGroup.name ?? "")").tag(subGroup as SubGroup?)
                             }
                         })
                     }
-                    if self.fetchedDetails != nil {
+                    if fetchedDetails != nil {
                         Picker("Detail", selection: selectedDetail, content: {
                             Text("").tag(nil as Detail?)
-                            ForEach(self.fetchedDetails!) { (detail: Detail) in
+                            ForEach(fetchedDetails!) { (detail: Detail) in
                                 Text("\(detail.key ?? "") \(detail.name ?? "")").tag(detail as Detail?)
                             }
                         })
                     }
-                    if self.fetchedPreparations != nil {
+                    if fetchedPreparations != nil {
                         Picker("Zubereitung", selection: selectedPreparation, content: {
                             Text("").tag(nil as Preparation?)
-                            ForEach(self.fetchedPreparations!) { (preparation: Preparation) in
+                            ForEach(fetchedPreparations!) { (preparation: Preparation) in
                                 Text("\(preparation.key ?? "") \(preparation.name ?? "")").tag(preparation as Preparation?)
                             }
                         })
                     }
                     Picker("Ref.-Gew.", selection: selectedReferenceWeight, content: {
                         Text("").tag(nil as ReferenceWeight?)
-                        ForEach(self.referenceWeight) { (referenceWeight: ReferenceWeight) in
+                        ForEach(referenceWeight) { (referenceWeight: ReferenceWeight) in
                             Text("\(referenceWeight.key ?? "") \(referenceWeight.name ?? "")").tag(referenceWeight as ReferenceWeight?)
                         }
                     })
@@ -227,7 +227,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
             FoodDetailToolbar(food: food, ingredientCollection: ingredientCollection)
             
             // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!
-            if self.showingRecipeDetail && self.food.recipe != nil {
+            if showingRecipeDetail && food.recipe != nil {
                 NavigationLink(destination: RecipeDetail(recipe: self.food.recipe!), isActive: self.$showingRecipeDetail, label: { EmptyView() })
                         .hidden()
             }
@@ -259,7 +259,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                 }
                 .alert(isPresented: $showingDeleteFoodConfirmationAlert){ deleteFoodConfirmationAlert() }
 
-                Button(self.editingDisabled ? "Edit" : "Done") {
+                Button(editingDisabled ? "Edit" : "Done") {
                     if self.food.recipe != nil {
                         self.showingRecipeDetail = true
                     } else {
@@ -281,7 +281,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
     
     
     func deleteFoodConfirmationAlert() -> Alert {
-        return Alert(title: Text("Lebensmittel löschen?"), message: Text(self.food.deletionConfirmation()),
+        return Alert(title: Text("Lebensmittel löschen?"), message: Text(food.deletionConfirmation()),
                      primaryButton: .destructive(Text("Löschen")) {
                         self.deleteFood()
             },
@@ -290,15 +290,10 @@ struct FoodDetail<T>: View where T: IngredientCollection {
     
     func deleteFood() {
         food.managedObjectContext?.delete(food)
-        try? self.viewContext.save()
-        self.showingDeleteFoodConfirmationAlert = false
-        self.presentationMode.wrappedValue.dismiss()
+        try? viewContext.save()
+        showingDeleteFoodConfirmationAlert = false
+        presentationMode.wrappedValue.dismiss()
     }
-    
-
-    
-    
-    
 }
 
 

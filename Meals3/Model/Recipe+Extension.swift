@@ -12,7 +12,7 @@ import CoreData
 extension Recipe {
     
     func filteredAndSortedIngredients(predicate: NSPredicate? = nil) -> [RecipeIngredient]? {
-        if let ingredients = self.ingredients {
+        if let ingredients = ingredients {
             // Recipe has ingredients.
             var filteredAndSortedIngredients = ingredients
             // Filter if a predicate is given (text in searchbar), which needs NSSet.

@@ -16,8 +16,8 @@ extension Food {
         
         // Set date automatically when object ist created
         super.awakeFromInsert()
-        self.dateOfCreation = Date() as NSDate as Date
-        self.dateOfLastModification = Date() as NSDate as Date
+        dateOfCreation = Date() as NSDate as Date
+        dateOfLastModification = Date() as NSDate as Date
     }
     
     class func newFood(inManagedObjectContext context: NSManagedObjectContext) -> Food {
@@ -103,13 +103,13 @@ extension Food {
 //    }
     
     private func updateNutrients(amount: Double, managedObjectContext context: NSManagedObjectContext) {
-        if let recipe = self.recipe {
+        if let recipe = recipe {
             recipe.amount = NSNumber(value: amount)
             if let nutrients = Nutrient.fetchAllNutrients(managedObjectContext: context) {
                 for nutrient in nutrients {
                     if let value = recipe.doubleForNutrient(nutrient) {
                         let valuePer100g = value / amount * 100.0
-                        self.setValue(valuePer100g, forKey: nutrient.key!)
+                        setValue(valuePer100g, forKey: nutrient.key!)
                     }
                 }
             }
@@ -117,7 +117,7 @@ extension Food {
     }
     
     func updateNutrients(amount: RecipeAmount, managedObjectContext context: NSManagedObjectContext) {
-        if let recipe = self.recipe {
+        if let recipe = recipe {
             switch amount {
             case .sumOfAmountsOfRecipeIngredients: // use sum of ingredient amounts as overall amount (no weight loss  due to heating)
                 updateNutrients(amount: recipe.amountOfAllIngredients, managedObjectContext: context)
@@ -128,7 +128,7 @@ extension Food {
                     updateNutrients(amount: recipe.amountOfAllIngredients, managedObjectContext: context)
                 }
             }
-            self.dateOfLastModification = Date()
+            dateOfLastModification = Date()
         }
     }
     
@@ -165,9 +165,9 @@ extension Food {
     
     func addToFavorites(managedObjectContext context: NSManagedObjectContext) { // Adds the food to the list of favorite foods (if not already on that list)
         
-        if self.favoriteListItem?.food === self {
+        if favoriteListItem?.food === self {
             // Food is already a favorite, nothing has to be done
-            print("Food with name \(String(describing: name)) and favorite status \(String(describing: self.favoriteListItem)) is already a favorite")
+            print("Food with name \(String(describing: name)) and favorite status \(String(describing: favoriteListItem)) is already a favorite")
             
         } else {
             // Food is not yet a favorite and must be added as a favorite
@@ -178,46 +178,46 @@ extension Food {
     }
 
     func isMealIngredient() -> Bool {
-        if self.mealIngredients != nil && self.mealIngredients!.count > 0 {
+        if mealIngredients != nil && mealIngredients!.count > 0 {
             return true
         }
         return false
     }
     
     func isRecipeIngredient() -> Bool {
-        if self.recipeIngredients != nil && self.recipeIngredients!.count > 0 {
+        if recipeIngredients != nil && recipeIngredients!.count > 0 {
             return true
         }
         return false
     }
     
     func isMealAndRecipeIngredient() -> Bool {
-        return self.isMealIngredient() && self.isRecipeIngredient()
+        return isMealIngredient() && isRecipeIngredient()
     }
     
     /// Return the value as a String in the unit specified by hkDispUnit in nutrients, e.g. "12.3 µg"
     /// If something fails, either nil or an empty unit string (e.g. "g") is returned, depending on showUnit
     func dispStringForNutrient(_ nutrient: Nutrient, formatter: NumberFormatter, showUnit: Bool = true) -> String? {
-        return nutrient.dispStringForValue(self.doubleForKey(nutrient.key!), formatter: formatter, showUnit: showUnit)
+        return nutrient.dispStringForValue(doubleForKey(nutrient.key!), formatter: formatter, showUnit: showUnit)
     }
     
     /// Return the value as a String in the unit specified by hkDispUnit in nutrients, e.g. "12.3 µg"
     /// If something fails, either nil or an empty unit string (e.g. "g") is returned, depending on showUnit
     func dispStringForNutrientWithKey(_ key: String, formatter: NumberFormatter, showUnit: Bool = true) -> String? {
-        if let managedObjectContext = self.managedObjectContext, let nutrient = Nutrient.nutrientForKey(key, inManagedObjectContext: managedObjectContext) {
-            return nutrient.dispStringForValue(self.doubleForKey(nutrient.key!), formatter: formatter, showUnit: showUnit) ?? nil
+        if let managedObjectContext = managedObjectContext, let nutrient = Nutrient.nutrientForKey(key, inManagedObjectContext: managedObjectContext) {
+            return nutrient.dispStringForValue(doubleForKey(nutrient.key!), formatter: formatter, showUnit: showUnit) ?? nil
         }
         return nil
     }
     
     func nutrientStringForFood(formatter: NumberFormatter) -> String {
-        if let context = self.managedObjectContext {
-            let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: self.doubleForKey("totalEnergyCals"), formatter: formatter, inManagedObjectContext: context) ?? ""
-            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: self.doubleForKey("totalCarb"),    formatter: formatter, inManagedObjectContext: context) ?? ""
-            let totalProtein = Nutrient.dispStringForNutrientWithKey("totalProtein", value: self.doubleForKey("totalProtein"), formatter: formatter, inManagedObjectContext: context) ?? ""
-            let totalFat     = Nutrient.dispStringForNutrientWithKey("totalFat",     value: self.doubleForKey("totalFat"),     formatter: formatter, inManagedObjectContext: context) ?? ""
-            let carbFructose = Nutrient.dispStringForNutrientWithKey("carbFructose", value: self.doubleForKey("carbFructose"), formatter: formatter, inManagedObjectContext: context) ?? ""
-            let carbGlucose   = Nutrient.dispStringForNutrientWithKey("carbGlucose", value: self.doubleForKey("carbGlucose"),  formatter: formatter, inManagedObjectContext: context) ?? ""
+        if let context = managedObjectContext {
+            let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: doubleForKey("totalEnergyCals"), formatter: formatter, inManagedObjectContext: context) ?? ""
+            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: doubleForKey("totalCarb"),    formatter: formatter, inManagedObjectContext: context) ?? ""
+            let totalProtein = Nutrient.dispStringForNutrientWithKey("totalProtein", value: doubleForKey("totalProtein"), formatter: formatter, inManagedObjectContext: context) ?? ""
+            let totalFat     = Nutrient.dispStringForNutrientWithKey("totalFat",     value: doubleForKey("totalFat"),     formatter: formatter, inManagedObjectContext: context) ?? ""
+            let carbFructose = Nutrient.dispStringForNutrientWithKey("carbFructose", value: doubleForKey("carbFructose"), formatter: formatter, inManagedObjectContext: context) ?? ""
+            let carbGlucose   = Nutrient.dispStringForNutrientWithKey("carbGlucose", value: doubleForKey("carbGlucose"),  formatter: formatter, inManagedObjectContext: context) ?? ""
             return totalEnergyCals + ", " + totalCarb + " KH, " + totalProtein + " P, " + totalFat + " F, " + carbFructose + " Fr., " + carbGlucose + " Gl."
         }
         return "no data"
@@ -236,24 +236,24 @@ extension Food {
 //        return String(aString[...aString.startIndex]) // 2017-10-08: Swift 4, hopefully this works fine (and supports at least UTF-16)
 //    }
     @objc dynamic var  uppercaseFirstLetterOfName: String {
-        self.willAccessValue(forKey: "uppercaseFirstLetterOfName")
-        let aString: String = self.name?.uppercased() ?? " "
-        self.didAccessValue(forKey: "uppercaseFirstLetterOfName")
+        willAccessValue(forKey: "uppercaseFirstLetterOfName")
+        let aString: String = name?.uppercased() ?? " "
+        didAccessValue(forKey: "uppercaseFirstLetterOfName")
         return String(aString[...aString.startIndex]) // 2017-10-08: Swift 4, hopefully this works fine (and supports at least UTF-16)
     }
 
 
     func deletionConfirmation() -> String {
-        if self.isMealAndRecipeIngredient() {
-            let uniqueMeals = Set(self.mealIngredients!.compactMap{ ($0 as AnyObject).meal })
-            let uniqueRecipes = Set (self.recipeIngredients!.compactMap{ ($0 as AnyObject).recipe })
-            return "Dieses Lebensmittel wird \(self.mealIngredients!.count) mal in insgesamt \(uniqueMeals.count) Mahlzeit(en) verwendet und wird aus diesen gelöscht.\n\nDieses Lebensmittel wird außerdem \(self.recipeIngredients!.count) mal in insgesamt \(uniqueRecipes.count) Rezept(en) verwendet und wird auch aus diesen gelöscht. "
-        } else if self.isMealIngredient() {
-            let uniqueMeals = Set(self.mealIngredients!.compactMap{ ($0 as AnyObject).meal })
-            return "Dieses Lebensmittel wird \(self.mealIngredients!.count) mal in insgesamt \(uniqueMeals.count) Mahlzeit(en) verwendet und wird diesen gelöscht."
-        } else if self.isRecipeIngredient() {
-            let uniqueRecipes = Set (self.recipeIngredients!.compactMap{ ($0 as AnyObject).recipe })
-            return "Dieses Lebensmittel wird \(self.recipeIngredients!.count) mal in insgesamt \(uniqueRecipes.count) Rezept(en) verwendet und wird diesen gelöscht."
+        if isMealAndRecipeIngredient() {
+            let uniqueMeals = Set(mealIngredients!.compactMap{ ($0 as AnyObject).meal })
+            let uniqueRecipes = Set (recipeIngredients!.compactMap{ ($0 as AnyObject).recipe })
+            return "Dieses Lebensmittel wird \(mealIngredients!.count) mal in insgesamt \(uniqueMeals.count) Mahlzeit(en) verwendet und wird aus diesen gelöscht.\n\nDieses Lebensmittel wird außerdem \(recipeIngredients!.count) mal in insgesamt \(uniqueRecipes.count) Rezept(en) verwendet und wird auch aus diesen gelöscht. "
+        } else if isMealIngredient() {
+            let uniqueMeals = Set(mealIngredients!.compactMap{ ($0 as AnyObject).meal })
+            return "Dieses Lebensmittel wird \(mealIngredients!.count) mal in insgesamt \(uniqueMeals.count) Mahlzeit(en) verwendet und wird diesen gelöscht."
+        } else if isRecipeIngredient() {
+            let uniqueRecipes = Set (recipeIngredients!.compactMap{ ($0 as AnyObject).recipe })
+            return "Dieses Lebensmittel wird \(recipeIngredients!.count) mal in insgesamt \(uniqueRecipes.count) Rezept(en) verwendet und wird diesen gelöscht."
         }
         return "Dieses Lebensmitttel wird bisher in keiner Mahlzeit und keinem Rezept genutzt."
     }
@@ -276,6 +276,6 @@ extension Food: HasNutrients {
     }
 
     public func doubleForKey(_ key: String) -> Double? {
-        return (self.value(forKey: key) as? NSNumber)?.doubleValue ?? nil
+        return (value(forKey: key) as? NSNumber)?.doubleValue ?? nil
     }
 }

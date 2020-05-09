@@ -14,7 +14,7 @@ extension Event {
     override public func awakeFromInsert() {
         // Set date automatically when object ist created
         super.awakeFromInsert()
-        self.timestamp = NSDate() as Date
+        timestamp = NSDate() as Date
     }
 }
 

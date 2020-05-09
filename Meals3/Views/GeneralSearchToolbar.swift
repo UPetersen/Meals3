@@ -41,7 +41,7 @@ struct GeneralSearchToolbar: View {
     }
     
     func toggleSearchFilter() {
-        self.search.filter = self.search.filter == .Contains ? .BeginsWith : .Contains
+        search.filter = search.filter == .Contains ? .BeginsWith : .Contains
     }
     
     func sortRuleActionSheet() -> ActionSheet {

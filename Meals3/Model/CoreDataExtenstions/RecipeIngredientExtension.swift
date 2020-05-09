@@ -13,8 +13,8 @@ extension RecipeIngredient {
 
     /// Return the Content of the nutrient with the key key as double
     func doubleForKey(_ key: String) -> Double? {
-        if let foodValue = (self.food?.value(forKey: key) as? NSNumber)?.doubleValue {
-            return foodValue * (self.amount?.doubleValue)! / 100 // per 100 g
+        if let foodValue = (food?.value(forKey: key) as? NSNumber)?.doubleValue {
+            return foodValue * (amount?.doubleValue)! / 100 // per 100 g
         }
         return nil
     }
