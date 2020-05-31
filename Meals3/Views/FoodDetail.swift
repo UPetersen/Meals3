@@ -224,7 +224,8 @@ struct FoodDetail<T>: View where T: IngredientCollection {
             }
             .environment(\.defaultMinListRowHeight, 1)
 
-            FoodDetailToolbar(food: food, ingredientCollection: ingredientCollection)
+//            FoodDetailToolbar(food: food, ingredientCollection: ingredientCollection)
+            FoodDetailToolbar(food: food, ingredientCollection: ingredientCollection, showingAddOrChangeAmountOfFoodView: $showingAddOrChangeAmountOfFoodView)
             
             // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!
             if showingRecipeDetail && food.recipe != nil {

@@ -23,7 +23,7 @@ class Search: ObservableObject {
     @Published var fetchOffset: Int = 0
     
     
-    /// Returns a NSFetchRequest for foods that match the search.
+    /// Returns a NSFetchRequest for foods that matches the search.
     ///
     /// Batch size, offset, limit and other properties are chosen such to achieve speed performance when scrolling the resulting list with SwiftUI.
     /// - Returns: NSFetchRequest

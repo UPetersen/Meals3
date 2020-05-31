@@ -24,6 +24,7 @@ struct Meals: View {
     @State private var scrollingProxy: ListScrollingProxy = ListScrollingProxy() // proxy helper
     private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
 
+
     
     init(search: Search) {
         
@@ -83,27 +84,16 @@ struct Meals: View {
                         }
                         HealthManager.synchronize(meal, withSynchronisationMode: .update)
                         try? self.viewContext.save()
-                    }
 
-//                    .onDelete { indices in
-//                        print("onDelete")
-//                        self.indicesToDelete = indices
-//                        self.showingDeleteConfirmation = true
-//                    }
-                    //                    .onMove(perform: self.moveInner)
+                    }
                 }
 
             }
             .onMove(perform: move)
-//            .onDelete { indices in
-//                print("onDelete")
-//                self.indicesToDelete = indices
-//                self.showingDeleteConfirmation = true
-//            }
         }
         .onReceive(self.didSave) { _ in
             self.scrollingProxy.scrollTo(.top)
-        }
+         }
 
         .onAppear() {
             self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
@@ -124,8 +114,7 @@ struct Meals: View {
     
     func lazyFoodDetail(food: Food) -> some View {
         return LazyView(
-            FoodDetail(ingredientCollection: self.currentMeal.meal,
-                            food: food)
+            FoodDetail(ingredientCollection: self.currentMeal.meal, food: food)
                 .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
         )
     }

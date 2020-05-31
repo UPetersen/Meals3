@@ -48,7 +48,6 @@ struct ContentView: View {
                         MenuView(showThisMenu: self.$showMenu)
                             .frame(width: geometry.size.width*0.6, height: geometry.size.height)
                             .transition(.move(edge: .leading))
-//                            .gesture(drag)
                     }
                 }
             }
@@ -59,11 +58,7 @@ struct ContentView: View {
                 leading: Button(action: { withAnimation { self.showMenu.toggle() } },
                                 label: { Image(systemName: "line.horizontal.3").padding() }
             ), trailing: EditButton())
-            //            .resignKeyboardOnDragGesture()
         }
-        
-        ////            .resignKeyboardOnDragGesture()
-        //        }
     }
 }
 

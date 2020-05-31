@@ -14,9 +14,10 @@ struct FoodDetailToolbar<T>: View where T: IngredientCollection{
 
     @ObservedObject var food: Food
     @ObservedObject var ingredientCollection: T
+    @Binding var showingAddOrChangeAmountOfFoodView: Bool
     
     @State private var showingCopyFoodConfirmationAlert = false
-    @State private var showingAddOrChangeAmountOfFoodView = false
+//    @State private var showingAddOrChangeAmountOfFoodView = false
 
 
     var body: some View {
@@ -43,13 +44,6 @@ struct FoodDetailToolbar<T>: View where T: IngredientCollection{
                 print("Plus button was tapped")
                 self.showingAddOrChangeAmountOfFoodView = true
             }) { Image(systemName: "plus").padding() }
-                .sheet(isPresented: $showingAddOrChangeAmountOfFoodView,
-                       content:{ AddOrChangeAmountOfFoodView(food: self.food,
-                                                             task: .addAmountOfFoodToIngredientCollection(self.ingredientCollection),
-                                                             isPresented: self.$showingAddOrChangeAmountOfFoodView,
-                                                             presentationModeOfParentView: self.presentationMode)
-                        .environment(\.managedObjectContext, self.viewContext)}
-            )
         }
     }
     
@@ -67,6 +61,69 @@ struct FoodDetailToolbar<T>: View where T: IngredientCollection{
         }
     }
 }
+
+
+
+//struct FoodDetailToolbar<T>: View where T: IngredientCollection{
+//    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+//    @Environment(\.managedObjectContext) var viewContext
+//
+//    @ObservedObject var food: Food
+//    @ObservedObject var ingredientCollection: T
+//
+//    @State private var showingCopyFoodConfirmationAlert = false
+//    @State private var showingAddOrChangeAmountOfFoodView = false
+//
+//
+//    var body: some View {
+//        HStack {
+//
+//            Button(action: {
+//                self.copyFood()
+//                self.showingCopyFoodConfirmationAlert = true
+//            }) {
+//                Image(systemName: "doc.on.doc").padding()
+//            }
+//
+//            Spacer()
+//
+//            Button(action: {
+//                self.toggleFavoriteBookmark()
+//            }) {
+//                Image(systemName: food.favoriteListItem != nil ? "bookmark.fill" : "bookmark").padding()
+//            }
+//
+//            Spacer()
+//
+//            Button(action: {
+//                print("Plus button was tapped")
+//                self.showingAddOrChangeAmountOfFoodView = true
+//            }) { Image(systemName: "plus").padding() }
+//                .sheet(isPresented: $showingAddOrChangeAmountOfFoodView,
+//                       content:{ AddOrChangeAmountOfFoodView(food: self.food,
+//                                                             task: .addAmountOfFoodToIngredientCollection(self.ingredientCollection),
+//                                                             isPresented: self.$showingAddOrChangeAmountOfFoodView,
+//                                                             presentationModeOfParentView: self.presentationMode)
+//                        .environment(\.managedObjectContext, self.viewContext)}
+//            )
+//        }
+//    }
+//
+//    func copyFood() {
+//        let _ = Food.fromFood(food, inManagedObjectContext: viewContext)
+//        try? viewContext.save()
+//        presentationMode.wrappedValue.dismiss()
+//    }
+//
+//    func toggleFavoriteBookmark() {
+//        if food.favoriteListItem != nil {
+//            food.favoriteListItem = nil
+//        } else {
+//            food.addToFavorites(managedObjectContext: viewContext)
+//        }
+//    }
+//}
+
 
 //
 //struct FoodDetailViewToolbar_Previews: PreviewProvider {

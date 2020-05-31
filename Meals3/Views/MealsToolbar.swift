@@ -12,12 +12,22 @@ import CoreData
 struct MealsToolbar: View {
     @Environment(\.managedObjectContext) var viewContext
     @State private var isShowingGeneralSearchView = false
+    @State private var healthKitIsAuthorized: Bool = false
+    @State private var showingMenu = false
+    @State private var isPresentingHealthAuthorizationConfirmationAlert: Bool = false
+    @State private var isPresentingNewFood: Bool = false
     
 //    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection
     @EnvironmentObject var currentMeal: CurrentMeal
     
     var body: some View {
         HStack {
+            Button(action: { self.showingMenu.toggle()} ,
+                   label: { Image(systemName: "ellipsis.circle").padding(.horizontal) })
+            .actionSheet(isPresented: $showingMenu) { menuActionSheet() }  // Menu Action Sheet
+            .alert(isPresented: $isPresentingHealthAuthorizationConfirmationAlert, content: self.authorizeHealthAlert) // Health authorization confirmation alert
+
+
             Spacer()
             
             Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
@@ -32,10 +42,79 @@ struct MealsToolbar: View {
             NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal).environment(\.managedObjectContext, viewContext),
                            isActive: $isShowingGeneralSearchView,
                            label: {EmptyView()})
-                .frame(width: 0, height: 0)
+                .hidden()
+//                .frame(width: 0, height: 0)
+
+            NavigationLink(destination: foodDetail(), isActive: self.$isPresentingNewFood, label: { EmptyView() })
+//                .frame(width: 0, height: 0)
+                .hidden()
+
+            
+//            // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!
+//            if self.isPresentingNewFood {
+//                    NavigationLink(destination: foodDetail(), isActive: self.$isPresentingNewFood, label: { EmptyView() })
+//                        .hidden()
+//            }
+
+
         }
         .padding()
+        
 
+    }
+    
+    func menuActionSheet() -> ActionSheet {
+        ActionSheet(title: Text("Es ist angerichtet."), message: nil, buttons: [
+            .default(Text("Neues Lebensmittel")){ self.newFood() },
+            .default(Text("Neues Rezept")){ self.newRecipe() },
+            .default(Text("Neue Mahlzeit")){ self.newMeal() },
+            .default(Text("Authorisiere Healthkit")){ self.authorizeHealthKit() },
+            .cancel(Text("Zurück"))
+            ]
+        )
+    }
+    
+    
+    func foodDetail() -> some View {
+        return FoodDetail(ingredientCollection: currentMeal.meal, food: Food(context: viewContext))
+            .environmentObject(Meal.newestMeal(managedObjectContext: viewContext))
+    }
+
+
+    func authorizeHealthAlert() -> Alert {
+        let text = healthKitIsAuthorized ? "Health wurde autorisiert." : "Health wurde nicht autorisiert."
+        return Alert(title: Text(text), message: nil, dismissButton: .default(Text("Verstanden")) {})
+    }
+
+    func authorizeHealthKit() {
+        print("Authorize Healthkit")
+        HealthManager.authorizeHealthKit {(authorized, error) -> Void in
+            if authorized {
+                print("HealthKit authorization received.")
+                self.healthKitIsAuthorized = true
+            } else {
+                print("HealthKit authorization denied!")
+                if error != nil {
+                    print("\(String(describing: error))")
+                }
+                self.healthKitIsAuthorized = false
+            }
+        }
+        self.isPresentingHealthAuthorizationConfirmationAlert = true
+    }
+
+    
+    func newFood() {
+        try? self.viewContext.save()
+        isPresentingNewFood = true
+//        return FoodDetail(ingredientCollection: currentMeal.meal, food: Food(context: viewContext))
+//            .environmentObject(Meal.newestMeal(managedObjectContext: viewContext))
+    }
+
+    func newRecipe() {
+        let recipe = Recipe(context: self.viewContext)
+        recipe.food = Food.fromRecipe(recipe, inManagedObjectContext: self.viewContext)
+        try? self.viewContext.save()
     }
     
     func newMeal() {
@@ -44,6 +123,7 @@ struct MealsToolbar: View {
         try? viewContext.save()
         HealthManager.synchronize(meal, withSynchronisationMode: .save)
     }
+    
 }
 
 

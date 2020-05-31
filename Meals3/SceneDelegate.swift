@@ -33,6 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Get the managed object context from the shared persistent container
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy // recommendation from hackingwithswift.com
 
         // The meal to which foods will be added to as ingredients.
         // Has to be changed, if a new meal is created or the current meal is deleted.
@@ -43,6 +44,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .environment(\.managedObjectContext, context)
             .environmentObject(currentMeal)
 
+        
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
