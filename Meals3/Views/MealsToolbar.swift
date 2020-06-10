@@ -15,8 +15,10 @@ struct MealsToolbar: View {
     @State private var healthKitIsAuthorized: Bool = false
     @State private var showingMenu = false
     @State private var isPresentingHealthAuthorizationConfirmationAlert: Bool = false
-    @State private var isPresentingNewFood: Bool = false
     
+    @State private var newFood: Food?
+    @State private var isPresentingNewFood: Bool = false
+
 //    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection
     @EnvironmentObject var currentMeal: CurrentMeal
     
@@ -27,7 +29,6 @@ struct MealsToolbar: View {
             .actionSheet(isPresented: $showingMenu) { menuActionSheet() }  // Menu Action Sheet
             .alert(isPresented: $isPresentingHealthAuthorizationConfirmationAlert, content: self.authorizeHealthAlert) // Health authorization confirmation alert
 
-
             Spacer()
             
             Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
@@ -35,7 +36,7 @@ struct MealsToolbar: View {
 
             Spacer()
             
-            Button(action: { withAnimation {self.newMeal()} },
+            Button(action: { withAnimation {self.createNewMeal()} },
                    label: { Image(systemName: "plus").padding(.horizontal) })
             
             // Zero size (thus invisible) NavigationLink with EmptyView() to move to
@@ -44,30 +45,21 @@ struct MealsToolbar: View {
                            label: {EmptyView()})
                 .hidden()
 //                .frame(width: 0, height: 0)
-
-            NavigationLink(destination: foodDetail(), isActive: self.$isPresentingNewFood, label: { EmptyView() })
-//                .frame(width: 0, height: 0)
-                .hidden()
-
             
-//            // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!
-//            if self.isPresentingNewFood {
-//                    NavigationLink(destination: foodDetail(), isActive: self.$isPresentingNewFood, label: { EmptyView() })
-//                        .hidden()
-//            }
-
-
+            // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!
+            if self.isPresentingNewFood {
+                NavigationLink(destination: newFoodDetail(), isActive: self.$isPresentingNewFood, label: { EmptyView() })
+                    .hidden()
+            }
         }
         .padding()
-        
-
     }
     
     func menuActionSheet() -> ActionSheet {
         ActionSheet(title: Text("Es ist angerichtet."), message: nil, buttons: [
-            .default(Text("Neues Lebensmittel")){ self.newFood() },
-            .default(Text("Neues Rezept")){ self.newRecipe() },
-            .default(Text("Neue Mahlzeit")){ self.newMeal() },
+            .default(Text("Neues Lebensmittel")){ self.createNewFood() },
+            .default(Text("Neues Rezept")){ self.createNewRecipe() },
+            .default(Text("Neue Mahlzeit")){ self.createNewMeal() },
             .default(Text("Authorisiere Healthkit")){ self.authorizeHealthKit() },
             .cancel(Text("Zurück"))
             ]
@@ -75,11 +67,14 @@ struct MealsToolbar: View {
     }
     
     
-    func foodDetail() -> some View {
-        return FoodDetail(ingredientCollection: currentMeal.meal, food: Food(context: viewContext))
-            .environmentObject(Meal.newestMeal(managedObjectContext: viewContext))
+    @ViewBuilder func newFoodDetail() -> some View {
+        if self.newFood != nil {
+            FoodDetail(ingredientCollection: self.currentMeal.meal, food: self.newFood!)
+                .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
+        }
     }
 
+    
 
     func authorizeHealthAlert() -> Alert {
         let text = healthKitIsAuthorized ? "Health wurde autorisiert." : "Health wurde nicht autorisiert."
@@ -104,20 +99,19 @@ struct MealsToolbar: View {
     }
 
     
-    func newFood() {
+    func createNewFood() {
         try? self.viewContext.save()
+        newFood = Food(context: viewContext)
         isPresentingNewFood = true
-//        return FoodDetail(ingredientCollection: currentMeal.meal, food: Food(context: viewContext))
-//            .environmentObject(Meal.newestMeal(managedObjectContext: viewContext))
     }
 
-    func newRecipe() {
+    func createNewRecipe() {
         let recipe = Recipe(context: self.viewContext)
         recipe.food = Food.fromRecipe(recipe, inManagedObjectContext: self.viewContext)
         try? self.viewContext.save()
     }
     
-    func newMeal() {
+    func createNewMeal() {
         let meal = Meal(context: viewContext)
         currentMeal.meal = meal
         try? viewContext.save()

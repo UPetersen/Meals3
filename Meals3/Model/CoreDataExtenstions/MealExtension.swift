@@ -141,8 +141,25 @@ extension Meal {
     }
 }
 
+
+extension Meal {
+    /// Returns the fat protein units (FPU or FPE in German) for the meal.
+    var fpu: Double? {
+        if let protein = doubleForKey("totalProtein"), let fat = doubleForKey("totalFat") {
+            return (4.0 * protein + 9.0 * fat) / 100.0 / 1000.0
+        }
+        return nil
+    }
+
+    var fpuFalse: Double? {
+        if let protein = doubleForKey("totalProtein"), let fat = doubleForKey("totalFat") {
+            return (9.0 * protein + 4.0 * fat) / 100.0 / 1000.0
+        }
+        return nil
+    }
+}
+
 extension Meal: HasNutrients {
-    
     
         /// Overall amount of all meal ingredients in gram
         var amount: NSNumber? {

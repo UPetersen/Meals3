@@ -21,50 +21,33 @@ private let dateFormatter: DateFormatter = {
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
-//    @EnvironmentObject var search: Search
-    
     @ObservedObject var search = Search()
-
-    @State private var showMenu: Bool = false
     
     var body: some View {
-                
+        
         return NavigationView {
-            GeometryReader { geometry in
-                ZStack(alignment: .leading)  {
-                    VStack{
-                        SearchBarView(searchText: self.$search.text)
-                        .padding(.top, 9)
-
-                        Meals(search: self.search)
-
-                        // Bottom tool bar
-                        MealsToolbar() //‚.environment(\.managedObjectContext, self.viewContext)
-                    }
-                    .offset(x: self.showMenu ? geometry.size.width*0.4 : 0)
-                    .disabled(self.showMenu ? true : false)
-                    
-                    if self.showMenu {
-                        MenuView(showThisMenu: self.$showMenu)
-                            .frame(width: geometry.size.width*0.6, height: geometry.size.height)
-                            .transition(.move(edge: .leading))
-                    }
-                }
+            VStack{
+                SearchBarView(searchText: self.$search.text)
+                    .padding(.top, topMargin)
+                
+                Meals(search: self.search)
+                
+                MealsToolbar() //‚.environment(\.managedObjectContext, self.viewContext)
             }
             .navigationViewStyle(StackNavigationViewStyle())
-//            .navigationViewStyle(DoubleColumnNavigationViewStyle())
-            .navigationBarTitle(Text("Mahlzeiten"), displayMode: .inline)
-            .navigationBarItems(
-                leading: Button(action: { withAnimation { self.showMenu.toggle() } },
-                                label: { Image(systemName: "line.horizontal.3").padding() }
-            ), trailing: EditButton())
+                //            .navigationViewStyle(DoubleColumnNavigationViewStyle())
+                .navigationBarTitle(Text("Mahlzeiten"), displayMode: .inline)
+                .navigationBarItems(trailing: EditButton())
         }
     }
 }
 
-//
+
+// MARK: - Constants
+let topMargin: CGFloat = 9
 
 
+// MARK: - Preview
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
@@ -72,8 +55,3 @@ struct ContentView_Previews: PreviewProvider {
         return ContentView().environment(\.managedObjectContext, context)
     }
 }
-
-
-//func deleteFruit(offsets: IndexSet) {
-//    fruits.remove(atOffsets: offsets)
-//}

@@ -14,8 +14,6 @@ import SwiftUI
 fileprivate let dateFormatter: DateFormatter = {
 //    print("DateFormatter")
     let dateFormatter = DateFormatter()
-//    dateFormatter.dateStyle = .medium
-//    dateFormatter.timeStyle = .short    
     let template = "EEEEyMMMMdHHmm"
     dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: template, options: 0, locale: Locale.current)!
 
@@ -33,7 +31,6 @@ fileprivate let numberFormatter: NumberFormatter = {
 /// Example data is
 ///
 /// `"11. Jan 2020 at 13:51"`
-///
 /// `"35 g KH  und 2 FPE"`
 struct MealsNutrients: View, Equatable {
     @ObservedObject var meal: Meal
@@ -64,17 +61,10 @@ struct MealsNutrients: View, Equatable {
         return lhs.meal.dateOfCreation == rhs.meal.dateOfCreation && lhs.meal.dateOfLastModification == rhs.meal.dateOfLastModification
     }
 
-    func reducedNutrientString(meal: Meal?) -> String {
-        print("MealNutrients viev func reducedutrientString(meal:): \(String(describing: meal?.description))")
-        if let meal = meal {
-            let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"),    formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
-            var fpu = 0.0
-            if let protein = meal.doubleForKey("totalProtein"), let fat = meal.doubleForKey("totalFat") {
-                fpu = (9.0 * protein + 4.0 * fat) / 100.0 / 1000.0
-            }
-            return String("\(totalCarb) KH  und   \(numberFormatter.string(from: NSNumber(value: fpu)) ?? "") FPE")
-        }
-        return ""
+    func reducedNutrientString(meal: Meal) -> String {
+        print("MealNutrients viev func reducedutrientString(meal:): \(String(describing: meal.description))")
+        let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"), formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
+        return String("\(totalCarb) KH  und   \(numberFormatter.string(from: NSNumber(value: meal.fpu ?? 0.0)) ?? "") FPE  (\(numberFormatter.string(from: NSNumber(value: meal.fpuFalse ?? 0.0)) ?? "") FPE)")
     }
     
     /// Create copy of this meal an dismiss the view
