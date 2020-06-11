@@ -115,7 +115,7 @@ struct AddOrChangeAmountOfIngredientView: View {
     
     private var amountBinding: Binding<String> {
         Binding<String> (
-            get: { return self.amount.map{ numberFormatter.string(from: $0) ?? "" } ?? "" },
+            get: { self.amount.map{ numberFormatter.string(from: $0) ?? "" } ?? "" },
             set: { self.amount = numberFormatter.number(from: $0) }
         )
     }
@@ -197,7 +197,7 @@ struct AddOrChangeAmountOfIngredientView: View {
                     
                     self.oldLocation = value.location
                     let hugo = max(0.0, (self.amount?.doubleValue ?? 0.0) + 0.2 * (angle.degrees >= 0 ? Double(distance) : Double(-distance)) ).rounded()
-                    self.amount = NSNumber(value: hugo)
+                    self.amount = hugo <= 0.0000001 ? nil : NSNumber(value: hugo) // if amount is zero -> make it nil to show the placeholder (and do not allow to store the value)
                 }
             }
         }
