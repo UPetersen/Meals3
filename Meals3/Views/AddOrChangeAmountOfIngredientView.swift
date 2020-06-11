@@ -142,7 +142,7 @@ struct AddOrChangeAmountOfIngredientView: View {
     // Translation from the previous touch to the current touch
     @State var newTranslation = CGVector()
     // Animation of the plus icon, when rotation gesture finished (and stopped while rotating)
-    @State private var animatePlusIcon = false
+    @State private var isAnimatingSafeButton = false
 
     var drag: some Gesture {
         DragGesture(minimumDistance: 10, coordinateSpace: .local)
@@ -159,11 +159,11 @@ struct AddOrChangeAmountOfIngredientView: View {
         }
         .onEnded {value in
             self.oldLocation = CGPoint(x: 0.0, y: 0.0)
-            self.animatePlusIcon = true
+            self.isAnimatingSafeButton = true
 //            self.oldTranslation = CGVector(dx: 0.0, dy: 0.0)
         }
         .onChanged { value in
-            self.animatePlusIcon = false
+            self.isAnimatingSafeButton = false
             switch self.dragState {
             case .inactive:
                 break
@@ -228,21 +228,22 @@ struct AddOrChangeAmountOfIngredientView: View {
                     HStack {
                         Spacer()
                         ZStack {
-                            Rectangle().frame(width: 10, height: 400) // Create some vertical space
+                            Rectangle().frame(width: 10, height: 400) // Add some vertical space
                                 .opacity(0.0)
                             Circle()
-                                .frame(width: 300, height: 300)
+                                .scaledToFit()
+                                .frame(width: 300, height: 300) // Not bigger than 300 by 300
                                 .foregroundColor(Color(.systemFill))
                             Image(systemName: "arrow.2.circlepath")
                                 .resizable()
                                 .foregroundColor(Color(.systemBackground))
-                                .frame(width: 200, height: 170)
-                            Button("speichern", action:{ self.save() }).padding()
+                                .frame(width: 200*1.1, height: 170*1.1)
+                            Button("Speichern", action:{ self.save() }).padding()
                                 .foregroundColor(Color(.systemBlue))
-                                .scaleEffect(animatePlusIcon ? 1.0 : 1.25) // animate when rotation finished
-                                .animation(Animation.default.repeat(while: self.animatePlusIcon))
+                                .scaleEffect(self.isAnimatingSafeButton ? 1.25 : 1.0) // animate when rotation finished
+                                .animation(Animation.default.repeat(while: self.isAnimatingSafeButton))
                         }
-                        .gesture(drag)
+                        .gesture(self.drag)
                         Spacer()
                     }
                         .onTapGesture { self.save() } // Tapping anywhere saves.
