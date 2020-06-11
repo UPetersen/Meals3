@@ -8,8 +8,9 @@
 
 import SwiftUI
 
-fileprivate let formatter: NumberFormatter = {
+fileprivate let numberFormatter: NumberFormatter = {
     let numberFormatter = NumberFormatter()
+    numberFormatter.maximumFractionDigits = 3
     numberFormatter.minimum = 0
     return numberFormatter
 }()
@@ -103,7 +104,7 @@ struct OneFingerRoationView: View {
 }
 
 
-struct AddOrChangeAmountOfFoodView: View {
+struct AddOrChangeAmountOfIngredientView: View {
     @Environment(\.managedObjectContext) var viewContext
     var food: Food
     var task: Task
@@ -112,9 +113,18 @@ struct AddOrChangeAmountOfFoodView: View {
 
     @State private var amount: NSNumber? = nil
     
+    private var amountBinding: Binding<String> {
+        Binding<String> (
+            get: { return self.amount.map{ numberFormatter.string(from: $0) ?? "" } ?? "" },
+            set: { self.amount = numberFormatter.number(from: $0) }
+        )
+    }
+
+    
     @State var angle = Angle(degrees: 0.0)
     @State var angle2 = Angle(degrees: 0.0)
     @State var distance = CGFloat(0.0)
+    @State var title = "Menge hinzufügen" // "Menge hinzufügen" for new food or "Menge ändern" for updating the amount of a food
     
     /// State of the one finger rotation drag.
     ///
@@ -186,7 +196,7 @@ struct AddOrChangeAmountOfFoodView: View {
                     print("")
                     
                     self.oldLocation = value.location
-                    let hugo = max(0.0, (self.amount?.doubleValue ?? 0.0) + 0.2 * (angle.degrees >= 0 ? Double(distance) : Double(-distance)) )
+                    let hugo = max(0.0, (self.amount?.doubleValue ?? 0.0) + 0.2 * (angle.degrees >= 0 ? Double(distance) : Double(-distance)) ).rounded()
                     self.amount = NSNumber(value: hugo)
                 }
             }
@@ -194,81 +204,64 @@ struct AddOrChangeAmountOfFoodView: View {
     }
     
     var body: some View {
+
         NavigationView() {
+            
             Form {
-                Section(header: Text("Lebensmittel hinzufügen")) {
-                    Text(food.name ?? "food without name")
+                Section(header: Text("Lebensmittel"), footer: Text(" ")) {
+                    Text(food.name ?? " ")
+                }
+                
+                Section(header: Text("Menge in der Mahlzeit"), footer: Text(" ")) {
                     HStack {
-                        Text("Menge")
                         Spacer()
-                        NSNumberTextField(label: "g", value: self.$amount, formatter: formatter)
+                        TextField("g", text: amountBinding)
+                            .keyboardType(.decimalPad)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
-                    }
-                }
-                Section() {
-                    HStack {
-                        Spacer()
-                        Button("Übernehmen", action:{ self.save() }).padding()
+                            .scaledToFit()
+                            .multilineTextAlignment(.center)
                         Spacer()
                     }
                 }
-                Section() {
-                    HStack {
-                        Spacer()
-                        Text("\(Int(self.amount?.intValue ?? 0))")
-                        Spacer()
-                    }
+                
+                Section(header: Text(" ")) {
                     HStack {
                         Spacer()
                         ZStack {
+                            Rectangle().frame(width: 10, height: 400) // Create some vertical space
+                                .opacity(0.0)
                             Circle()
-                            .frame(width: 300, height: 300)
+                                .frame(width: 300, height: 300)
                                 .foregroundColor(Color(.systemFill))
                             Image(systemName: "arrow.2.circlepath")
                                 .resizable()
                                 .foregroundColor(Color(.systemBackground))
                                 .frame(width: 200, height: 170)
-                            Image(systemName: "plus.circle")
+                            Button("speichern", action:{ self.save() }).padding()
                                 .foregroundColor(Color(.systemBlue))
-                                .scaleEffect(animatePlusIcon ? 2.2 : 2) // animate when rotation finished
+                                .scaleEffect(animatePlusIcon ? 1.0 : 1.25) // animate when rotation finished
                                 .animation(Animation.default.repeat(while: self.animatePlusIcon))
                         }
                         .gesture(drag)
-                            .onTapGesture {
-                                self.save()
-                        }
-
                         Spacer()
                     }
-                    HStack {
-                        Image(systemName: "arrow.right.circle.fill")
-                            .resizable()
-                            .foregroundColor(Color.red)
-                            .frame(width: 40, height: 40)
-                            .rotationEffect(angle2)
-                            .animation(.spring())
-                        Spacer()
-                        Image(systemName: "arrow.right.circle.fill")
-                            .resizable()
-                            .foregroundColor(Color.red)
-                            .frame(width: 40, height: 40)
-                            .rotationEffect(angle)
-                            .animation(.spring())
-                    }
+                        .onTapGesture { self.save() } // Tapping anywhere saves.
+                    
                 }
             }
             .onAppear() {
                 switch self.task {
                 case .changeAmountOfIngredient(let ingredient):
                     self.amount = ingredient.amount
+                    self.title = "Menge ändern"
                 default: break
                 }
             }
-            .navigationBarTitle(Text("Hinzufügen"), displayMode: .inline)
+            .navigationBarTitle(Text(self.title), displayMode: .inline)
             .navigationBarItems(leading:
-                Button("Cancel") { self.isPresented = false }.padding(),
+                Button("Zurück") { self.isPresented = false }.padding(),
                                 trailing:
-                Button("Save") {
+                Button("Speichern") {
                     self.save()
                 }.padding()
             )
@@ -276,8 +269,9 @@ struct AddOrChangeAmountOfFoodView: View {
         .onTapGesture(count: 2) {
             self.save()
         }
-
     }
+    
+    
     func save() {
         if let amount = self.amount {
             switch task {
@@ -328,6 +322,8 @@ struct AddOrChangeAmountOfFoodView: View {
         }
     }
     
+    // MARK: - Constants
+    
 }
 
 
@@ -372,7 +368,7 @@ struct AddFoodView_Previews: PreviewProvider {
 
         let meal = Meal.newestMeal(managedObjectContext: context)
 
-        return AddOrChangeAmountOfFoodView(food: food,
+        return AddOrChangeAmountOfIngredientView(food: food,
                                            task: .addAmountOfFoodToIngredientCollection(meal as IngredientCollection),
                                            isPresented: .constant(true),
                                            presentationModeOfParentView: presentationMode)

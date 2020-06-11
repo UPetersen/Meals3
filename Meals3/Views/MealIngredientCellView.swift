@@ -51,7 +51,7 @@ struct MealIngredientCellView: View, Equatable {
         }
             // TODO: hier geht's weiter: optionals rausmachen
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
-             AddOrChangeAmountOfFoodView(food: self.mealIngredient.food!,
+             AddOrChangeAmountOfIngredientView(food: self.mealIngredient.food!,
                                          task: self.task!,
                                          isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
                 .environment(\.managedObjectContext, self.viewContext)

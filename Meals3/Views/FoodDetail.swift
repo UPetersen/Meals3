@@ -147,7 +147,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                 // Section "Grundnährwerte je 100g"
                 Section(header: Text(nutrientSections[0].header)) {
                     ForEach(nutrientSections[0].keys, id: \.self) { (key: String) in
-                        return FoodNumberFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: numberFormatter)
+                        return FoodNumberTextFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: numberFormatter)
                     }
                 }
                 
@@ -213,7 +213,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                         //          ForEach(nutrientSections.dropFirst(), id: \.self) {nutrientSection in
                         Section(header: Text(nutrientSection.header)) {
                             ForEach(nutrientSection.keys, id: \.self) { (key: String) in
-                                return FoodNumberFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: numberFormatter)
+                                return FoodNumberTextFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: numberFormatter)
                             }
                         }
                     }
@@ -269,7 +269,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                 }.padding()
             }
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
-            AddOrChangeAmountOfFoodView(food: self.food,
+            AddOrChangeAmountOfIngredientView(food: self.food,
                                         task: .addAmountOfFoodToIngredientCollection(self.ingredientCollection),
                                         isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
                 .environment(\.managedObjectContext, self.viewContext)}

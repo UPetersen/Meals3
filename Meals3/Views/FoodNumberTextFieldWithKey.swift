@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct FoodNumberFieldWithKey: View {
+struct FoodNumberTextFieldWithKey: View {
     
     // TODO: testen und vergleichen, insbesondere, wie oft etwas aufgerufen wird. (Ggf. auch Rechenleistung durch ForEach mit 100.000 Elementen oder so.
     // a.) Wie hier mit Aniview
@@ -121,7 +121,7 @@ struct FoodNumberCellWithKey_Previews: PreviewProvider {
 
         return NavigationView {
             Form {
-                FoodNumberFieldWithKey(editingDisabled: $isDisabled, food: food, key: "totalEnergyCals", numberFormatter: NumberFormatter())
+                FoodNumberTextFieldWithKey(editingDisabled: $isDisabled, food: food, key: "totalEnergyCals", numberFormatter: NumberFormatter())
                     .environment(\.managedObjectContext, context)
                     .navigationBarTitle(food.name ?? "no name given")
             }

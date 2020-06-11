@@ -108,6 +108,9 @@ struct MealsToolbar: View {
     func createNewRecipe() {
         let recipe = Recipe(context: self.viewContext)
         recipe.food = Food.fromRecipe(recipe, inManagedObjectContext: self.viewContext)
+        newFood = recipe.food
+        isPresentingNewFood = true
+
         try? self.viewContext.save()
     }
     
