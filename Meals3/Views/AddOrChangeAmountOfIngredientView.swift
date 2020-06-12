@@ -204,50 +204,57 @@ struct AddOrChangeAmountOfIngredientView: View {
     }
     
     var body: some View {
-
+        
         NavigationView() {
-            
-            Form {
-                Section(header: Text("Lebensmittel"), footer: Text(" ")) {
-                    Text(food.name ?? " ")
-                }
+            GeometryReader() { geometry in
                 
-                Section(header: Text("Menge in der Mahlzeit"), footer: Text(" ")) {
-                    HStack {
-                        Spacer()
-                        TextField("g", text: amountBinding)
-                            .keyboardType(.decimalPad)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .scaledToFit()
-                            .multilineTextAlignment(.center)
-                        Spacer()
+                Form {
+                    Section(header: Text("Lebensmittel"), footer: Text(" ")) {
+                        Text(self.food.name ?? " ")
                     }
-                }
-                
-                Section(header: Text(" ")) {
-                    HStack {
-                        Spacer()
-                        ZStack {
-                            Rectangle().frame(width: 10, height: 400) // Add some vertical space
-                                .opacity(0.0)
-                            Circle()
+                    
+                    Section(header: Text("Menge in der Mahlzeit"), footer: Text(" ")) {
+                        HStack {
+                            Spacer()
+                            TextField("g", text: self.amountBinding)
+                                .keyboardType(.decimalPad)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .scaledToFit()
-                                .frame(width: 300, height: 300) // Not bigger than 300 by 300
-                                .foregroundColor(Color(.systemFill))
-                            Image(systemName: "arrow.2.circlepath")
-                                .resizable()
-                                .foregroundColor(Color(.systemBackground))
-                                .frame(width: 200*1.1, height: 170*1.1)
-                            Button("Speichern", action:{ self.save() }).padding()
-                                .foregroundColor(Color(.systemBlue))
-                                .scaleEffect(self.isAnimatingSafeButton ? 1.25 : 1.0) // animate when rotation finished
-                                .animation(Animation.default.repeat(while: self.isAnimatingSafeButton))
+                                .multilineTextAlignment(.center)
+                            Spacer()
+                        }
+                    }
+                    
+                    Section(header: Text(" ")) {
+                        
+                        HStack {
+                            Spacer()
+                            ZStack {
+//                                Rectangle()
+//                                    .frame(width: geometry.size.width, height: geometry.size.height)
+//                                    .foregroundColor(Color.red)
+                                Rectangle().frame(width: 10, height: 400) // Add some vertical space
+                                    .opacity(0.0)
+                                Circle()
+                                    .scaledToFit()
+                                    .frame(width: 300, height: 300) // Not bigger than 300 by 300
+//                                    .frame(width: geometry.size.width * self.circleScaleFactor, height: geometry.size.width * self.circleScaleFactor) // Not bigger than 300 by 300
+                                    .foregroundColor(Color(.systemFill))
+                                Image(systemName: "arrow.2.circlepath")
+                                    .resizable()
+                                    .foregroundColor(Color(.systemBackground))
+                                    .frame(width: 200*1.1, height: 170*1.1)
+//                                    .frame(width: geometry.size.width * self.arrowsScaleFactor, height: geometry.size.width * self.arrowsScaleFactor * self.arrowsAspectRatio)
+                                Button("Speichern", action:{ self.save() }).padding()
+                                    .foregroundColor(Color(.systemBlue))
+                                    .scaleEffect(self.isAnimatingSafeButton ? 1.25 : 1.0) // animate when rotation finished
+                                    .animation(Animation.default.repeat(while: self.isAnimatingSafeButton))
+                            }
+                            Spacer()
                         }
                         .gesture(self.drag)
-                        Spacer()
+                            .onTapGesture { self.save() } // Tapping anywhere saves.
                     }
-                        .onTapGesture { self.save() } // Tapping anywhere saves.
-                    
                 }
             }
             .onAppear() {
@@ -271,6 +278,13 @@ struct AddOrChangeAmountOfIngredientView: View {
             self.save()
         }
     }
+    
+    
+    // MARK: - Constants
+    let circleScaleFactor: CGFloat = 0.8
+    let arrowsScaleFactor: CGFloat = 0.6
+    let arrowsAspectRatio: CGFloat = 0.85
+    let verticalSpacing: CGFloat = 20
     
     
     func save() {
