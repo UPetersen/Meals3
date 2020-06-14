@@ -268,8 +268,10 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                     }
                 }.padding()
             }
-        .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
-            AddOrChangeAmountOfIngredientView(food: self.food,
+                // TODO: Presentationmode of parent view not needed any more -> remove with next refactoring
+        .sheet(isPresented: $showingAddOrChangeAmountOfFoodView,
+               onDismiss: { self.presentationMode.wrappedValue.dismiss() },
+               content:{ AddOrChangeAmountOfIngredientView(food: self.food,
                                         task: .addAmountOfFoodToIngredientCollection(self.ingredientCollection),
                                         isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
                 .environment(\.managedObjectContext, self.viewContext)}
