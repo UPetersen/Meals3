@@ -10,7 +10,7 @@ import Foundation
 //import LlamaKit
 import CoreData
 
-extension Group {
+extension Meals3.Group {
     
     /// Fetches the group from coredata database with the given BLS key (first position of the BLS string). For instance:
     /// The group with name "Brot und Kleingebäck" (which has the key "B") will be returned for the food with key "B105100"
@@ -54,7 +54,7 @@ extension Group {
         //        request.predicate = NSPredicate(format: "key = '\(key)'")
         
         do {
-            if let groups = try context.fetch(request) as? [Group] {
+            if let groups = try context.fetch(request) as? [Meals3.Group] {
                 assert(groups.count <= 1, "Error fetching group from csv-File for key '\(key)':\n There is more than one group returned for this food. Groups are: \(groups)")
                 return success(groups.first)
             }
@@ -66,6 +66,6 @@ extension Group {
     }
 }
 
-extension Group: Identifiable {
+extension Meals3.Group: Identifiable {
 
 }

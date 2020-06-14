@@ -291,7 +291,6 @@ struct AddOrChangeAmountOfIngredientView: View {
         if let amount = self.amount {
             switch task {
             case .addAmountOfFoodToIngredientCollection(let ingredientCollection):
-                DispatchQueue.main.async {
                     ingredientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
                     if let meal = ingredientCollection as? Meal {
                         meal.objectWillChange.send()
@@ -313,7 +312,6 @@ struct AddOrChangeAmountOfIngredientView: View {
 //                        print(recipe.amount ?? "")
 //                        print(recipe.amountOfAllIngredients)
                     }
-                }
             case .changeAmountOfIngredient(var ingredient):
                 ingredient.amount = self.amount
                 if let meal = (ingredient as? MealIngredient)?.meal {
@@ -355,6 +353,10 @@ extension Animation {
 
 
 struct AddFoodView_Previews: PreviewProvider {
+    
+    
+    // NOTE: This view must bbe previewed from its parent view "FoodDetail".
+    //       This is due to that I did not manage to create a Binding to the environment var presentationMode (which is read only)
     
     @Environment(\.presentationMode) static var presentationMode: Binding<PresentationMode>
 

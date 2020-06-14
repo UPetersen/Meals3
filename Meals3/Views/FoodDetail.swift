@@ -39,9 +39,9 @@ struct FoodDetail<T>: View where T: IngredientCollection {
     @State private var showingDeleteFoodConfirmationAlert = false
     @State private var showingAllIngredients = false
     
-    @FetchRequest(entity: Group.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Group.key, ascending: true)]) var groups: FetchedResults<Group>
-    private var selectedGroup: Binding<Group?> {
-        Binding<Group?> ( get: { self.food.group },
+    @FetchRequest(entity: Meals3.Group.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Meals3.Group.key, ascending: true)]) var groups: FetchedResults<Meals3.Group>
+    private var selectedGroup: Binding<Meals3.Group?> {
+        Binding<Meals3.Group?> ( get: { self.food.group },
                           set: { newValue in self.food.group = newValue })
     }
 
@@ -107,9 +107,9 @@ struct FoodDetail<T>: View where T: IngredientCollection {
 
                 Section {
                     Picker("Gruppe", selection: selectedGroup, content: {
-                        Text("").tag(nil as Group?)
-                        ForEach(groups) { (group: Group) in
-                            Text("\(group.key ?? "") \(group.name ?? "")").tag(group as Group?)
+                        Text("").tag(nil as Meals3.Group?)
+                        ForEach(groups) { (group: Meals3.Group) in
+                            Text("\(group.key ?? "") \(group.name ?? "")").tag(group as Meals3.Group?)
                         }
                     })
                     if fetchedSubGroups != nil {
@@ -331,11 +331,36 @@ struct FoodDetail_Previews: PreviewProvider {
             return nutrient
         }()
         
-        return NavigationView {
-            FoodDetail(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
-                .environment(\.managedObjectContext, context)
-                .navigationBarTitle(food.name ?? "Lebensmittel")
+        return SwiftUI.Group {
+            SwiftUI.Group {
+                NavigationView {
+                    FoodDetail(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
+                        .environment(\.managedObjectContext, context)
+                        .navigationBarTitle(food.name ?? "Lebensmittel")
+                }
+                .previewDevice(PreviewDevice(rawValue: "iPhone 6S Plus"))
+                .previewDisplayName("iPhone 6S Plus")
+            }
+            
+            SwiftUI.Group {
+                NavigationView {
+                    FoodDetail(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
+                        .environment(\.managedObjectContext, context)
+                        .navigationBarTitle(food.name ?? "Lebensmittel")
+                }
+                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
+                .previewDisplayName("iPhone SE")
+            }
+            
+            SwiftUI.Group {
+                NavigationView {
+                    FoodDetail(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
+                        .environment(\.managedObjectContext, context)
+                        .navigationBarTitle(food.name ?? "Lebensmittel")
+                }
+                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+                .previewDisplayName("iPhone 11 Pro Max")
+            }
         }
-        
     }
 }

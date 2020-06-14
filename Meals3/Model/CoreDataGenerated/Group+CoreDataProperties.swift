@@ -11,7 +11,7 @@ import Foundation
 import CoreData
 
 
-extension Group {
+extension Meals3.Group {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Group> {
         return NSFetchRequest<Group>(entityName: "Group")
@@ -25,7 +25,7 @@ extension Group {
 }
 
 // MARK: Generated accessors for foods
-extension Group {
+extension Meals3.Group {
 
     @objc(addFoodsObject:)
     @NSManaged public func addToFoods(_ value: Food)
