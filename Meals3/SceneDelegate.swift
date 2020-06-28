@@ -40,7 +40,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let currentMeal = CurrentMeal(Meal.newestMeal(managedObjectContext: context))
 
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath
-        let contentView = ContentView()
+        let search = Search()
+        let contentView = ContentView(search: search)
             .environment(\.managedObjectContext, context)
             .environmentObject(currentMeal)
 

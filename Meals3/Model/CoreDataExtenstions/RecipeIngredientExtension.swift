@@ -22,5 +22,5 @@ extension RecipeIngredient {
 
 
 extension RecipeIngredient: Ingredient, Identifiable {
-    
+
 }

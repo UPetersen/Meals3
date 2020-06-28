@@ -119,9 +119,8 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
         Text("\(search.fetchOffset) bis \(search.fetchOffset + foods.endIndex-1) von \(totalFoodsCount), h: \(headerAppeared.description)|\(headerDisAppeared.description), f: \(footerAppeared.description)| \(footerDisAppeared.description)")
     }
         
-    func foodDetailView(food: Food) -> some View {
-        FoodDetail(ingredientCollection: ingredientCollection,
-                        food: food)
+    @ViewBuilder func foodDetailView(food: Food) -> some View {
+        FoodDetail(ingredientCollection: ingredientCollection, food: food)
             .environmentObject( Meal.newestMeal(managedObjectContext: viewContext))
     }
     

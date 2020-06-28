@@ -100,7 +100,6 @@ struct FoodDetail<T>: View where T: IngredientCollection {
     
     var body: some View {
         
-        
         VStack {
             
             Form {

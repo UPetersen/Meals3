@@ -34,5 +34,7 @@ extension Meal {
 
 
 extension Meal: Identifiable {
-    
+    public var id: Date {
+        self.dateOfCreation ?? Date() // dateOfCreation should never be nil, but avoid forced unwrapping anyways.
+    }
 }

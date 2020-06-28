@@ -18,7 +18,7 @@ struct MealDetailIngredients: View {
             if meal.filteredAndSortedMealIngredients() == nil {
                 Text("Leere Mahlzeit").foregroundColor(Color(.placeholderText))
             } else {
-                ForEach(meal.filteredAndSortedMealIngredients()!, id: \.self) { (mealIngredient: MealIngredient) in
+                ForEach(meal.filteredAndSortedMealIngredients()!) { (mealIngredient: MealIngredient) in
                     MealIngredientCellView(mealIngredient: mealIngredient)
                 }
                 .onDelete() {

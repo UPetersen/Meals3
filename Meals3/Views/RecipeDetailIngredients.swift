@@ -17,7 +17,7 @@ struct RecipeDetailIngredients: View {
             if recipe.filteredAndSortedIngredients() == nil {
                 Text("Leeres Rezept").foregroundColor(Color(.placeholderText))
             } else {
-                ForEach(recipe.filteredAndSortedIngredients()!, id: \.self) { (recipeIngredient: RecipeIngredient) in
+                ForEach(recipe.filteredAndSortedIngredients()!) { (recipeIngredient: RecipeIngredient) in
                     RecipeIngredientRow(ingredient: recipeIngredient)
                 }
                 .onDelete() { IndexSet in

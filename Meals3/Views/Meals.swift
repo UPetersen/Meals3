@@ -23,8 +23,6 @@ struct Meals: View {
 //    private let scrollingProxy = ListScrollingProxy() // proxy helper
     @State private var scrollingProxy: ListScrollingProxy = ListScrollingProxy() // proxy helper
     private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
-
-
     
     init(search: Search) {
         self.search = search
@@ -33,8 +31,8 @@ struct Meals: View {
         let request = NSFetchRequest<Meal>(entityName: "Meal")
         request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(search.text)
 //        request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(searchText.wrappedValue)
-        request.fetchBatchSize = 50
-        request.fetchLimit = 50  // Speeds up a lot, especially inital loading of this view controller, but needs care
+        request.fetchBatchSize = 35
+        request.fetchLimit = 35  // Speeds up a lot, especially inital loading of this view controller, but needs care
         request.returnsObjectsAsFaults = true   // objects are only loaded, when needed/used -> faster but more frequent disk reads
         request.includesPropertyValues = true   // usefull only, when only relevant properties are read
         request.propertiesToFetch = ["dateOfCreation"] // read only certain properties (others are fetched automatically on demand)
@@ -63,18 +61,10 @@ struct Meals: View {
                             MealIngredientCellView(mealIngredient: mealIngredient).equatable()
                         }
                     }
-                    .onDelete() { IndexSet in
-                        print("Deleting meal ingredient from food.")
-                        for index in IndexSet {
-//                            print (meal.filteredAndSortedMealIngredients()![index].description)
-                            self.viewContext.delete(meal.filteredAndSortedMealIngredients()![index])
-                        }
-                        HealthManager.synchronize(meal, withSynchronisationMode: .update)
-                        try? self.viewContext.save()
-
+                    .onDelete() { indexSet in
+                        self.deleteIngredients(atIndexSet: indexSet, fromMeal: meal)
                     }
                 }
-
             }
             .onMove(perform: move)
         }
@@ -99,13 +89,22 @@ struct Meals: View {
         }
     }
     
-    func lazyFoodDetail(food: Food) -> some View {
-        return LazyView(
-            FoodDetail(ingredientCollection: self.currentMeal.meal, food: food)
-                .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
-        )
+    @ViewBuilder func lazyFoodDetail(food: Food) -> some View {
+        FoodDetail(ingredientCollection: self.currentMeal.meal, food: food)
+            .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
     }
-    
+
+    func deleteIngredients(atIndexSet indexSet: IndexSet, fromMeal meal: Meal) {
+        print("Deleting meal ingredient from food.")
+        for index in indexSet {
+            if let ingredients = meal.filteredAndSortedMealIngredients() {
+                self.viewContext.delete(ingredients[index])
+            }
+        }
+        HealthManager.synchronize(meal, withSynchronisationMode: .update)
+        try? self.viewContext.save()
+    }
+
     func move (from source: IndexSet, to destination: Int) {
         print("Outer move")
         print("From: \(source.indices.endIndex.description)")
