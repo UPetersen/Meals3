@@ -28,6 +28,7 @@ struct SearchBarView: View {
                     }
                     TextField("", text: $searchText, onEditingChanged: { isEditing in
                         self.showCancelButton = true
+//                        print("Isediting: \(isEditing)")
                     }, onCommit: onCommit).foregroundColor(.primary)
                 }
                 // Clear button

@@ -19,8 +19,28 @@ class Search: ObservableObject {
     @Published var sortRule: FoodListSortRule = .NameAscending
     @Published var selection: FoodListSelection = .All
 //    @Published var selection: FoodListSelection = .LastWeek
-    @Published var fetchLimit: Int = 50
+    var fetchLimit: Int = 25
     @Published var fetchOffset: Int = 0
+    
+//    @Published var debouncedText: String = "" {
+//        didSet {
+//            print("The debounced text: \(debouncedText)")
+//        }
+//    }
+//    
+//    private var cancellable = Set<AnyCancellable>()
+//    init() {
+////        $text.throttle(for: .seconds(0.4), scheduler: RunLoop.main, latest: true)
+//        $text.debounce(for: .seconds(0.1), scheduler: RunLoop.main)
+////            .filter{$0.count != 1}
+////            .assign(to: \.debouncedText, on: self)
+//            .sink { [weak self] (newString) in
+//                if newString.count != 1 {
+//                    self?.debouncedText = newString
+//                }
+//        }
+//        .store(in: &cancellable)
+//    }
     
     
     /// Returns a NSFetchRequest for foods that matches the search.

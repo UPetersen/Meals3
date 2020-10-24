@@ -25,14 +25,16 @@ struct Meals: View {
     private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
     
     init(search: Search) {
+        print("Init of meals view")
         self.search = search
         let searchFilter = SearchFilter.Contains
         
         let request = NSFetchRequest<Meal>(entityName: "Meal")
         request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(search.text)
+//        request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(search.debouncedText)
 //        request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(searchText.wrappedValue)
-        request.fetchBatchSize = 35
-        request.fetchLimit = 35  // Speeds up a lot, especially inital loading of this view controller, but needs care
+        request.fetchBatchSize = 25
+        request.fetchLimit = 25  // Speeds up a lot, especially inital loading of this view controller, but needs care
         request.returnsObjectsAsFaults = true   // objects are only loaded, when needed/used -> faster but more frequent disk reads
         request.includesPropertyValues = true   // usefull only, when only relevant properties are read
         request.propertiesToFetch = ["dateOfCreation"] // read only certain properties (others are fetched automatically on demand)
@@ -41,7 +43,8 @@ struct Meals: View {
         self._meals = FetchRequest(fetchRequest: request)
         
         self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(search.text)
-        
+//        self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(search.debouncedText)
+
     }
     
     var body: some View {
@@ -54,7 +57,7 @@ struct Meals: View {
                     ) {
                         LazyView( MealsNutrients(meal: meal).equatable() )
                     }
-                    .background(ListScrollingHelper(proxy: self.scrollingProxy)) // injection for scroll to top
+//                    .background(ListScrollingHelper(proxy: self.scrollingProxy)) // injection for scroll to top
                 ) {
                     ForEach(meal.filteredAndSortedMealIngredients(predicate: self.ingredientsPredicate)!) { (mealIngredient: MealIngredient) in
                         NavigationLink(destination: self.lazyFoodDetail(food: mealIngredient.food!)) {

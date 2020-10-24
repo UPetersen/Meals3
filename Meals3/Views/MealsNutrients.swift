@@ -14,7 +14,8 @@ import SwiftUI
 fileprivate let dateFormatter: DateFormatter = {
 //    print("DateFormatter")
     let dateFormatter = DateFormatter()
-    let template = "EEEEyMMMMdHHmm"
+//    let template = "EEEEyMMMMdHHmm"
+    let template = "EEEEyMMMdHHmm"
     dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: template, options: 0, locale: Locale.current)!
 
     return dateFormatter
@@ -43,13 +44,10 @@ struct MealsNutrients: View, Equatable {
             Spacer()
             VStack {
                 Text("\(meal.dateOfCreation ?? Date(), formatter: dateFormatter)")
-                    .padding(.bottom, 4)
                 Text("\(reducedNutrientString(meal: meal))")
             }
             .font(.headline)
-            .padding(.vertical, 3)
             Spacer()
-            
             Button(action: { withAnimation{ self.copyMeal() } },
                    label: { Image(systemName: "doc.on.doc").padding(.leading)
             })
