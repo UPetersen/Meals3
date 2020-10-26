@@ -27,7 +27,7 @@ fileprivate let numberFormatter: NumberFormatter = {
 struct MealIngredientCellView: View, Equatable {
     @Environment(\.managedObjectContext) var viewContext
     var mealIngredient: MealIngredient
-    @State private var task: Task?
+//    @State private var task: Task?
     @State private var showingAddOrChangeAmountOfFoodView = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode> // This is a dummy, unfortunately I do not know a better way
 
@@ -41,7 +41,7 @@ struct MealIngredientCellView: View, Equatable {
                     .foregroundColor(Color(.systemBlue))
                     .onTapGesture {
                         print("tapped")
-                        self.task = .changeAmountOfIngredient(self.mealIngredient as Ingredient)
+//                        self.task = .changeAmountOfIngredient(self.mealIngredient as Ingredient)
                         self.showingAddOrChangeAmountOfFoodView = true
                 }
             }
@@ -52,7 +52,8 @@ struct MealIngredientCellView: View, Equatable {
             // TODO: hier geht's weiter: optionals rausmachen
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
              AddOrChangeAmountOfIngredientView(food: self.mealIngredient.food!,
-                                         task: self.task!,
+//                                               task: self.task!,
+                                               task: Task.changeAmountOfIngredient(self.mealIngredient as Ingredient),
                                          isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
                 .environment(\.managedObjectContext, self.viewContext)
         })

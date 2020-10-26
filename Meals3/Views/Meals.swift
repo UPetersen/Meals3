@@ -49,13 +49,14 @@ struct Meals: View {
     
     var body: some View {
         List {
-            ForEach(meals){ (meal: Meal) in
+            ForEach(meals) {(meal: Meal) in
                 Section(header:
                     NavigationLink(destination: MealDetailView(meal: meal)
                         .environment(\.managedObjectContext, self.viewContext)
                         .environmentObject(self.currentMeal)
                     ) {
-                        LazyView( MealsNutrients(meal: meal).equatable() )
+//                        LazyView( MealsNutrients(meal: meal).equatable() )
+                        MealsNutrients(meal: meal).equatable()
                     }
 //                    .background(ListScrollingHelper(proxy: self.scrollingProxy)) // injection for scroll to top
                 ) {
@@ -67,12 +68,13 @@ struct Meals: View {
                     .onDelete() { indexSet in
                         self.deleteIngredients(atIndexSet: indexSet, fromMeal: meal)
                     }
-                }
+                } .id(meal.dateOfCreationAsString) // This line makes list scroll to top, when new meal is added (via copying another meal), do not ask me why.
             }
             .onMove(perform: move)
         }
+        .listStyle(GroupedListStyle())
         .onReceive(self.didSave) { _ in
-            self.scrollingProxy.scrollTo(.top)
+            print("Received self.didSave")
          }
 
         .onAppear() {

@@ -95,11 +95,11 @@ struct MealDetailView: View {
         }
     }
     
-    func headerView() -> some View {
+    @ViewBuilder func headerView() -> some View {
         Text(mealNutrientsString(meal: currentMeal.meal))
     }
     
-    func footerView() -> some View {
+    @ViewBuilder func footerView() -> some View {
         HStack {
             Spacer()
             Text("\(meal.ingredients?.count ?? 0) Zutaten, insgesamt \(amountString(meal: currentMeal.meal)) g")
