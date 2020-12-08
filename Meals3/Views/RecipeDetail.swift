@@ -25,7 +25,15 @@ import CoreData
     return numberFormatter
 }()
 
-
+// Alternatively this could be used. With a var in the view, this can then be used and even changed. 
+//private extension RecipeDetail {
+//    static let defaultCalsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
+//        let numberFormatter = NumberFormatter()
+//        numberFormatter.numberStyle = NumberFormatter.Style.none
+//        numberFormatter.zeroSymbol = "0"
+//        return numberFormatter
+//    }()
+//}
 
 struct RecipeDetail: View {
     @ObservedObject var recipe: Recipe
@@ -42,15 +50,24 @@ struct RecipeDetail: View {
                 self.recipe.dateOfCreation = Date()
                 self.recipe.dateOfLastModification = Date()
         })
-
+        let comment = Binding<String>(
+            get: {self.recipe.food?.comment ?? ""},
+            set: {
+                self.recipe.food?.comment = $0
+                self.recipe.dateOfCreation = Date()
+                self.recipe.dateOfLastModification = Date()
+        })
         
         return VStack {
             
             Form {
                 Section(header: Text("Name und Kommentar"), footer: Text("Letzte Änderung am \(self.dateString(date: self.recipe.dateOfLastModification))")) {
-                    // TODO: make this a multiline TextField, there are various solutions on stackoverflow
                     TextField("Name des erzeugten Rezepts bzw. Lebensmittels", text: name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                    ZStack { // lets the texteditor grow when entering text.
+                        TextEditor(text: comment).border(Color.gray)
+                        Text(recipe.food?.comment ?? "").opacity(0).padding(.all, 8) // <- This will solve the issue if it is in the same ZStack (from Stackoverflow)
+                    }
                 }
 
                 Section(footer: Text(explanationString)) {
