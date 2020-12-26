@@ -10,7 +10,7 @@ import SwiftUI
 
 
 fileprivate let numberFormatter: NumberFormatter =  {() -> NumberFormatter in
-    print("the one max digits")
+//    print("the one max digits")
     let numberFormatter = NumberFormatter()
     numberFormatter.numberStyle = NumberFormatter.Style.decimal
     numberFormatter.maximumFractionDigits = 1

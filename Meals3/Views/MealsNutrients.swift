@@ -60,7 +60,7 @@ struct MealsNutrients: View, Equatable {
     }
 
     func reducedNutrientString(meal: Meal) -> String {
-        print("MealNutrients viev func reducedutrientString(meal:): \(String(describing: meal.description))")
+//        print("MealNutrients viev func reducedutrientString(meal:): \(String(describing: meal.description))")
         let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"), formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
         return String("\(totalCarb) KH  und   \(numberFormatter.string(from: NSNumber(value: meal.fpu ?? 0.0)) ?? "") FPE  (\(numberFormatter.string(from: NSNumber(value: meal.fpuFalse ?? 0.0)) ?? "") FPE)")
     }

@@ -21,9 +21,9 @@ struct Meals: View {
     @FetchRequest var meals: FetchedResults<Meal>
     
 //    private let scrollingProxy = ListScrollingProxy() // proxy helper
-    @State private var scrollingProxy: ListScrollingProxy = ListScrollingProxy() // proxy helper
+//    @State private var scrollingProxy: ListScrollingProxy = ListScrollingProxy() // proxy helper
     private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
-    
+        
     init(search: Search) {
         print("Init of meals view")
         self.search = search
@@ -45,6 +45,11 @@ struct Meals: View {
         self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(search.text)
 //        self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(search.debouncedText)
 
+// Color stuff for lists see: https://izziswift.com/swiftui-list-color-background/
+//        UITableView.appearance().backgroundColor = .red
+//        UITableViewCell.appearance().backgroundColor = .red
+//        UITableView.appearance().tableFooterView = UIView()
+
     }
     
     var body: some View {
@@ -59,6 +64,7 @@ struct Meals: View {
                         MealsNutrients(meal: meal).equatable()
                     }
 //                    .background(ListScrollingHelper(proxy: self.scrollingProxy)) // injection for scroll to top
+//                            .background(Color.green)
                 ) {
                     ForEach(meal.filteredAndSortedMealIngredients(predicate: self.ingredientsPredicate)!) { (mealIngredient: MealIngredient) in
                         NavigationLink(destination: self.lazyFoodDetail(food: mealIngredient.food!)) {
@@ -68,11 +74,20 @@ struct Meals: View {
                     .onDelete() { indexSet in
                         self.deleteIngredients(atIndexSet: indexSet, fromMeal: meal)
                     }
-                } .id(meal.dateOfCreationAsString) // This line makes list scroll to top, when new meal is added (via copying another meal), do not ask me why.
+                }
+//                .listRowInsets(.init())
+//                .listRowBackground(Color.red)     // << here !!
+//                .frame(height: 50)
+//                .background(Color.blue)
+//                .cornerRadius(15)
+
+//                .background(meal == currentMeal.meal ? Color.red : Color.blue)
+                .id(meal.dateOfCreationAsString) // This line makes list scroll to top, when new meal is added (via copying another meal), do not ask me why.
+//                .listRowBackground(Color.yellow)
             }
             .onMove(perform: move)
         }
-        .listStyle(GroupedListStyle())
+//        .listStyle(GroupedListStyle())
         .onReceive(self.didSave) { _ in
             print("Received self.didSave")
          }
@@ -108,6 +123,7 @@ struct Meals: View {
         }
         HealthManager.synchronize(meal, withSynchronisationMode: .update)
         try? self.viewContext.save()
+        currentMeal.objectWillChange.send() // update this ui
     }
 
     func move (from source: IndexSet, to destination: Int) {
