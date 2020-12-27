@@ -89,7 +89,8 @@ struct Meals: View {
         }
 //        .listStyle(GroupedListStyle())
         .onReceive(self.didSave) { _ in
-            print("Received self.didSave")
+//            print("Received self.didSave")
+            currentMeal.objectWillChange.send() // update this ui
          }
 
         .onAppear() {
@@ -123,7 +124,6 @@ struct Meals: View {
         }
         HealthManager.synchronize(meal, withSynchronisationMode: .update)
         try? self.viewContext.save()
-        currentMeal.objectWillChange.send() // update this ui
     }
 
     func move (from source: IndexSet, to destination: Int) {
