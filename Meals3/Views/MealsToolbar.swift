@@ -18,6 +18,34 @@ struct MealsToolbar: View {
     
     @State private var newFood: Food?
     @State private var isPresentingNewFood: Bool = false
+    
+    @State private var isPresentingScanner: Bool = false
+    @State var scannedCode: String?
+//    var scannerSheet : some View {
+//        CodeScannerView(
+//            codeTypes: [.qr],
+//            completion: { result in
+//                print("Scanner result")
+//                switch result {
+//                case .success(let code):
+//                    print("Found code: \(code)")
+//                case .failure(let error):
+//                    print(error.unbox)
+//                }
+//            }
+//        )
+//    }
+    var scannerSheet : some View {
+        CodeScannerView(
+            codeTypes: [.qr],
+            completion: { result in
+                if case let .success(code) = result {
+                    self.scannedCode = code
+                    self.isPresentingScanner = false
+                }
+            }
+        )
+    }
 
 //    @EnvironmentObject var currentIngredientCollection: CurrentIngredientCollection
     @EnvironmentObject var currentMeal: CurrentMeal
@@ -34,6 +62,15 @@ struct MealsToolbar: View {
             Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
                    label: { Image(systemName: "magnifyingglass").padding(.horizontal) })
 
+            Spacer()
+            
+            Button("Scan Code") {
+                self.isPresentingScanner = true
+            }
+            .sheet(isPresented: $isPresentingScanner) {
+                self.scannerSheet
+            }
+            
             Spacer()
             
             Button(action: { withAnimation {self.createNewMeal()} },

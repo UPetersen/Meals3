@@ -56,13 +56,16 @@ extension Meals3.Group {
         do {
             if let groups = try context.fetch(request) as? [Meals3.Group] {
                 assert(groups.count <= 1, "Error fetching group from csv-File for key '\(key)':\n There is more than one group returned for this food. Groups are: \(groups)")
-                return success(groups.first)
+//                return success(groups.first)
+                return .success(groups.first) // switched to Swift's Result type
             }
         } catch {
             print("Error fetching group from csv-file for key '\(key)': Corresponding group not found.'")
-            return failure(error as NSError)
+//            return failure(error as NSError)
+            return .failure(error as NSError)  // switched to Swift's Result type
         }
-        return success(nil)
+//        return success(nil)
+        return .success(nil) // switched to Swift's Result typ
     }
 }
 

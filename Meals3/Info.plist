@@ -20,6 +20,8 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Use for Barcode Scanner</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>App wants to read nutrient data from Health</string>
 	<key>NSHealthUpdateUsageDescription</key>
