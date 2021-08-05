@@ -10,6 +10,7 @@ import SwiftUI
 import CoreData
 
 struct Meals: View {
+    
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var search: Search
     private var ingredientsPredicate: NSPredicate?
@@ -87,7 +88,6 @@ struct Meals: View {
             }
             .onMove(perform: move)
         }
-//        .listStyle(GroupedListStyle())
         .onReceive(self.didSave) { _ in
 //            print("Received self.didSave")
             currentMeal.objectWillChange.send() // update this ui

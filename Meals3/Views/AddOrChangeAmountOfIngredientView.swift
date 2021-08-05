@@ -267,11 +267,11 @@ struct AddOrChangeAmountOfIngredientView: View {
             }
             .navigationBarTitle(Text(self.title), displayMode: .inline)
             .navigationBarItems(leading:
-                Button("Zurück") { self.isPresented = false }.padding(),
+                                    Button("Zurück") { self.isPresented = false }.padding(),
                                 trailing:
-                Button("Speichern") {
-                    self.save()
-                }.padding()
+                                    Button("Speichern") {
+                                        self.save()
+                                    }.padding()
             )
         }
         .onTapGesture(count: 2) {

@@ -34,9 +34,9 @@ struct MealDetailToolbar: View {
 
             Spacer()
 
-            Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
-                   label: { Image(systemName: "magnifyingglass").padding(.horizontal)
-            })
+            NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal).environment(\.managedObjectContext, viewContext)) {
+                Image(systemName: "magnifyingglass").padding(.horizontal)
+            }
 
             Spacer()
             
@@ -44,11 +44,6 @@ struct MealDetailToolbar: View {
                    label: { Image(systemName: "doc.on.doc").padding(.horizontal)
             })
 
-            // Zero size (thus invisible) NavigationLink with EmptyView() to move to
-            NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal).environment(\.managedObjectContext, viewContext),
-                           isActive: $isShowingGeneralSearchView,
-                           label: {EmptyView()})
-                .frame(width: 0, height: 0)
         }
         .padding(.bottom, 10)
     }

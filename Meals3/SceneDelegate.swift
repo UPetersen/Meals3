@@ -38,12 +38,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // The meal to which foods will be added to as ingredients.
         // Has to be changed, if a new meal is created or the current meal is deleted.
         let currentMeal = CurrentMeal(Meal.newestMeal(managedObjectContext: context))
+        
+        // Manage Open Food Facts
+        let offManager = OffManager()
 
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath
         let search = Search()
         let contentView = ContentView(search: search)
             .environment(\.managedObjectContext, context)
             .environmentObject(currentMeal)
+            .environmentObject(offManager)
 
         
         // Use a UIHostingController as window root view controller.

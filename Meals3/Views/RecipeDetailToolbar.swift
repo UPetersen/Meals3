@@ -26,9 +26,9 @@ struct RecipeDetailToolbar: View {
 
             Spacer()
             
-            Button(action: { withAnimation{self.isShowingGeneralSearchView = true} },
-                   label: { Image(systemName: "magnifyingglass").padding(.horizontal)
-            })
+            NavigationLink(destination: GeneralSearch(ingredientCollection: self.recipe).environment(\.managedObjectContext, viewContext)) {
+                Image(systemName: "magnifyingglass").padding(.horizontal)
+            }
 
             Spacer()
             
@@ -36,13 +36,6 @@ struct RecipeDetailToolbar: View {
                    label: { Image(systemName: "trash").padding(.horizontal)
             })
                 .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
-
-            
-            // Zero size (thus invisible) NavigationLink with EmptyView() to move to
-            NavigationLink(destination: GeneralSearch(ingredientCollection: self.recipe).environment(\.managedObjectContext, viewContext),
-                           isActive: $isShowingGeneralSearchView,
-                           label: {EmptyView()})
-                .frame(width: 0, height: 0)
         }
         .padding()
     }

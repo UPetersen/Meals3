@@ -104,44 +104,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
             
             Form {
 
-//                Section {
-//                    Picker("Gruppe", selection: selectedGroup, content: {
-//                        Text("").tag(nil as Meals3.Group?)
-//                        ForEach(groups) { (group: Meals3.Group) in
-//                            Text("\(group.key ?? "") \(group.name ?? "")").tag(group as Meals3.Group?)
-//                        }
-//                    })
-//                    if fetchedSubGroups != nil {
-//                        Picker("Untergruppe", selection: selectedSubGroup, content: {
-//                            Text("").tag(nil as SubGroup?)
-//                            ForEach(fetchedSubGroups!) { (subGroup: SubGroup) in
-//                                Text("\(subGroup.key ?? "") \(subGroup.name ?? "")").tag(subGroup as SubGroup?)
-//                            }
-//                        })
-//                    }
-//                    if fetchedDetails != nil {
-//                        Picker("Detail", selection: selectedDetail, content: {
-//                            Text("").tag(nil as Detail?)
-//                            ForEach(fetchedDetails!) { (detail: Detail) in
-//                                Text("\(detail.key ?? "") \(detail.name ?? "")").tag(detail as Detail?)
-//                            }
-//                        })
-//                    }
-//                    if fetchedPreparations != nil {
-//                        Picker("Zubereitung", selection: selectedPreparation, content: {
-//                            Text("").tag(nil as Preparation?)
-//                            ForEach(fetchedPreparations!) { (preparation: Preparation) in
-//                                Text("\(preparation.key ?? "") \(preparation.name ?? "")").tag(preparation as Preparation?)
-//                            }
-//                        })
-//                    }
-//                    Picker("Ref.-Gew.", selection: selectedReferenceWeight, content: {
-//                        Text("").tag(nil as ReferenceWeight?)
-//                        ForEach(referenceWeight) { (referenceWeight: ReferenceWeight) in
-//                            Text("\(referenceWeight.key ?? "") \(referenceWeight.name ?? "")").tag(referenceWeight as ReferenceWeight?)
-//                        }
-//                    })
-//                }
+
                 
                 // Section Name und Quick Picks
                 Section(header: Text(" ")) {
@@ -159,33 +122,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                 Section(header: Text("ALLGEMEINE INFORMATIONEN")) {
 
                     FoodNutritionString(text: "Name", value: $food.name, editingDisabled: $editingDisabled)
-//                    HStack {
-//                        Text("Detail")
-//                        Spacer()
-//                        Text(food.detail?.name ?? "")
-//                    }
-//
-//                    HStack {
-//                        Text("Gruppe")
-//                        Spacer()
-//                        Text(food.group?.name ?? "")
-//                    }
-//
-//                    HStack {
-//                        Text("Untergr.")
-//                        Spacer()
-//                        Text(food.subGroup?.name ?? "")
-//                    }
-//                    HStack {
-//                        Text("Zuber.")
-//                        Spacer()
-//                        Text(food.preparation?.name ?? "")
-//                    }
-//                    HStack {
-//                        Text("Refer.")
-//                        Spacer()
-//                        Text(food.referenceWeight?.name ?? "")
-//                    }
+
                     Picker("Gruppe", selection: selectedGroup, content: {
                         Text("").tag(nil as Meals3.Group?)
                         ForEach(groups) { (group: Meals3.Group) in
@@ -265,7 +202,6 @@ struct FoodDetail<T>: View where T: IngredientCollection {
             }
             .environment(\.defaultMinListRowHeight, 1)
 
-//            FoodDetailToolbar(food: food, ingredientCollection: ingredientCollection)
             FoodDetailToolbar(food: food, ingredientCollection: ingredientCollection, showingAddOrChangeAmountOfFoodView: $showingAddOrChangeAmountOfFoodView)
             
             // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!
