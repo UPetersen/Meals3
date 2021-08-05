@@ -16,6 +16,7 @@ enum FoodListSelection: String {
     case OwnEntries = "Eingetragene"
     case BLS = "Bundeslebensmittelschlüssel"
     case All = "Alle"
+    case OFF = "Open Food Facts"
     
     // TODO: correct source completely: opulate user's own entries with a spcific source and use BLS-Source in the following for the following switch statement
     var predicate: NSPredicate? {
@@ -33,7 +34,10 @@ enum FoodListSelection: String {
             return NSPredicate(format: "source = nil")
         case .MealIngredients:
             return NSPredicate(format: "mealIngredients.@count > 0")
+            // TODO: fix this for now we also have data from open food facts
         case .BLS:
+            return NSPredicate(format: "source != nil")
+        case .OFF:
             return NSPredicate(format: "source != nil")
         }
     }

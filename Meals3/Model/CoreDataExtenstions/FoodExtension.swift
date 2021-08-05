@@ -279,3 +279,30 @@ extension Food: HasNutrients {
         return (value(forKey: key) as? NSNumber)?.doubleValue ?? nil
     }
 }
+
+
+extension Food {
+    class func CreateFromOffProduct(product: OffProduct, inManagedObjectContext context: NSManagedObjectContext) -> Food {
+        let food = Food(context: context)
+        
+        food.name = product.name
+        food.totalEnergyCals = product.totalEnergyCals != nil ? NSNumber(value: product.totalEnergyCals!) : nil
+        food.totalCarb       = product.totalCarbs      != nil ? NSNumber(value: product.totalCarbs!) : nil
+        food.totalFat        = product.totalFat        != nil ? NSNumber(value: product.totalFat!) : nil
+        food.totalProtein    = product.totalProtein    != nil ? NSNumber(value: product.totalProtein!) : nil
+        food.dateOfCreation = Date() as NSDate as Date
+        food.dateOfLastModification = Date() as NSDate as Date
+
+        // Source must be "www.openfoodfacts.org"
+        // Check if source exists and use it. If not yet exists, create the source.
+        let sources =  Source.fetchSourcesForName("world.openfoodfacts.org", managedObjectContext: context)
+        if let source = sources?.first {
+            food.source = source
+            sources?.forEach{ print("Source name: \($0.name ?? "Source has no name")") }
+        } else {
+            food.source = Source.createSourceWithName("world.openfoodfacts.org", inManagedObjectContext: context)
+        }
+        
+        return food
+    }
+}

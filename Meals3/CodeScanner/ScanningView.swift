@@ -9,7 +9,13 @@
 import SwiftUI
 
 struct ScanningView: View {
-    @EnvironmentObject var offManager: OffManager
+    
+//    @EnvironmentObject var offManager: OffManager
+    @StateObject private var offManager = OffManager()
+
+    @Environment(\.managedObjectContext) var viewContext
+    @EnvironmentObject var currentMeal: CurrentMeal
+
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     @State private var isPresentingFouncdABarcodeAlert: Bool = false
@@ -20,52 +26,43 @@ struct ScanningView: View {
         NavigationView {
             
             VStack {
-                if offManager.offManagerState == .isScanning {
+                if offManager.state == .isScanning {
                     CodeScannerView(
                         codeTypes: [.ean13, .ean8],
                         completion: { result in
-                            if case let .success(code) = result {
-                                self.offManager.scannedBarcode = code
-                                self.offManager.offManagerState = .scanningCompleted
-                                self.offManager.fetch()
-//                                self.isPresentingFouncdABarcodeAlert = true
-                                print("scanner found code \(code)")
-                            } else {
-                                self.offManager.scannedBarcode = nil
-                                self.offManager.offManagerState = .idle
-                                print("scanner did not find any code")
-                                self.presentationMode.wrappedValue.dismiss()
-                            }
+                            offManager.finishedScanningWithResult(result)
                         }
                     )
                 }
-                if offManager.offManagerState == .isFetching {
+                if offManager.state == .isFetching {
                     Spacer()
                     Text("Fetching food data for EAN \(offManager.scannedBarcode ?? "kein Barcod gefunden").").padding()
                     ProgressView()
                     Spacer()
                 }
-                if offManager.offManagerState == .fetchingCompleted, let product = offManager.product  {
+                if offManager.state == .fetchingCompleted, let product = offManager.product  {
                     Spacer()
                     Text(product.description).padding()
                     Spacer()
+                    Button("Zur aktuellen Mahhlzeit hinzufügen.") {
+                        self.addProduct()
+                        offManager.reset()
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
                 }
 
-                
-                Text("Status: \(self.offManager.offManagerState.rawValue)")
+                Text("Status: \(self.offManager.state.description)")
                     .padding()
                     
             }
-            .onDisappear(perform: {
-                print("Scanning view onDisappear")
-                self.offManager.reset()
-            })
-//            .alert(isPresented: $isPresentingFouncdABarcodeAlert, content: self.foundABarcodeAlert)
 
             .navigationBarTitle("Scan Barcode")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(leading:
-                                    Button("Cancel") { self.presentationMode.wrappedValue.dismiss() }
+                                    Button("Cancel") {
+                                        offManager.reset()
+                                        self.presentationMode.wrappedValue.dismiss()
+                                    }
             )
 
         }
@@ -73,22 +70,18 @@ struct ScanningView: View {
             print("Scanning view onAppear")
             self.offManager.scan()
         }
+        .onDisappear(perform: {
+            print("Scanning view onDisappear")
+            self.offManager.reset()
+        })
+
 
     }
-
-//    func foundABarcodeAlert() -> Alert {
-//
-//        return Alert(title: Text("Barcode gefunden."),
-//                     message: Text("\(self.offManager.scannedBarcode ?? "oops")\n Soll ich die zugehörigen Daten laden?"),
-//                     primaryButton: .default(Text("Nee danke Du.")) {
-//                        self.presentationMode.wrappedValue.dismiss()
-//                     },
-//                     secondaryButton: .default(Text("ja bitte, leg endlich los.")) {
-//                        self.offManager.fetch()
-//                     }
-//        )
-//    }
-
+    
+    func addProduct() {
+        let food = Food.CreateFromOffProduct(product: offManager.product!, inManagedObjectContext: viewContext)
+        currentMeal.meal.addIngredient(food: food, amount: NSNumber(0), managedObjectContext: viewContext)
+    }
 
 }
 

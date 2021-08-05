@@ -57,6 +57,7 @@ struct GeneralSearchToolbar: View {
             ]
         )
     }
+    
     func selectionActionSheet() -> ActionSheet {
         ActionSheet(title: Text("Welche Lebensmittel sollen genutzt werden?"), message: nil, buttons: [
             .default(Text(FoodListSelection.Favorites.rawValue)){ self.search.selection = .Favorites },
@@ -65,6 +66,7 @@ struct GeneralSearchToolbar: View {
             .default(Text(FoodListSelection.OwnEntries.rawValue)){ self.search.selection = .OwnEntries },
             .default(Text(FoodListSelection.MealIngredients.rawValue)){ self.search.selection = .MealIngredients },
             .default(Text(FoodListSelection.BLS.rawValue)){ self.search.selection = .BLS },
+            .default(Text(FoodListSelection.OFF.rawValue)){ self.search.selection = .OFF },
             .default(Text(FoodListSelection.All.rawValue)){ self.search.selection = .All },
             .cancel(Text("Zurück"))
             ]

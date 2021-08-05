@@ -14,9 +14,9 @@ class NetworkRequest {
     init(url: URL) {
         self.url = url
     }
-    
+    // URLResponse?, Error?
     func execute(withCompletion completion: @escaping (Data?) -> Void) {
-        let task = URLSession.shared.dataTask(with: url, completionHandler: { (data: Data?, _, _) -> Void in
+        let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, _, _) -> Void in
             DispatchQueue.main.async {
                 completion(data)
             }
