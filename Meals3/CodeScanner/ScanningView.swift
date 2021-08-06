@@ -27,12 +27,23 @@ struct ScanningView: View {
             
             VStack {
                 if offManager.state == .isScanning {
-                    CodeScannerView(
-                        codeTypes: [.ean13, .ean8],
-                        completion: { result in
-                            offManager.finishedScanningWithResult(result)
-                        }
-                    )
+                    ZStack(alignment: .bottom) {
+                        CodeScannerView(
+                            codeTypes: [.ean13, .ean8],
+                            completion: { result in
+                                offManager.finishedScanningWithResult(result)
+                            }
+                        )
+                        
+                        ZStack(alignment: .center) {
+                            Circle()
+                                .fill(Color.white)
+                                .opacity(0.5)
+                                .frame(width: 70, height: 70)
+
+                            TorchView().scaleEffect(2.5)
+                        }.padding()
+                    }
                 }
                 
                 if offManager.state == .isFetching {
@@ -45,12 +56,14 @@ struct ScanningView: View {
                 if offManager.state == .fetchingCompleted {
                     
                     Spacer()
-                    Text(offManager.offResponse?.description ?? "no response").padding()
+                    OffProductView(offManager: offManager)
+//                    Text(offManager.offResponse?.description ?? "no response").padding()
                     Spacer()
                     
                     // Button to handle product, if a product was found
                     if offManager.productFound  {
-                        Button("Zur Mahhlzeit hinzufügen (ggf. upgedated.") { addProduct() }
+                        Button("Zur Mahhlzeit hinzufügen\n(aktualisiert, falls schon vorhanden).") { addProduct() }
+                            .multilineTextAlignment(.center)
                             .padding()
                             .background(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 2))
                     }

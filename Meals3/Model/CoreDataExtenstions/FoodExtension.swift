@@ -288,7 +288,8 @@ extension Food {
         key = product.code
         name = product.name
 
-        totalEnergyCals              = product.energyCals   != nil ? NSNumber(value: product.energyCals! * 1000.0) : nil   // g -> mg
+        totalEnergyCals              = product.energyCals   != nil ? NSNumber(value: product.energyCals!) : nil
+        
         totalCarb                    = product.carbs        != nil ? NSNumber(value: product.carbs! * 1000.0) : nil        // g -> mg
         totalFat                     = product.fat          != nil ? NSNumber(value: product.fat! * 1000.0) : nil          // g -> mg
         totalProtein                 = product.protein      != nil ? NSNumber(value: product.protein! * 1000.0) : nil      // g -> mg

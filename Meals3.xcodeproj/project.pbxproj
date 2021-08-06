@@ -26,6 +26,9 @@
 		C604B2C3236DEDD8006BFE9E /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C604B2C2236DEDD8006BFE9E /* HealthKit.framework */; };
 		C607D03323809C51009BA48C /* FoodNutritionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = C607D03223809C50009BA48C /* FoodNutritionString.swift */; };
 		C60A870726BD6A010062944E /* BrandExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60A870626BD6A010062944E /* BrandExtension.swift */; };
+		C60A870F26BDABE40062944E /* TorchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60A870E26BDABE40062944E /* TorchState.swift */; };
+		C60A871426BDAC280062944E /* TorchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60A871326BDAC280062944E /* TorchView.swift */; };
+		C60A871926BDD7120062944E /* OffProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60A871826BDD7120062944E /* OffProductView.swift */; };
 		C60CD80423BF63440041502C /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60CD80323BF63430041502C /* HealthManager.swift */; };
 		C60F510223A166AB009F2CDA /* Meals.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60F510123A166AB009F2CDA /* Meals.swift */; };
 		C61526A423BE58D6001A4D69 /* CurrentMeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61526A323BE58D6001A4D69 /* CurrentMeal.swift */; };
@@ -158,6 +161,9 @@
 		C604B2C2236DEDD8006BFE9E /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C607D03223809C50009BA48C /* FoodNutritionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutritionString.swift; sourceTree = "<group>"; };
 		C60A870626BD6A010062944E /* BrandExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandExtension.swift; sourceTree = "<group>"; };
+		C60A870E26BDABE40062944E /* TorchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorchState.swift; sourceTree = "<group>"; };
+		C60A871326BDAC280062944E /* TorchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorchView.swift; sourceTree = "<group>"; };
+		C60A871826BDD7120062944E /* OffProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffProductView.swift; sourceTree = "<group>"; };
 		C60CD80323BF63430041502C /* HealthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthManager.swift; sourceTree = "<group>"; };
 		C60F510123A166AB009F2CDA /* Meals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meals.swift; sourceTree = "<group>"; };
 		C61526A323BE58D6001A4D69 /* CurrentMeal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMeal.swift; sourceTree = "<group>"; };
@@ -320,6 +326,8 @@
 				C6FB71F626B99BA6006009BD /* OffResponse.swift */,
 				C62592F626BADB7F009F1CFB /* ScanningView.swift */,
 				C6E20A2526BD45710021E1FB /* OffJsonSampleFile */,
+				C60A870E26BDABE40062944E /* TorchState.swift */,
+				C60A871826BDD7120062944E /* OffProductView.swift */,
 			);
 			path = CodeScanner;
 			sourceTree = "<group>";
@@ -369,6 +377,7 @@
 				C68AE91C23C1DFCE00A1348B /* RecipeDetailIngredients.swift */,
 				C68AE92023C2147500A1348B /* RecipeDetailToolbar.swift */,
 				C68AE91E23C1E3CB00A1348B /* RecipeIngredientRow.swift */,
+				C60A871326BDAC280062944E /* TorchView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -642,6 +651,7 @@
 			files = (
 				C648804123B90EA700294EFD /* MealDetailToolbar.swift in Sources */,
 				C6FE88C0236B5A3100881ACB /* Event.swift in Sources */,
+				C60A871926BDD7120062944E /* OffProductView.swift in Sources */,
 				C6F45B87236B65AD00C4FAC3 /* Group+CoreDataProperties.swift in Sources */,
 				C604B2AE236C247A006BFE9E /* MealExtension.swift in Sources */,
 				C604B2B8236C247A006BFE9E /* DetailExtentsion.swift in Sources */,
@@ -685,6 +695,7 @@
 				C604B2B5236C247A006BFE9E /* RecipeExtension.swift in Sources */,
 				C6FE88B9236B5A3100881ACB /* AppDelegate.swift in Sources */,
 				C6F45B96236B65AD00C4FAC3 /* Nutrient+CoreDataClass.swift in Sources */,
+				C60A871426BDAC280062944E /* TorchView.swift in Sources */,
 				C65768422376B46000D6CB98 /* SearchFilter.swift in Sources */,
 				C6F45B91236B65AD00C4FAC3 /* Source+CoreDataProperties.swift in Sources */,
 				C6F45B88236B65AD00C4FAC3 /* Detail+CoreDataClass.swift in Sources */,
@@ -696,6 +707,7 @@
 				C6F45B86236B65AD00C4FAC3 /* Group+CoreDataClass.swift in Sources */,
 				C6FE88BE236B5A3100881ACB /* SceneDelegate.swift in Sources */,
 				C65768442376B94800D6CB98 /* SearchBarView.swift in Sources */,
+				C60A870F26BDABE40062944E /* TorchState.swift in Sources */,
 				C6F45B9D236B65AD00C4FAC3 /* Meal+CoreDataProperties.swift in Sources */,
 				C648803D23B7E44400294EFD /* LazyView.swift in Sources */,
 				C6F45B85236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift in Sources */,

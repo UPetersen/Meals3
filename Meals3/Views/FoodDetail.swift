@@ -103,8 +103,6 @@ struct FoodDetail<T>: View where T: IngredientCollection {
         VStack {
             
             Form {
-
-
                 
                 // Section Name und Quick Picks
                 Section(header: Text(" ")) {
