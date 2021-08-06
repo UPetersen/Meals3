@@ -36,9 +36,9 @@ struct MealsToolbar: View {
             NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal).environment(\.managedObjectContext, viewContext)) {
                 Image(systemName: "magnifyingglass").padding(.horizontal)
             }
-
             
             Spacer()
+            
             Button(action: { self.isPresentingScanner = true }) {
                 Image(systemName: "barcode.viewfinder").padding(.horizontal)
             }

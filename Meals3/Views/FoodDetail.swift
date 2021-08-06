@@ -159,23 +159,36 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                             Text("\(referenceWeight.key ?? "") \(referenceWeight.name ?? "")").tag(referenceWeight as ReferenceWeight?)
                         }
                     })
-
-                    HStack {
-                        Text("Quelle")
-                        Spacer()
-                        Text(food.source?.name ?? "")
-                    }
-                    HStack {
-                        Text("Rezept")
-                        Spacer()
-                        if food.recipe?.dateOfCreation != nil {
-                            Text("ja (\(food.recipe!.dateOfCreation!, formatter: dateFormatter))")
-                        } else {
-                            Text("nein")
+                    
+                    SwiftUI.Group() { // Group, because more than 10 elements otherwhise
+                        HStack {
+                            Text("Quelle")
+                            Spacer()
+                            Text(food.source?.name ?? "")
                         }
+                        HStack {
+                            Text("Marke")
+                            Spacer()
+                            Text(food.brand?.name ?? "")
+                        }
+                        HStack {
+                            Text("Rezept")
+                            Spacer()
+                            if food.recipe?.dateOfCreation != nil {
+                                Text("ja (\(food.recipe!.dateOfCreation!, formatter: dateFormatter))")
+                            } else {
+                                Text("nein")
+                            }
+                        }
+                        DatePicker("Erstellt", selection: .constant(food.dateOfCreation ?? noDate)).disabled(editingDisabled)
+                        HStack {
+                            Text("Kommentar")
+                            Spacer()
+                            Text(food.comment ?? "")
+                        }
+                        DatePicker("Letzte Änderung", selection: .constant(food.dateOfLastModification ?? noDate)).disabled(true)
                     }
-                    DatePicker("Erstellt", selection: .constant(food.dateOfCreation ?? noDate)).disabled(editingDisabled)
-                    DatePicker("Letzte Änderung", selection: .constant(food.dateOfLastModification ?? noDate)).disabled(true)
+                    
                 }.lineLimit(nil)
                 
                 // Remaining sections, Button to ask user if he wants to see all nutrients

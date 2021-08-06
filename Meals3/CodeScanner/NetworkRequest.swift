@@ -9,14 +9,16 @@
 import Foundation
 
 class NetworkRequest {
-    let url: URL
+    let urlRequest: URLRequest
     
-    init(url: URL) {
-        self.url = url
+    init(urlRequest: URLRequest) {
+        self.urlRequest = urlRequest
     }
     // URLResponse?, Error?
     func execute(withCompletion completion: @escaping (Data?) -> Void) {
-        let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, _, _) -> Void in
+        
+//        let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, _, _) -> Void in
+        let task = URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, _, _) -> Void in
             DispatchQueue.main.async {
                 completion(data)
             }

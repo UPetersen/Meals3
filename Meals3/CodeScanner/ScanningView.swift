@@ -34,20 +34,28 @@ struct ScanningView: View {
                         }
                     )
                 }
+                
                 if offManager.state == .isFetching {
                     Spacer()
                     Text("Fetching food data for EAN \(offManager.scannedBarcode ?? "kein Barcod gefunden").").padding()
                     ProgressView()
                     Spacer()
                 }
-                if offManager.state == .fetchingCompleted, let product = offManager.product  {
+                
+                if offManager.state == .fetchingCompleted {
+                    
                     Spacer()
-                    Text(product.description).padding()
+                    Text(offManager.offResponse?.description ?? "no response").padding()
                     Spacer()
-                    Button("Zur aktuellen Mahhlzeit hinzufügen.") {
-                        self.addProduct()
-                        offManager.reset()
-                        self.presentationMode.wrappedValue.dismiss()
+                    
+                    if offManager.offResponse?.product != nil   {
+                        Button("Zur aktuellen Mahhlzeit hinzufügen.") {
+                            self.addProduct()
+                            offManager.reset()
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 2))
                     }
                 }
 
@@ -79,7 +87,7 @@ struct ScanningView: View {
     }
     
     func addProduct() {
-        let food = Food.CreateFromOffProduct(product: offManager.product!, inManagedObjectContext: viewContext)
+        let food = Food.CreateFromOffProduct(product: offManager.offResponse!.product!, inManagedObjectContext: viewContext)
         currentMeal.meal.addIngredient(food: food, amount: NSNumber(0), managedObjectContext: viewContext)
     }
 

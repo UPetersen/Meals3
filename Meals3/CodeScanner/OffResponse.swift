@@ -13,12 +13,29 @@ import Foundation
 ///
 /// Only relevant information is decoded.
 struct OffResponse: Decodable {
-    let product: OffProduct
     let code: String
+    let status: Int
+    let statusVerbose: String
+    let product: OffProduct?
+    
+    enum CodingKeys: String, CodingKey {
+        case code
+        case status
+        case statusVerbose = "status_verbose"
+        case product
+    }
+
 }
 
-extension OffResponse: CustomDebugStringConvertible {
-    var debugDescription: String {
-        return String("code: \(code) \n\(product.description)")
+extension OffResponse: CustomStringConvertible {
+    var description: String {
+        var aString = ""
+        aString.append(String("code:    \(code) \n"))
+        aString.append(String("status:  \(status) (\(statusVerbose))\n"))
+        if let product = product {
+            aString.append(String("Product:\n \(product.description)"))
+        }
+
+        return aString
     }
 }

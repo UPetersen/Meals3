@@ -21,7 +21,6 @@ extension Source {
     
     class func fetchSourcesForName(_ name: String, managedObjectContext context: NSManagedObjectContext) -> [Source]? {
         
-        // returns the food detail information matching the detail number and the group characters in the bls-key-string for the current food.
         let request: NSFetchRequest<Source> = Source.fetchRequest()
         request.predicate = NSPredicate(format: "name = '\(name)'")
                 
