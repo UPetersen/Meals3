@@ -9,17 +9,24 @@
 import Foundation
 import Combine
 
+/// Manager for retrieving data from [Open Food Facts](https://world.openfoodfacts.org).
+///
+/// See also their [API](https://wiki.openfoodfacts.org/API) and [instructions](https://wiki.openfoodfacts.org/API/Read/Product#Contributors) for reading data.
 class OffManager: ObservableObject {
     @Published var state: OffManagerState = .idle
-    @Published var scannedBarcode: String? = nil
-//    @Published var product: OffProduct? = nil
+    @Published var code: String? = nil
     @Published var offResponse: OffResponse? = nil
+    var productFound: Bool {
+        if offResponse?.product != nil {
+            return true
+        }
+        return false
+    }
 
 //    let offApiUrl = URL(string: "https://world.openfoodfacts.org/api/v0/product")! // Get a product like this: https://world.openfoodfacts.org/api/v0/product/737628064502.json
     let offApiUrl = URL(string: "https://de.openfoodfacts.org/api/v0/product")! // Get a product like this: https://world.openfoodfacts.org/api/v0/product/737628064502.json
     // Open Food Facts requires to send an http head in order to not be blocked.
     // UserAgent: MyFoodApp - Android - Version 1.0 - https://myfoodapp.example.com
-
     
     enum OffManagerState: Equatable {
         case isScanning
@@ -54,15 +61,13 @@ class OffManager: ObservableObject {
     
     func scan() {
         state = .isScanning
-        scannedBarcode = nil
-//        product = nil
+        code = nil
         offResponse = nil
     }
     
     func reset() {
         state = .idle
-        scannedBarcode = nil
-//        product = nil
+        code = nil
         offResponse = nil
     }
     
@@ -70,8 +75,7 @@ class OffManager: ObservableObject {
         self.state = .scanningCompleted
         switch result {
         case .success(let code):
-//            print("scanner found code \(code)")
-            self.scannedBarcode = code
+            self.code = code
             self.fetch()
         case .failure(let error):
             self.failedScanning(error: error)
@@ -82,14 +86,14 @@ class OffManager: ObservableObject {
     }
     
     func fetch() {
-        print("scanner found code \(String(describing: scannedBarcode))")
+        print("scanner found code \(String(describing: code))")
         state = .isFetching
-        fetchProduct(code: scannedBarcode!)
+        fetchProduct(code: code!)
     }
     
     func failedScanning(error: CodeScannerView.ScanError) {
         state = .scanError(error: error)
-        scannedBarcode = nil
+        code = nil
         print("scanner did not find any code")
     }
     
@@ -128,12 +132,9 @@ class OffManager: ObservableObject {
         decoder.dateDecodingStrategy = .secondsSince1970
 
         offResponse = (try? decoder.decode(OffResponse.self, from: data))
-//        product = offResponse?.product
         
         print("OffResponse: \(String(describing: offResponse?.description))")
-//        print("Product: \(String(describing: product))")
         print("OffManager end of decode")
-        
     }
 
     

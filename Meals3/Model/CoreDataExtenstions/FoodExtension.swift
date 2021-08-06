@@ -282,45 +282,118 @@ extension Food: HasNutrients {
 
 
 extension Food {
-    class func CreateFromOffProduct(product: OffProduct, inManagedObjectContext context: NSManagedObjectContext) -> Food {
-        let food = Food(context: context)
-        
-        food.name = product.name
-        food.totalEnergyCals              = product.energyCals   != nil ? NSNumber(value: product.energyCals! * 1000.0) : nil   // g -> mg
-        food.totalCarb                    = product.carbs        != nil ? NSNumber(value: product.carbs! * 1000.0) : nil        // g -> mg
-        food.totalFat                     = product.fat          != nil ? NSNumber(value: product.fat! * 1000.0) : nil          // g -> mg
-        food.totalProtein                 = product.protein      != nil ? NSNumber(value: product.protein! * 1000.0) : nil      // g -> mg
-        food.totalDietaryFiber            = product.fiber        != nil ? NSNumber(value: product.fiber! * 1000.0) : nil        // g -> mg
-        food.totalSalt                    = product.salt         != nil ? NSNumber(value: product.salt! * 1000.0) : nil         // g -> mg
-        food.carbSugar                    = product.sugar        != nil ? NSNumber(value: product.sugar! * 1000.0) : nil        // g -> mg
-        food.fattyAcidSaturatedFattyAcids = product.saturatedFat != nil ? NSNumber(value: product.saturatedFat! * 1000.0) : nil // g -> mg
-        
-        food.dateOfCreation = product.created ?? Date(timeIntervalSince1970: 0)
-        food.dateOfLastModification = product.lastModified ?? Date()
-        food.comment = "Ersteller: \(product.creator ?? "")"
 
-        // Source must be "www.openfoodfacts.org"
+     func updateFromOffProduct(product: OffProduct, inManagedObjectContext context: NSManagedObjectContext) {
+        
+        key = product.code
+        name = product.name
+
+        totalEnergyCals              = product.energyCals   != nil ? NSNumber(value: product.energyCals! * 1000.0) : nil   // g -> mg
+        totalCarb                    = product.carbs        != nil ? NSNumber(value: product.carbs! * 1000.0) : nil        // g -> mg
+        totalFat                     = product.fat          != nil ? NSNumber(value: product.fat! * 1000.0) : nil          // g -> mg
+        totalProtein                 = product.protein      != nil ? NSNumber(value: product.protein! * 1000.0) : nil      // g -> mg
+        totalDietaryFiber            = product.fiber        != nil ? NSNumber(value: product.fiber! * 1000.0) : nil        // g -> mg
+        totalSalt                    = product.salt         != nil ? NSNumber(value: product.salt! * 1000.0) : nil         // g -> mg
+        carbSugar                    = product.sugar        != nil ? NSNumber(value: product.sugar! * 1000.0) : nil        // g -> mg
+        fattyAcidSaturatedFattyAcids = product.saturatedFat != nil ? NSNumber(value: product.saturatedFat! * 1000.0) : nil // g -> mg
+        
+        dateOfCreation = product.created ?? Date(timeIntervalSince1970: 0)
+        dateOfLastModification = product.lastModified ?? Date()
+        comment = "Ersteller: \(product.creator ?? "")"
+
+        // Source must be "world.openfoodfacts.org"
         // Check if source exists and use it. If not yet exists, create the source.
         let sources =  Source.fetchSourcesForName("world.openfoodfacts.org", managedObjectContext: context)
         if let source = sources?.first {
-            food.source = source
+            self.source = source
             sources?.forEach{ print("Source name: \($0.name ?? "Source has no name")") }
         } else {
-            food.source = Source.createSourceWithName("world.openfoodfacts.org", inManagedObjectContext: context)
+            self.source = Source.createSourceWithName("world.openfoodfacts.org", inManagedObjectContext: context)
         }
 
         // Check if brand exists and use it. If not yet exists, create the brand.
         if let brand = product.brand {
             let brands =  Brand.fetchBrandsForName(brand, managedObjectContext: context)
             if let brand = brands?.first {
-                food.brand = brand
+                self.brand = brand
                 brands?.forEach{ print("Brand name: \($0.name ?? "Brand has no name")") }
             } else {
-                food.brand = Brand.createBrandWithName(brand, inManagedObjectContext: context)
+                self.brand = Brand.createBrandWithName(brand, inManagedObjectContext: context)
             }
         }
+    }
 
+
+    class func createFromOffProduct(product: OffProduct, inManagedObjectContext context: NSManagedObjectContext) -> Food {
         
+        let food = Food(context: context)
+        food.updateFromOffProduct(product: product, inManagedObjectContext: context)
         return food
     }
+        
+    /// Returns the first food that has the key.
+    ///
+    /// Needed for foods from Open Foods Facts in order to check if a food with the EAN-code already exists. (In this case the food will be updated but not newly created.)
+    ///  - Parameter key: the key from BLS (Bundeslebensmittelschlüssel) or the products EAN code.
+    ///  - Parameter context: the managed object context.
+    class func foodWithKey(key: String?, inManagedObjectContext context: NSManagedObjectContext) -> Food? {
+
+        if let key = key {
+            let request: NSFetchRequest<Food> = Food.fetchRequest()
+            request.predicate = NSPredicate(format: "key = '\(key)'")
+            
+            print("Request: \(request.description)")
+                    
+            do {
+                let foods = try context.fetch(request)
+                print("Erstes Food: \(String(describing: foods.first))")
+                return foods.first
+            } catch {
+                print("Error fetching foods for key '\(key)': \(error)")
+            }
+        }
+        return nil
+    }
+        
+//    class func CreateFromOffProduct(product: OffProduct, inManagedObjectContext context: NSManagedObjectContext) -> Food {
+//        let food = Food(context: context)
+//
+//        food.key = product.code
+//        food.name = product.name
+//
+//        food.totalEnergyCals              = product.energyCals   != nil ? NSNumber(value: product.energyCals! * 1000.0) : nil   // g -> mg
+//        food.totalCarb                    = product.carbs        != nil ? NSNumber(value: product.carbs! * 1000.0) : nil        // g -> mg
+//        food.totalFat                     = product.fat          != nil ? NSNumber(value: product.fat! * 1000.0) : nil          // g -> mg
+//        food.totalProtein                 = product.protein      != nil ? NSNumber(value: product.protein! * 1000.0) : nil      // g -> mg
+//        food.totalDietaryFiber            = product.fiber        != nil ? NSNumber(value: product.fiber! * 1000.0) : nil        // g -> mg
+//        food.totalSalt                    = product.salt         != nil ? NSNumber(value: product.salt! * 1000.0) : nil         // g -> mg
+//        food.carbSugar                    = product.sugar        != nil ? NSNumber(value: product.sugar! * 1000.0) : nil        // g -> mg
+//        food.fattyAcidSaturatedFattyAcids = product.saturatedFat != nil ? NSNumber(value: product.saturatedFat! * 1000.0) : nil // g -> mg
+//
+//        food.dateOfCreation = product.created ?? Date(timeIntervalSince1970: 0)
+//        food.dateOfLastModification = product.lastModified ?? Date()
+//        food.comment = "Ersteller: \(product.creator ?? "")"
+//
+//        // Source must be "www.openfoodfacts.org"
+//        // Check if source exists and use it. If not yet exists, create the source.
+//        let sources =  Source.fetchSourcesForName("world.openfoodfacts.org", managedObjectContext: context)
+//        if let source = sources?.first {
+//            food.source = source
+//            sources?.forEach{ print("Source name: \($0.name ?? "Source has no name")") }
+//        } else {
+//            food.source = Source.createSourceWithName("world.openfoodfacts.org", inManagedObjectContext: context)
+//        }
+//
+//        // Check if brand exists and use it. If not yet exists, create the brand.
+//        if let brand = product.brand {
+//            let brands =  Brand.fetchBrandsForName(brand, managedObjectContext: context)
+//            if let brand = brands?.first {
+//                food.brand = brand
+//                brands?.forEach{ print("Brand name: \($0.name ?? "Brand has no name")") }
+//            } else {
+//                food.brand = Brand.createBrandWithName(brand, inManagedObjectContext: context)
+//            }
+//        }
+//        return food
+//    }
 }

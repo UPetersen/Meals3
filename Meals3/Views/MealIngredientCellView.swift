@@ -34,8 +34,11 @@ struct MealIngredientCellView: View, Equatable {
 
         HStack {
             VStack (alignment: .leading) {
-                Text(mealIngredient.food?.name ?? "-")
-                    .lineLimit(1)
+                if let brandName = mealIngredient.food?.brand?.name {
+                    Text("\(mealIngredient.food?.name ?? "-") von \(brandName)").lineLimit(1)
+                } else{
+                    Text(mealIngredient.food?.name ?? "-").lineLimit(1)
+                }
                 Text(smallContentFor(mealIngredient: mealIngredient))
                     .lineLimit(1)
                     .font(.footnote)
@@ -55,30 +58,6 @@ struct MealIngredientCellView: View, Equatable {
                                          isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
                 .environment(\.managedObjectContext, self.viewContext)
         })
-//        VStack (alignment: .leading) {
-//            HStack {
-//                Text(mealIngredient.food?.name ?? "-")
-//                    .lineLimit(1)
-//                Spacer()
-//                Text("\(mealIngredient.amount ?? NSNumber(-999), formatter: numberFormatter) g")
-//                    .foregroundColor(Color(.systemBlue))
-//                    .onTapGesture {
-//                        print("tapped")
-//                        self.showingAddOrChangeAmountOfFoodView = true
-//                }
-//            }
-////            Text(contentFor(mealIngredient: mealIngredient))
-//            Text(smallContentFor(mealIngredient: mealIngredient))
-//                .lineLimit(1)
-//                .font(.footnote)
-//        }
-//            // TODO: hier geht's weiter: optionals rausmachen
-//        .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
-//             AddOrChangeAmountOfIngredientView(food: self.mealIngredient.food!,
-//                                               task: Task.changeAmountOfIngredient(self.mealIngredient as Ingredient),
-//                                         isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
-//                .environment(\.managedObjectContext, self.viewContext)
-//        })
     }
     
     static func == (lhs: MealIngredientCellView, rhs: MealIngredientCellView) -> Bool {

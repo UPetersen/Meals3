@@ -187,6 +187,11 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                             Text(food.comment ?? "")
                         }
                         DatePicker("Letzte Änderung", selection: .constant(food.dateOfLastModification ?? noDate)).disabled(true)
+                        HStack {
+                            Text(food.source?.name == "world.openfoodfacts.org" ? "EAN-Code" : "Key")
+                            Spacer()
+                            Text(food.key ?? "")
+                        }
                     }
                     
                 }.lineLimit(nil)
@@ -236,7 +241,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
         .onDisappear() {
             print("foodDetail disappears")
             if self.viewContext.hasChanges {
-                self.food.dateOfLastModification = Date()
+//                self.food.dateOfLastModification = Date()
                 try? self.viewContext.save()            
             }
         }
@@ -255,6 +260,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                         self.showingRecipeDetail = true
                     } else {
                         self.editingDisabled.toggle()  // edit food data
+                        self.food.dateOfLastModification = Date()
                     }
                 }.padding()
             }

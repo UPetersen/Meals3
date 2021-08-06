@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 /// Holds the relevant product data from [Open Food Facts](https://wiki.openfoodfacts.org) ([API documentation](https://wiki.openfoodfacts.org/API)). like nutrient information and name of the product (food).
 ///
@@ -77,6 +78,7 @@ struct OffProduct: Decodable { // TODO: make Identifiable via variable "code" in
         }
     }
 }
+
 extension OffProduct: CustomStringConvertible {
     public var description: String {
         var aString = ""

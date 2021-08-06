@@ -37,7 +37,7 @@ struct ScanningView: View {
                 
                 if offManager.state == .isFetching {
                     Spacer()
-                    Text("Fetching food data for EAN \(offManager.scannedBarcode ?? "kein Barcod gefunden").").padding()
+                    Text("Fetching food data for EAN \(offManager.code ?? "kein Barcod gefunden").").padding()
                     ProgressView()
                     Spacer()
                 }
@@ -48,14 +48,11 @@ struct ScanningView: View {
                     Text(offManager.offResponse?.description ?? "no response").padding()
                     Spacer()
                     
-                    if offManager.offResponse?.product != nil   {
-                        Button("Zur aktuellen Mahhlzeit hinzufügen.") {
-                            self.addProduct()
-                            offManager.reset()
-                            self.presentationMode.wrappedValue.dismiss()
-                        }
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 2))
+                    // Button to handle product, if a product was found
+                    if offManager.productFound  {
+                        Button("Zur Mahhlzeit hinzufügen (ggf. upgedated.") { addProduct() }
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 2))
                     }
                 }
 
@@ -87,10 +84,39 @@ struct ScanningView: View {
     }
     
     func addProduct() {
-        let food = Food.CreateFromOffProduct(product: offManager.offResponse!.product!, inManagedObjectContext: viewContext)
-        currentMeal.meal.addIngredient(food: food, amount: NSNumber(0), managedObjectContext: viewContext)
+        
+        if let product = offManager.offResponse?.product {
+
+            // Check if product is already as food in local database
+            if let food = Food.foodWithKey(key: product.code, inManagedObjectContext: viewContext) {
+                food.updateFromOffProduct(product: product, inManagedObjectContext: viewContext)
+                currentMeal.meal.addIngredient(food: food, amount: NSNumber(0), managedObjectContext: viewContext)
+            } else {
+                let food = Food.createFromOffProduct(product: product, inManagedObjectContext: viewContext)
+                currentMeal.meal.addIngredient(food: food, amount: NSNumber(0), managedObjectContext: viewContext)
+            }
+        }
+        offManager.reset()
+        self.presentationMode.wrappedValue.dismiss()
     }
 
+    func updateWithProduct() {
+        if let product = offManager.offResponse?.product, let food = Food.foodWithKey(key: product.code, inManagedObjectContext: viewContext) {
+            food.updateFromOffProduct(product: product, inManagedObjectContext: viewContext)
+        }
+        offManager.reset()
+        self.presentationMode.wrappedValue.dismiss()
+    }
+    
+    func productAlreadyInDatabase(product: OffProduct?) -> Bool {
+        if let product = product {
+            if Food.foodWithKey(key: product.code, inManagedObjectContext: viewContext) != nil {
+                return true
+            }
+        }
+        return false
+    }
+    
 }
 
 
