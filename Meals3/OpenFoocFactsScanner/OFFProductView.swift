@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-struct OffProductView: View {
-    @ObservedObject var offManager: OffManager
+struct OFFProductView: View {
+    @ObservedObject var offManager: OFFManager
     
     var body: some View {
         

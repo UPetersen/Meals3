@@ -1,5 +1,5 @@
 //
-//  OffProduct.swift
+//  OFFProduct.swift
 //  Meals3
 //
 //  Created by Uwe Petersen on 03.08.21.
@@ -12,7 +12,7 @@ import CoreData
 /// Holds the relevant product data from [Open Food Facts](https://wiki.openfoodfacts.org) ([API documentation](https://wiki.openfoodfacts.org/API)). like nutrient information and name of the product (food).
 ///
 /// Some data (like the nutrition information) resides in sub structures within the json data. The relevant data of these sub structures is pulled out and moved to the top level (i.e. flattened) during the decoding process.
-struct OffProduct: Decodable { // TODO: make Identifiable via variable "code" instead of hashable
+struct OFFProduct: Decodable { // TODO: make Identifiable via variable "code" instead of hashable
 
     /// EAN code
     let code: String?
@@ -79,7 +79,7 @@ struct OffProduct: Decodable { // TODO: make Identifiable via variable "code" in
     }
 }
 
-extension OffProduct: CustomStringConvertible {
+extension OFFProduct: CustomStringConvertible {
     public var description: String {
         var aString = ""
         aString.append("code:         \(String(describing: code))\n")

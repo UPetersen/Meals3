@@ -283,7 +283,7 @@ extension Food: HasNutrients {
 
 extension Food {
 
-     func updateFromOffProduct(product: OffProduct, inManagedObjectContext context: NSManagedObjectContext) {
+     func updateFromOffProduct(product: OFFProduct, inManagedObjectContext context: NSManagedObjectContext) {
         
         key = product.code
         name = product.name
@@ -325,7 +325,7 @@ extension Food {
     }
 
 
-    class func createFromOffProduct(product: OffProduct, inManagedObjectContext context: NSManagedObjectContext) -> Food {
+    class func createFromOffProduct(product: OFFProduct, inManagedObjectContext context: NSManagedObjectContext) -> Food {
         
         let food = Food(context: context)
         food.updateFromOffProduct(product: product, inManagedObjectContext: context)

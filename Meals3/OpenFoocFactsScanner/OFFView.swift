@@ -8,10 +8,10 @@
 
 import SwiftUI
 
-struct ScanningView: View {
+struct OFFView: View {
     
 //    @EnvironmentObject var offManager: OffManager
-    @StateObject private var offManager = OffManager()
+    @StateObject private var offManager = OFFManager()
 
     @Environment(\.managedObjectContext) var viewContext
     @EnvironmentObject var currentMeal: CurrentMeal
@@ -34,16 +34,10 @@ struct ScanningView: View {
                                 offManager.finishedScanningWithResult(result)
                             }
                         )
-                        
-                        ZStack(alignment: .center) {
-                            Circle()
-                                .fill(Color.white)
-                                .opacity(0.5)
-                                .frame(width: 70, height: 70)
-
-                            TorchView().scaleEffect(2.5)
-                        }.padding()
+                        TorchView()
+                            .padding()
                     }
+                    
                 }
                 
                 if offManager.state == .isFetching {
@@ -56,7 +50,7 @@ struct ScanningView: View {
                 if offManager.state == .fetchingCompleted {
                     
                     Spacer()
-                    OffProductView(offManager: offManager)
+                    OFFProductView(offManager: offManager)
 //                    Text(offManager.offResponse?.description ?? "no response").padding()
                     Spacer()
                     
@@ -74,7 +68,7 @@ struct ScanningView: View {
                     
             }
 
-            .navigationBarTitle("Scan Barcode")
+            .navigationBarTitle("Open Food Fatcts")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(leading:
                                     Button("Cancel") {
@@ -121,7 +115,7 @@ struct ScanningView: View {
         self.presentationMode.wrappedValue.dismiss()
     }
     
-    func productAlreadyInDatabase(product: OffProduct?) -> Bool {
+    func productAlreadyInDatabase(product: OFFProduct?) -> Bool {
         if let product = product {
             if Food.foodWithKey(key: product.code, inManagedObjectContext: viewContext) != nil {
                 return true
@@ -139,7 +133,7 @@ struct ScanningView: View {
 
 struct ScanningView_Previews: PreviewProvider {
     static var previews: some View {
-        ScanningView()
+        OFFView()
     }
 }
 

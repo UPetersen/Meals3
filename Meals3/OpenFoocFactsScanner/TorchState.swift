@@ -3,6 +3,8 @@
 //  Meals3
 //
 //  Created by Uwe Petersen on 06.08.21.
+//  Taken from https://stackoverflow.com/questions/27207278/how-to-turn-flashlight-on-and-off-in-swift#27334447
+//  All credits go to https://stackoverflow.com/users/3013992/peter-kreinz
 //  Copyright © 2021 Uwe Petersen. All rights reserved.
 //
 

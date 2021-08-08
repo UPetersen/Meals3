@@ -12,11 +12,11 @@ import Foundation
 /// Holds the response of the top level structure of a json response from [Open Food Facts API](https://wiki.openfoodfacts.org/API) ([API documentation](https://wiki.openfoodfacts.org/API)).
 ///
 /// Only relevant information is decoded.
-struct OffResponse: Decodable {
+struct OFFResponse: Decodable {
     let code: String
     let status: Int
     let statusVerbose: String
-    let product: OffProduct?
+    let product: OFFProduct?
     
     enum CodingKeys: String, CodingKey {
         case code
@@ -27,7 +27,7 @@ struct OffResponse: Decodable {
 
 }
 
-extension OffResponse: CustomStringConvertible {
+extension OFFResponse: CustomStringConvertible {
     var description: String {
         var aString = ""
         aString.append(String("code:    \(code) \n"))

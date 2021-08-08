@@ -43,7 +43,7 @@ struct MealsToolbar: View {
                 Image(systemName: "barcode.viewfinder").padding(.horizontal)
             }
             .sheet(isPresented: $isPresentingScanner) {
-                ScanningView()
+                OFFView()
             }
             
             Spacer()
