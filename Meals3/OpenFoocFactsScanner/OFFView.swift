@@ -10,16 +10,10 @@ import SwiftUI
 
 struct OFFView: View {
     
-//    @EnvironmentObject var offManager: OffManager
     @StateObject private var offManager = OFFManager()
-
     @Environment(\.managedObjectContext) var viewContext
     @EnvironmentObject var currentMeal: CurrentMeal
-
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
-    @State private var isPresentingFouncdABarcodeAlert: Bool = false
-
     
     var body: some View {
         
@@ -50,11 +44,12 @@ struct OFFView: View {
                 if offManager.state == .fetchingCompleted {
                     
                     Spacer()
+
                     OFFProductView(offManager: offManager)
-//                    Text(offManager.offResponse?.description ?? "no response").padding()
+
                     Spacer()
                     
-                    // Button to handle product, if a product was found
+                    // Button to use product, if a product was found
                     if offManager.productFound  {
                         Button("Zur Mahhlzeit hinzufügen\n(aktualisiert, falls schon vorhanden).") { addProduct() }
                             .multilineTextAlignment(.center)
@@ -63,9 +58,7 @@ struct OFFView: View {
                     }
                 }
 
-                Text("Status: \(self.offManager.state.description)")
-                    .padding()
-                    
+//                Text("Status: \(self.offManager.state.description)").padding()
             }
 
             .navigationBarTitle("Open Food Fatcts")
@@ -82,12 +75,10 @@ struct OFFView: View {
             print("Scanning view onAppear")
             self.offManager.scan()
         }
-        .onDisappear(perform: {
+        .onDisappear() {
             print("Scanning view onDisappear")
             self.offManager.reset()
-        })
-
-
+        }
     }
     
     func addProduct() {
@@ -123,11 +114,7 @@ struct OFFView: View {
         }
         return false
     }
-    
 }
-
-
-
 
 
 

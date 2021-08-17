@@ -10,18 +10,6 @@ import UIKit
 import SwiftUI
 import CoreData
 
-
-//class CurrentIngredientCollection: ObservableObject {
-//    @Published var collection: IngredientCollection
-//    init(_ value: IngredientCollection) {
-//        self.collection = value
-//    }
-////    init(context: NSManagedObjectContext) {
-////        self.currentIngredientCollection = Meal.newestMeal(managedObjectContext: context)
-////    }
-//}
-
-
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?

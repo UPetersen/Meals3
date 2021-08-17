@@ -323,6 +323,7 @@
 				C62592E126BA9A5E009F1CFB /* NetworkRequest.swift */,
 				C62AF919259A0E340005F044 /* CodeScannerView.swift */,
 				C6E20A2526BD45710021E1FB /* OffJsonSampleFile */,
+				C62592EE26BAD847009F1CFB /* OFFManager.swift */,
 				C6FB71FB26B9A41A006009BD /* OFFProduct.swift */,
 				C60A871826BDD7120062944E /* OFFProductView.swift */,
 				C6FB71F626B99BA6006009BD /* OFFResponse.swift */,
@@ -451,7 +452,6 @@
 		C6FE88AC236B5A3100881ACB = {
 			isa = PBXGroup;
 			children = (
-				C62592EE26BAD847009F1CFB /* OFFManager.swift */,
 				C6FE88B7236B5A3100881ACB /* Meals3 */,
 				C6FE88D3236B5A3300881ACB /* Meals3Tests */,
 				C6FE88DE236B5A3300881ACB /* Meals3UITests */,
