@@ -60,6 +60,7 @@ struct MealIngredientCellView: View, Equatable {
         })
     }
     
+    // FIXME: equatable is probably not correct here, if this view is also used, within a search where only the ingredients are displayed that match the search term.
     static func == (lhs: MealIngredientCellView, rhs: MealIngredientCellView) -> Bool {
 //        print("Using equatable on MealIngredientCellView")
         return lhs.mealIngredient.food?.name == rhs.mealIngredient.food?.name &&

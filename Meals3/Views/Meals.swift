@@ -61,35 +61,29 @@ struct Meals: View {
                         .environment(\.managedObjectContext, self.viewContext)
                         .environmentObject(self.currentMeal)
                     ) {
+//                        LazyView( MealsNutrients(meal: meal) )
 //                        LazyView( MealsNutrients(meal: meal).equatable() )
-                        MealsNutrients(meal: meal).equatable()
+//                        MealsNutrients(meal: meal).equatable()
+                        MealsNutrients(meal: meal)
                     }
-//                    .background(ListScrollingHelper(proxy: self.scrollingProxy)) // injection for scroll to top
-//                            .background(Color.green)
                 ) {
                     ForEach(meal.filteredAndSortedMealIngredients(predicate: self.ingredientsPredicate)!) { (mealIngredient: MealIngredient) in
                         NavigationLink(destination: self.lazyFoodDetail(food: mealIngredient.food!)) {
-                            MealIngredientCellView(mealIngredient: mealIngredient).equatable()
+                            MealIngredientCellView(mealIngredient: mealIngredient) // .equatable()
                         }
                     }
                     .onDelete() { indexSet in
                         self.deleteIngredients(atIndexSet: indexSet, fromMeal: meal)
                     }
                 }
-//                .listRowInsets(.init())
-//                .listRowBackground(Color.red)     // << here !!
-//                .frame(height: 50)
-//                .background(Color.blue)
-//                .cornerRadius(15)
-
-//                .background(meal == currentMeal.meal ? Color.red : Color.blue)
-                .id(meal.dateOfCreationAsString) // This line makes list scroll to top, when new meal is added (via copying another meal), do not ask me why.
-//                .listRowBackground(Color.yellow)
+                // FIXME: not sure, if this line is good. When searching, the meal date does not change, but the rows that will be displayed with a meal in this view.
+//                .id(meal.dateOfCreationAsString) // This line makes list scroll to top, when new meal is added (via copying another meal), do not ask me why.
             }
             .onMove(perform: move)
         }
         .onReceive(self.didSave) { _ in
 //            print("Received self.didSave")
+            // FIXME: This could be the cause of crashes when entering text into the search field.
             currentMeal.objectWillChange.send() // update this ui
          }
 
@@ -124,6 +118,7 @@ struct Meals: View {
         }
         HealthManager.synchronize(meal, withSynchronisationMode: .update)
         try? self.viewContext.save()
+//        currentMeal.objectWillChange.send() // update this ui
     }
 
     func move (from source: IndexSet, to destination: Int) {
