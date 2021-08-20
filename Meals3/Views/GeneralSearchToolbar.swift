@@ -46,13 +46,13 @@ struct GeneralSearchToolbar: View {
     
     func sortRuleActionSheet() -> ActionSheet {
         ActionSheet(title: Text("Wonach soll sortiert werden?"), message: nil, buttons: [
-            .default(Text(FoodListSortRule.NameAscending.rawValue)){ self.search.sortRule = .NameAscending },
-            .default(Text(FoodListSortRule.TotalEnergyCalsDescending.rawValue)){ self.search.sortRule = .TotalEnergyCalsDescending },
-            .default(Text(FoodListSortRule.TotalCarbDescending.rawValue)){ self.search.sortRule = .TotalCarbDescending },
-            .default(Text(FoodListSortRule.TotalProteinDescending.rawValue)){ self.search.sortRule = .TotalProteinDescending },
-            .default(Text(FoodListSortRule.TotalFatDescending.rawValue)){ self.search.sortRule = .TotalFatDescending },
-            .default(Text(FoodListSortRule.FattyAcidCholesterolDescending.rawValue)){ self.search.sortRule = .FattyAcidCholesterolDescending },
-            .default(Text(FoodListSortRule.GroupThenSubGroupThenNameAscending.rawValue)){ self.search.sortRule = .GroupThenSubGroupThenNameAscending },
+            .default(Text(FoodListSortRule.nameAscending.rawValue)){ self.search.sortRule = .nameAscending },
+            .default(Text(FoodListSortRule.totalEnergyCalsDescending.rawValue)){ self.search.sortRule = .totalEnergyCalsDescending },
+            .default(Text(FoodListSortRule.totalCarbDescending.rawValue)){ self.search.sortRule = .totalCarbDescending },
+            .default(Text(FoodListSortRule.totalProteinDescending.rawValue)){ self.search.sortRule = .totalProteinDescending },
+            .default(Text(FoodListSortRule.totalFatDescending.rawValue)){ self.search.sortRule = .totalFatDescending },
+            .default(Text(FoodListSortRule.fattyAcidCholesterolDescending.rawValue)){ self.search.sortRule = .fattyAcidCholesterolDescending },
+            .default(Text(FoodListSortRule.groupThenSubGroupThenNameAscending.rawValue)){ self.search.sortRule = .groupThenSubGroupThenNameAscending },
             .cancel(Text("Zurück"))
             ]
         )
@@ -60,14 +60,14 @@ struct GeneralSearchToolbar: View {
     
     func selectionActionSheet() -> ActionSheet {
         ActionSheet(title: Text("Welche Lebensmittel sollen genutzt werden?"), message: nil, buttons: [
-            .default(Text(FoodListSelection.Favorites.rawValue)){ self.search.selection = .Favorites },
-            .default(Text(FoodListSelection.Recipes.rawValue)){ self.search.selection = .Recipes },
-            .default(Text(FoodListSelection.LastWeek.rawValue)){ self.search.selection = .LastWeek },
-            .default(Text(FoodListSelection.OwnEntries.rawValue)){ self.search.selection = .OwnEntries },
-            .default(Text(FoodListSelection.MealIngredients.rawValue)){ self.search.selection = .MealIngredients },
-            .default(Text(FoodListSelection.BLS.rawValue)){ self.search.selection = .BLS },
-            .default(Text(FoodListSelection.OFF.rawValue)){ self.search.selection = .OFF },
-            .default(Text(FoodListSelection.All.rawValue)){ self.search.selection = .All },
+            .default(Text(FoodListSelection.favorites.rawValue)){ self.search.selection = .favorites },
+            .default(Text(FoodListSelection.recipes.rawValue)){ self.search.selection = .recipes },
+            .default(Text(FoodListSelection.lastWeek.rawValue)){ self.search.selection = .lastWeek },
+            .default(Text(FoodListSelection.ownEntries.rawValue)){ self.search.selection = .ownEntries },
+            .default(Text(FoodListSelection.mealIngredients.rawValue)){ self.search.selection = .mealIngredients },
+            .default(Text(FoodListSelection.bls.rawValue)){ self.search.selection = .bls },
+            .default(Text(FoodListSelection.openFoodFacts.rawValue)){ self.search.selection = .openFoodFacts },
+            .default(Text(FoodListSelection.all.rawValue)){ self.search.selection = .all },
             .cancel(Text("Zurück"))
             ]
         )

@@ -10,29 +10,29 @@ import Foundation
 
 enum FoodListSortRule: String {
     
-    case NameAscending = "Name"
-    case TotalEnergyCalsDescending = "Kalorien"
-    case TotalCarbDescending = "Kohlehydrate"
-    case TotalProteinDescending = "Protein"
-    case TotalFatDescending = "Fett"
-    case GroupThenSubGroupThenNameAscending = "Gruppe"
-    case FattyAcidCholesterolDescending = "Cholesterin"
+    case nameAscending = "Name"
+    case totalEnergyCalsDescending = "Kalorien"
+    case totalCarbDescending = "Kohlehydrate"
+    case totalProteinDescending = "Protein"
+    case totalFatDescending = "Fett"
+    case groupThenSubGroupThenNameAscending = "Gruppe"
+    case fattyAcidCholesterolDescending = "Cholesterin"
     
     var sortDescriptors: [NSSortDescriptor] {
         switch self {
-        case .NameAscending:
+        case .nameAscending:
             return [NSSortDescriptor(key: "name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
-        case .TotalEnergyCalsDescending:
+        case .totalEnergyCalsDescending:
             return [NSSortDescriptor(key: "totalEnergyCals", ascending: false, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
-        case .TotalCarbDescending:
+        case .totalCarbDescending:
             return [NSSortDescriptor(key: "totalCarb", ascending: false, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
-        case .TotalProteinDescending:
+        case .totalProteinDescending:
             return [NSSortDescriptor(key: "totalProtein", ascending: false, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
-        case .TotalFatDescending:
+        case .totalFatDescending:
             return [NSSortDescriptor(key: "totalFat", ascending: false, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
-        case .FattyAcidCholesterolDescending:
+        case .fattyAcidCholesterolDescending:
             return [NSSortDescriptor(key: "fattyAcidCholesterol", ascending: false, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
-        case .GroupThenSubGroupThenNameAscending:
+        case .groupThenSubGroupThenNameAscending:
             //            sortDescriptors = [NSSortDescriptor(key: "group.name", ascending: true, selector: "localizedCaseInsensitiveCompare:"),
             //                NSSortDescriptor(key: "subGroup.name", ascending: true, selector: "localizedCaseInsensitiveCompare:"),
             //                NSSortDescriptor(key: "name", ascending: true, selector: "localizedCaseInsensitiveCompare:")]
@@ -50,19 +50,19 @@ enum FoodListSortRule: String {
     
     var sectionNameKeyPath: String? {
         switch self {
-        case .NameAscending:
+        case .nameAscending:
             return "uppercaseFirstLetterOfName"
-        case .TotalEnergyCalsDescending:
+        case .totalEnergyCalsDescending:
             return nil
-        case .TotalCarbDescending:
+        case .totalCarbDescending:
             return nil
-        case .TotalProteinDescending:
+        case .totalProteinDescending:
             return nil
-        case .TotalFatDescending:
+        case .totalFatDescending:
             return nil
-        case .FattyAcidCholesterolDescending:
+        case .fattyAcidCholesterolDescending:
             return nil
-        case .GroupThenSubGroupThenNameAscending:
+        case .groupThenSubGroupThenNameAscending:
             //            sectionNameKeyPath = "group.name"
             //            sectionNameKeyPath = "key"
             return "subGroup.name"

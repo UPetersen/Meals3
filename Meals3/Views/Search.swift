@@ -16,8 +16,9 @@ class Search: ObservableObject {
         } // Enforces refetch of data if search string is modified
     }
     @Published var filter: SearchFilter = .Contains
-    @Published var sortRule: FoodListSortRule = .NameAscending
-    @Published var selection: FoodListSelection = .All
+    @Published var sortRule: FoodListSortRule = .nameAscending
+    @Published var selection: FoodListSelection = .mealIngredients
+//    @Published var selection: FoodListSelection = .All
 //    @Published var selection: FoodListSelection = .LastWeek
     var fetchLimit: Int = 25
     @Published var fetchOffset: Int = 0

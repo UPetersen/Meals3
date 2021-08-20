@@ -9,37 +9,37 @@
 import Foundation
 
 enum FoodListSelection: String {
-    case Favorites = "Favoriten"
-    case Recipes = "Rezepte"
-    case LastWeek = "Letzte Woche"
-    case MealIngredients = "Gegessene"
-    case OwnEntries = "Eingetragene"
-    case BLS = "Bundeslebensmittelschlüssel"
-    case All = "Alle"
-    case OFF = "Open Food Facts"
+    case favorites = "Favoriten"
+    case recipes = "Rezepte"
+    case lastWeek = "Letzte Woche"
+    case mealIngredients = "Gegessene"
+    case ownEntries = "Eingetragene"
+    case bls = "Bundeslebensmittelschlüssel"
+    case all = "Alle"
+    case openFoodFacts = "Open Food Facts"
     
     // TODO: correct source completely: opulate user's own entries with a spcific source and use BLS-Source in the following for the following switch statement
     var predicate: NSPredicate? {
         switch self {
-        case .All:
+        case .all:
             return nil
-        case .Favorites:
+        case .favorites:
             return NSPredicate(format: "favoriteListItem != nil")
-        case .Recipes:
+        case .recipes:
             return NSPredicate(format: "recipe != nil")
-        case .LastWeek:
+        case .lastWeek:
             let lastWeek = Date(timeIntervalSinceNow: -86400.0*7.0)
             return NSPredicate(format: "SUBQUERY(mealIngredients, $x, $x.meal.dateOfCreation >= %@).@count != 0", lastWeek as CVarArg)
-        case .OwnEntries:
+        case .ownEntries:
             return NSPredicate(format: "source = nil")
-        case .MealIngredients:
+        case .mealIngredients:
             return NSPredicate(format: "mealIngredients.@count > 0")
-            // TODO: fix this for now we also have data from open food facts
-        case .BLS:
+            // TODO: fix this for meanwhile we also have data from open food facts
+        case .bls:
             return NSPredicate(format: "source != nil")
-        case .OFF:
-            return NSPredicate(format: "source != nil")
+        case .openFoodFacts:
+            return NSPredicate(format: "source.name contains[c] %@", "openfoodfacts.org" as CVarArg)
+
         }
     }
-    
 }
