@@ -13,8 +13,8 @@ import Foundation
 /// - BeginsWith: Searches for foods/ingredients whose name begin with the search text, e.g. "Ei" will list "Eier" but not "Speiseeis"
 /// - Contains: Searchs for foods/ingredients whose name contains the search text, e.g. "Ei" will list both, "Eier" and "Speiseis".
 enum SearchFilter: String {
-    case BeginsWith = "Name beginnt mit ..."
-    case Contains = "Name enthält ..."
+    case beginsWith = "Name beginnt mit ..."
+    case contains = "Name enthält ..."
     
     //    return NSPredicate(format: "name BEGINSWITH[c] %@", searchText)
     /// returns predicate for search text and corresponding selected scope bar item.
@@ -26,10 +26,10 @@ enum SearchFilter: String {
             return nil
         }
         switch self {
-        case .BeginsWith:
+        case .beginsWith:
             // Search foods where the name begins with the exact term given in the search bar text field
             return NSPredicate(format: "name BEGINSWITH[c] %@", searchText)
-        case .Contains:
+        case .contains:
             // Search for foods where the name contains the words given in the search bar text field
             let words = searchText.split(separator: " ")
             print("The words in the search text: \(words)")
@@ -46,10 +46,10 @@ enum SearchFilter: String {
             return nil
         }
         switch self {
-        case .BeginsWith:
+        case .beginsWith:
             // Search foods where the name begins with the exact term given in the search bar text field
             return NSPredicate(format: "food.name BEGINSWITH[c] %@", searchText)
-        case .Contains:
+        case .contains:
             // Search for foods where the name contains the words given in the search bar text field
             let words = searchText.split(separator: " ")
             print("The words in the search text: \(words)")
@@ -74,10 +74,10 @@ enum SearchFilter: String {
             return nil
         }
         switch self {
-        case .BeginsWith:
+        case .beginsWith:
             // Search foods where the name begins with the exact term given in the search bar text field
             return NSPredicate(format: "SUBQUERY(ingredients, $x, $x.food.name BEGINSWITH[c] %@).@count != 0", searchText as CVarArg)
-        case .Contains:
+        case .contains:
             // Search for foods where the name contains the words given in the search bar text field
             // see https://stackoverflow.com/questions/18051948/core-data-subquery-predicate
             let words = searchText.split(separator: " ")
@@ -104,10 +104,10 @@ enum SearchFilter: String {
             return nil
         }
         switch self {
-        case .BeginsWith:
+        case .beginsWith:
             // Search foods where the name begins with the exact term given in the search bar text field
             return NSPredicate(format: "food.name BEGINSWITH[c] %@", searchText as CVarArg)
-        case .Contains:
+        case .contains:
             // Search for foods where the name contains the words given in the search bar text field
             let words = searchText.split(separator: " ")
             print("The words in the search text: \(words)")

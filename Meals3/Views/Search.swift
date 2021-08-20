@@ -15,7 +15,7 @@ class Search: ObservableObject {
 //            print("did set fetchoffset to zero")
         } // Enforces refetch of data if search string is modified
     }
-    @Published var filter: SearchFilter = .Contains
+    @Published var filter: SearchFilter = .contains
     @Published var sortRule: FoodListSortRule = .nameAscending
     @Published var selection: FoodListSelection = .mealIngredients
 //    @Published var selection: FoodListSelection = .All

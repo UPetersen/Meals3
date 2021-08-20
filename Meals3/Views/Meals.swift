@@ -28,7 +28,7 @@ struct Meals: View {
     init(search: Search) {
         print("Init of meals view")
         self.search = search
-        let searchFilter = SearchFilter.Contains
+        let searchFilter = SearchFilter.contains
         
         let request = NSFetchRequest<Meal>(entityName: "Meal")
         request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(search.text)

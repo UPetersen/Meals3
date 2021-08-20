@@ -27,7 +27,7 @@ struct GeneralSearchToolbar: View {
             Spacer()
 
             Button(action: { self.toggleSearchFilter() }) {
-                Text(search.filter == SearchFilter.Contains ? "'   ...   '" : "'...      '").fontWeight(.bold)
+                Text(search.filter == SearchFilter.contains ? "'   ...   '" : "'...      '").fontWeight(.bold)
             }
 
             Spacer()
@@ -41,7 +41,7 @@ struct GeneralSearchToolbar: View {
     }
     
     func toggleSearchFilter() {
-        search.filter = search.filter == .Contains ? .BeginsWith : .Contains
+        search.filter = search.filter == .contains ? .beginsWith : .contains
     }
     
     func sortRuleActionSheet() -> ActionSheet {
