@@ -119,7 +119,7 @@ struct FoodDetail<T>: View where T: IngredientCollection {
                 // Section "Allgemeine Informationen
                 Section(header: Text("ALLGEMEINE INFORMATIONEN")) {
 
-                    FoodNutritionString(text: "Name", value: $food.name, editingDisabled: $editingDisabled)
+                    FoodNutritionStringView(text: "Name", value: $food.name, editingDisabled: $editingDisabled)
 
                     Picker("Gruppe", selection: selectedGroup, content: {
                         Text("").tag(nil as Meals3.Group?)

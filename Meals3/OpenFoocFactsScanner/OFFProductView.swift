@@ -15,34 +15,61 @@ struct OFFProductView: View {
         
         VStack(alignment: .center) {
 
-            if let response = offManager.offResponse {
-                SwiftUI.Group() {
-                    rowView(leftString: "EAN-Code", rightString: "\(response.code)")
-                    rowView(leftString: "Status", rightString: "\(response.status)")
-                    rowView(leftString: "Status", rightString: "\(response.statusVerbose)")
-                        .padding(.bottom)
+            Form() {
+                Section(header: Text(offManager.offResponse != nil && offManager.offResponse!.status == 0 ? "Kein Lebensmittel gefunden:" : "Lebensmittel in OpenFoodFacts gefunden:"),
+                        footer: Text(" ")) {
+
+                    if let response = offManager.offResponse {
+                        SwiftUI.Group() {
+                            rowView(leftString: "EAN-Code", rightString: "\(response.code)")
+                            rowView(leftString: "Status", rightString: "\(response.status)")
+                            rowView(leftString: "Status", rightString: "\(response.statusVerbose)")
+                                .padding(.bottom)
+                        }
+                    }
+                    
+                    if let product = offManager.offResponse?.product {
+                        
+                        SwiftUI.Group() {
+                            rowView(leftString: "Name", rightString: "\(product.name ?? "kein Name")")
+                            rowView(leftString: "Marke", rightString: "\(product.brand ?? "keine Marke")")
+                            rowView(leftString: "Energie", rightString: "\(String(describing: product.energyCals))")
+                            rowView(leftString: "Kohlehydrate", rightString: "\(String(describing: product.carbs))")
+                            rowView(leftString: "Protein", rightString: "\(String(describing: product.protein))")
+                            rowView(leftString: "Fett", rightString: "\(String(describing: product.fat))")
+                            rowView(leftString: "Ges. Fetts.", rightString: "\(String(describing: product.saturatedFat))")
+                            rowView(leftString: "Zucker", rightString: "\(String(describing: product.sugar))")
+                        }
+                        SwiftUI.Group() {
+                            rowView(leftString: "Balaststoffe", rightString: "\(String(describing: product.fiber))")
+                            rowView(leftString: "Salz", rightString: "\(String(describing: product.salt))")
+                                .padding(.bottom)
+                            rowView(leftString: "Erstellung", rightString: String(describing: product.created))
+                            rowView(leftString: "Letzte Änd.", rightString: String(describing: product.lastModified))
+                        }
+
+                    }
+
+
                 }
-            }
-            
-            if let product = offManager.offResponse?.product {
+
                 
-                SwiftUI.Group() {
-                    rowView(leftString: "Name", rightString: "\(product.name ?? "kein Name")")
-                    rowView(leftString: "Marke", rightString: "\(product.brand ?? "keine Marke")")
-                    rowView(leftString: "Energie", rightString: "\(String(describing: product.energyCals))")
-                    rowView(leftString: "Kohlehydrate", rightString: "\(String(describing: product.carbs))")
-                    rowView(leftString: "Protein", rightString: "\(String(describing: product.protein))")
-                    rowView(leftString: "Fett", rightString: "\(String(describing: product.fat))")
-                    rowView(leftString: "Ges. Fetts.", rightString: "\(String(describing: product.saturatedFat))")
-                    rowView(leftString: "Zucker", rightString: "\(String(describing: product.sugar))")
-                }
-                SwiftUI.Group() {
-                    rowView(leftString: "Balaststoffe", rightString: "\(String(describing: product.fiber))")
-                    rowView(leftString: "Salz", rightString: "\(String(describing: product.salt))")
-                        .padding(.bottom)
-                    rowView(leftString: "Erstellung", rightString: String(describing: product.created))
-                    rowView(leftString: "Letzte Änd.", rightString: String(describing: product.lastModified))
-                }
+//                Form() {
+//                    Section(header: Text("Lebensmittel in OpenFoodFacts-‚®Datenbank gefunden:"), footer: Text(" ")) {
+//                        HStack {
+//                            Spacer()
+//                            Text("\(product.name ?? "kein Name angegeben") von \(product.brand ?? "keine Marke angegeben.")")
+//                            Spacer()
+//                        }
+//                        rowView(leftString: "EAN-Code", rightString: "\(offManager.offResponse!.code)")
+//                        rowView(leftString: "Energie", rightString: "\(String(describing: product.energyCals))")
+//
+//                    }
+//
+//                }
+                Spacer()
+
+                
             }
         }
     }
@@ -53,7 +80,8 @@ struct OFFProductView: View {
             Text(leftString)
             Spacer()
             Text(rightString)
-        }.padding(.horizontal)
+        }
+//        .padding(.horizontal)
     }
 }
 

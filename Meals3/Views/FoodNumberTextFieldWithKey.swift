@@ -68,6 +68,7 @@ struct FoodInputFieldEditingModifier: ViewModifier {
         } else {
             return AnyView(
                 content
+//                    .textFieldStyle(.automatic)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disabled(editingDisabled)
             )

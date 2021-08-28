@@ -34,6 +34,7 @@ import SwiftUI
 struct NSNumberTextField : View {
     let label: String
     @Binding var value: NSNumber?
+    
     let formatter: NumberFormatter
     @State var displayedText: String? = nil
     @State var lastFormattedValue: NSNumber? = nil

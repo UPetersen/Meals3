@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct FoodNutritionString: View {
+struct FoodNutritionStringView: View {
     
     var text: String = ""
     @Binding var value: String?
@@ -80,13 +80,13 @@ struct FoodNutritionStringView_Previews: PreviewProvider {
         
         return NavigationView {
              VStack {
-                FoodNutritionString(text: "Name", value: $string0, editingDisabled: .constant(true))
+                FoodNutritionStringView(text: "Name", value: $string0, editingDisabled: .constant(true))
                  Divider()
-                 FoodNutritionString(text: "Detail", value: $string1, editingDisabled: .constant(true))
+                 FoodNutritionStringView(text: "Detail", value: $string1, editingDisabled: .constant(true))
                  Divider()
-                 FoodNutritionString(text: "Untergr.", value: $string2, editingDisabled: .constant(true))
+                 FoodNutritionStringView(text: "Untergr.", value: $string2, editingDisabled: .constant(true))
                  Divider()
-                 FoodNutritionString(text: "Refer.", value: $string3, editingDisabled: .constant(true))
+                 FoodNutritionStringView(text: "Refer.", value: $string3, editingDisabled: .constant(true))
                  Divider()
 
              }.padding()

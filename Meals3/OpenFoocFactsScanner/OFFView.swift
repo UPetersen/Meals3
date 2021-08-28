@@ -56,6 +56,7 @@ struct OFFView: View {
                             .padding()
                             .background(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 2))
                     }
+                    Spacer()
                 }
 
 //                Text("Status: \(self.offManager.state.description)").padding()
