@@ -36,18 +36,14 @@ struct OFFView: View {
                 
                 if offManager.state == .isFetching {
                     Spacer()
-                    Text("Fetching food data for EAN \(offManager.code ?? "kein Barcod gefunden").").padding()
+                    Text("Fetching food data for EAN \(offManager.code ?? "kein Barcode gefunden").").padding()
                     ProgressView()
                     Spacer()
                 }
                 
                 if offManager.state == .fetchingCompleted {
                     
-                    Spacer()
-
                     OFFProductView(offManager: offManager)
-
-                    Spacer()
                     
                     // Button to use product, if a product was found
                     if offManager.productFound  {
@@ -62,7 +58,7 @@ struct OFFView: View {
 //                Text("Status: \(self.offManager.state.description)").padding()
             }
 
-            .navigationBarTitle("Open Food Fatcts")
+            .navigationBarTitle("Open Food Facts")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(leading:
                                     Button("Cancel") {

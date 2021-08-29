@@ -8,69 +8,79 @@
 
 import SwiftUI
 
+
+fileprivate let numberFormatter: NumberFormatter =  {() -> NumberFormatter in
+    let numberFormatter = NumberFormatter()
+    numberFormatter.zeroSymbol = "0"
+    numberFormatter.usesSignificantDigits = true
+    return numberFormatter
+}()
+
+
+fileprivate let dateFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .medium
+    dateFormatter.timeStyle = .short
+    return dateFormatter
+}()
+
 struct OFFProductView: View {
     @ObservedObject var offManager: OFFManager
+    
+    var hugo = numberFormatter.string(from: NSNumber(12))
     
     var body: some View {
         
         VStack(alignment: .center) {
-
-            Form() {
-                Section(header: Text(offManager.offResponse != nil && offManager.offResponse!.status == 0 ? "Kein Lebensmittel gefunden:" : "Lebensmittel in OpenFoodFacts gefunden:"),
-                        footer: Text(" ")) {
-
-                    if let response = offManager.offResponse {
-                        SwiftUI.Group() {
-                            rowView(leftString: "EAN-Code", rightString: "\(response.code)")
-                            rowView(leftString: "Status", rightString: "\(response.status)")
-                            rowView(leftString: "Status", rightString: "\(response.statusVerbose)")
-                                .padding(.bottom)
+            
+            List() {
+                
+                if let response = offManager.offResponse, response.status == 0 {
+                    
+                    Section(header: Text("Kein Lebensmittel gefunden:"), footer: Text(" ")) {
+                        HStack() {
+                            Spacer()
+                            Text("Kein Lebensmittel gefunden.")
+                            Spacer()
                         }
+                        rowView(leftString: "EAN-Code", rightString: "\(response.code)")
+                        rowView(leftString: "Status", rightString: "\(response.status) (\(response.statusVerbose))")
+                            .padding(.bottom)
+                    }
+                }
+                
+                if let response = offManager.offResponse, let product = offManager.offResponse?.product {
+                    
+                    Section(header: Text("LEBENSMITTEL GEFUNDEN:"), footer: Text(" ")) {
+                        
+                        HStack() {
+                            Spacer()
+                            Text("\(product.name ?? "kein Name angegeben") von \(product.brand ?? "keine Marke angegeben.")")
+                            Spacer()
+                        }
+                        rowView(leftString: "EAN-Code", rightString: "\(response.code)")
+                        rowView(leftString: "Status", rightString: "\(response.status) (\(response.statusVerbose))")
                     }
                     
-                    if let product = offManager.offResponse?.product {
+                    Section(header: Text("NÄHRWERTE JE 100g:"), footer: Text(" ")) {
                         
+                        rowViewForFloat(leftString: "Energie", value: product.energyCals, unit: "kcal")
+                        rowViewForFloat(leftString: "Kohlehydrate", value: product.carbs, unit: "g")
+                        rowViewForFloat(leftString: "Protein", value: product.protein, unit: "g")
+                        rowViewForFloat(leftString: "Fett", value: product.fat, unit: "g")
+                        rowViewForFloat(leftString: "Ges. Fetts.", value: product.saturatedFat, unit: "g")
+                        rowViewForFloat(leftString: "Zucker", value: product.sugar, unit: "g")
                         SwiftUI.Group() {
-                            rowView(leftString: "Name", rightString: "\(product.name ?? "kein Name")")
-                            rowView(leftString: "Marke", rightString: "\(product.brand ?? "keine Marke")")
-                            rowView(leftString: "Energie", rightString: "\(String(describing: product.energyCals))")
-                            rowView(leftString: "Kohlehydrate", rightString: "\(String(describing: product.carbs))")
-                            rowView(leftString: "Protein", rightString: "\(String(describing: product.protein))")
-                            rowView(leftString: "Fett", rightString: "\(String(describing: product.fat))")
-                            rowView(leftString: "Ges. Fetts.", rightString: "\(String(describing: product.saturatedFat))")
-                            rowView(leftString: "Zucker", rightString: "\(String(describing: product.sugar))")
+                            rowViewForFloat(leftString: "Balaststoffe", value: product.fiber, unit: "g")
+                            rowViewForFloat(leftString: "Salz", value: product.salt, unit: "g")
+                            
+                            rowView(leftString: "Erstellt", rightString: product.created != nil ? dateFormatter.string(from: product.created!) : "k.A.")
+                            rowView(leftString: "Letzte Änderung", rightString: product.lastModified != nil ? dateFormatter.string(from: product.lastModified!) : "k.A.")
                         }
-                        SwiftUI.Group() {
-                            rowView(leftString: "Balaststoffe", rightString: "\(String(describing: product.fiber))")
-                            rowView(leftString: "Salz", rightString: "\(String(describing: product.salt))")
-                                .padding(.bottom)
-                            rowView(leftString: "Erstellung", rightString: String(describing: product.created))
-                            rowView(leftString: "Letzte Änd.", rightString: String(describing: product.lastModified))
-                        }
-
                     }
-
-
                 }
-
-                
-//                Form() {
-//                    Section(header: Text("Lebensmittel in OpenFoodFacts-‚®Datenbank gefunden:"), footer: Text(" ")) {
-//                        HStack {
-//                            Spacer()
-//                            Text("\(product.name ?? "kein Name angegeben") von \(product.brand ?? "keine Marke angegeben.")")
-//                            Spacer()
-//                        }
-//                        rowView(leftString: "EAN-Code", rightString: "\(offManager.offResponse!.code)")
-//                        rowView(leftString: "Energie", rightString: "\(String(describing: product.energyCals))")
-//
-//                    }
-//
-//                }
-                Spacer()
-
-                
             }
+            .listStyle(InsetGroupedListStyle())
         }
     }
 
@@ -81,8 +91,20 @@ struct OFFProductView: View {
             Spacer()
             Text(rightString)
         }
-//        .padding(.horizontal)
     }
+
+    @ViewBuilder func rowViewForFloat(leftString: String, value: Float?, unit: String) -> some View {
+        HStack {
+            Text(leftString)
+            Spacer()
+            if let value = value, let numberString = numberFormatter.string(from: NSNumber(value: value)) {
+                Text(numberString + " " + unit)
+            } else {
+                Text("k. A.")
+            }
+        }
+    }
+
 }
 
 //struct OffProductView_Previews: PreviewProvider {
