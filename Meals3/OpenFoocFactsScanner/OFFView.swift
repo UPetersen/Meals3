@@ -47,10 +47,20 @@ struct OFFView: View {
                     
                     // Button to use product, if a product was found
                     if offManager.productFound  {
-                        Button("Zur Mahhlzeit hinzufügen\n(aktualisiert, falls schon vorhanden).") { addProduct() }
-                            .multilineTextAlignment(.center)
-                            .padding()
-                            .background(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 2))
+                        Button(action: { addProduct() }) {
+                            ZStack() {
+                                Image(systemName: "arrow.2.circlepath")
+                                    .resizable()
+//                                    .foregroundColor(Color(.systemBackground))
+                                    .frame(width: 40*1.1, height: 34*1.1)
+                                Image(systemName: "plus")
+                            }
+                        }.padding()
+                        
+//                        Button("Zur Mahlzeit hinzufügen\n(aktualisiert, falls schon vorhanden).") { addProduct() }
+//                            .multilineTextAlignment(.center)
+//                            .padding()
+//                            .background(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 2))
                     }
                     Spacer()
                 }
