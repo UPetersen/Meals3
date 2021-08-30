@@ -22,8 +22,9 @@ extension Brand {
     class func fetchBrandsForName(_ name: String, managedObjectContext context: NSManagedObjectContext) -> [Brand]? {
         
         let request: NSFetchRequest<Brand> = Brand.fetchRequest()
-        request.predicate = NSPredicate(format: "name = '\(name)'")
-                
+//        request.predicate = NSPredicate(format: "name = '\(name)'")
+        request.predicate = NSPredicate(format: "name = %@", name)
+
         do {
             let brands = try context.fetch(request)
             return brands
