@@ -77,8 +77,12 @@ extension Food {
 //        newFood.referenceWeight = foodToCopyFrom.referenceWeight
 //        newFood.servingSizes = foodToCopyFrom.servingSizes
         
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        
         // Modify Dates and name
-        newFood.name = "Rezept vom " + "\(String(describing: recipe.dateOfCreation))"
+        newFood.name = "Rezept vom " + "\(dateFormatter.string(from: Date()))"
         newFood.dateOfCreation = recipe.dateOfCreation
         newFood.dateOfLastModification = recipe.dateOfLastModification
         newFood.recipe = recipe

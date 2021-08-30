@@ -36,7 +36,13 @@ struct FoodNutrientsRow: View {
     var body: some View {
         
         VStack(alignment: .leading) {
-            Text(food.name ?? "")
+//            Text(food.name ?? "")            
+            if let brandName = food.brand?.name {
+                Text("\(food.name ?? "") von \(brandName)")
+            } else{
+                Text(food.name ?? "")
+            }
+            
             Text(food.nutrientStringForFood(formatter: numberFormatter))
                 .font(.footnote)
         }
