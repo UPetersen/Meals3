@@ -38,7 +38,7 @@ struct ContentView: View {
                 //            .navigationViewStyle(DoubleColumnNavigationViewStyle())
                 .navigationBarTitle(Text("Mahlzeiten"), displayMode: .inline)
                 .navigationBarItems(trailing: EditButton())
-        }
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

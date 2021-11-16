@@ -247,8 +247,8 @@ struct AddOrChangeAmountOfIngredientView: View {
 //                                    .frame(width: geometry.size.width * self.arrowsScaleFactor, height: geometry.size.width * self.arrowsScaleFactor * self.arrowsAspectRatio)
                                 Button("Speichern", action:{ self.save() }).padding()
                                     .foregroundColor(Color(.systemBlue))
-                                    .scaleEffect(self.isAnimatingSafeButton ? 1.25 : 1.0) // animate when rotation finished
-                                    .animation(Animation.default.repeat(while: self.isAnimatingSafeButton))
+                                    .scaleEffect(isAnimatingSafeButton ? 1.25 : 1.0) // animate when rotation finished
+                                    .animation(Animation.default.repeat(while: isAnimatingSafeButton), value: isAnimatingSafeButton)
                             }
                             Spacer()
                         }
