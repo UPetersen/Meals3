@@ -14,9 +14,18 @@ import CoreData
 /// Some data (like the nutrition information) resides in sub structures within the json data. The relevant data of these sub structures is pulled out and moved to the top level (i.e. flattened) during the decoding process.
 struct OFFProduct: Decodable { // TODO: make Identifiable via variable "code" instead of hashable
 
-    /// EAN code
+    // EAN code
     let code: String?
     let name: String?
+    
+    // Image
+    var imageFrontSmallURL: String?
+    
+    // General information
+    var brand: String?
+    var created: Date?
+    var creator: String?
+    var lastModified: Date?
     
     // Nutrition information from substructure nutriments being flattened
     var energyCals: Float?
@@ -28,11 +37,6 @@ struct OFFProduct: Decodable { // TODO: make Identifiable via variable "code" in
     var fiber: Float?
     var salt: Float?
     
-    var brand: String?
-    var created: Date?
-    var creator: String?
-    var lastModified: Date?
-    
     enum CodingKeys: String, CodingKey {
         case code
         case name = "product_name"
@@ -40,6 +44,7 @@ struct OFFProduct: Decodable { // TODO: make Identifiable via variable "code" in
         case created = "created_t"
         case creator
         case lastModified = "last_modified_t"
+        case imageFrontSmallURL = "image_front_small_url"
         
         case nutriments
         // keys for data from substructure nutriments
@@ -60,6 +65,9 @@ struct OFFProduct: Decodable { // TODO: make Identifiable via variable "code" in
         let container  = try decoder.container(keyedBy: CodingKeys.self)
         code           = try? container.decode(String.self, forKey: .code)
         name           = try? container.decode(String.self, forKey: .name)
+        
+        imageFrontSmallURL = try? container.decode(String.self, forKey: .imageFrontSmallURL)
+        
         brand          = try? container.decode(String.self, forKey: .brand)
         created = try? container.decode(Date.self, forKey: .created)
         creator = try? container.decode(String.self, forKey: .creator)
@@ -82,20 +90,24 @@ struct OFFProduct: Decodable { // TODO: make Identifiable via variable "code" in
 extension OFFProduct: CustomStringConvertible {
     public var description: String {
         var aString = ""
-        aString.append("code:         \(String(describing: code))\n")
-        aString.append("Name:         \(String(describing: name))\n")
-        aString.append("energyCals:   \(String(describing: energyCals))\n")
-        aString.append("varbs:        \(String(describing: carbs))\n")
-        aString.append("protein:      \(String(describing: protein))\n")
-        aString.append("tfat:         \(String(describing: fat))\n")
-        aString.append("saturatedFat: \(String(describing: saturatedFat))\n")
-        aString.append("sugar:        \(String(describing: sugar))\n")
-        aString.append("fiber:        \(String(describing: fiber))\n")
-        aString.append("salt:         \(String(describing: salt))\n")
-        aString.append("brand:        \(String(describing: brand))\n")
-        aString.append("created:      \(String(describing: created))\n")
-        aString.append("creator:      \(String(describing: creator))\n")
-        aString.append("lastModified: \(String(describing: lastModified))\n")
+        aString.append("code:               \(String(describing: code))\n")
+        aString.append("Name:               \(String(describing: name))\n")
+
+        aString.append("ImageFrontSmallURL: \(String(describing: imageFrontSmallURL))\n")
+
+        aString.append("brand:              \(String(describing: brand))\n")
+        aString.append("created:            \(String(describing: created))\n")
+        aString.append("creator:            \(String(describing: creator))\n")
+        aString.append("lastModified:       \(String(describing: lastModified))\n")
+
+        aString.append("energyCals:         \(String(describing: energyCals))\n")
+        aString.append("varbs:              \(String(describing: carbs))\n")
+        aString.append("protein:            \(String(describing: protein))\n")
+        aString.append("tfat:               \(String(describing: fat))\n")
+        aString.append("saturatedFat:       \(String(describing: saturatedFat))\n")
+        aString.append("sugar:              \(String(describing: sugar))\n")
+        aString.append("fiber:              \(String(describing: fiber))\n")
+        aString.append("salt:               \(String(describing: salt))\n")
         return aString
     }
     

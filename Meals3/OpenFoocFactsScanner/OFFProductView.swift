@@ -37,7 +37,7 @@ struct OFFProductView: View {
                 
                 if let response = offManager.offResponse, response.status == 0 {
                     
-                    Section(header: Text("Kein Lebensmittel gefunden:"), footer: Text(" ")) {
+                    Section() {
                         HStack() {
                             Spacer()
                             Text("Kein Lebensmittel gefunden.")
@@ -51,15 +51,27 @@ struct OFFProductView: View {
                 
                 if let response = offManager.offResponse, let product = offManager.offResponse?.product {
                     
-                    Section(header: Text("LEBENSMITTEL GEFUNDEN:"), footer: Text(" ")) {
+                    Section() {
                         
                         HStack() {
+                            if let url = product.imageFrontSmallURL {
+                                AsyncImage(url: URL(string: url))
+                            }
                             Spacer()
-                            Text("\(product.name ?? "kein Name angegeben") von \(product.brand ?? "keine Marke angegeben.")")
+                            VStack(alignment: .leading) {
+                                Spacer()
+                                Text("\(product.name ?? "Kein Name angegeben")")
+                                    .font(.title3)
+                                    .fixedSize(horizontal: false, vertical: true) // enable line break, see https://stackoverflow.com/a/57794877/3687284
+                                    .border(Color.green)
+                                Text("\(product.brand ?? "Keine Marke angegeben.")").foregroundColor(.secondary)
+                                Spacer()
+                                Text("EAN \(response.code)").foregroundColor(.secondary)
+                            }
+                            .border(Color.red)
                             Spacer()
                         }
-                        rowView(leftString: "EAN-Code", rightString: "\(response.code)")
-                        rowView(leftString: "Status", rightString: "\(response.status) (\(response.statusVerbose))")
+//                        .scaledToFit()
                     }
                     
                     Section(header: Text("NÄHRWERTE JE 100g:"), footer: Text(" ")) {
@@ -73,7 +85,11 @@ struct OFFProductView: View {
                         SwiftUI.Group() {
                             rowViewForFloat(leftString: "Balaststoffe", value: product.fiber, unit: "g")
                             rowViewForFloat(leftString: "Salz", value: product.salt, unit: "g")
-                            
+                        }
+                    }
+                    Section() {
+                        
+                        SwiftUI.Group() {
                             rowView(leftString: "Erstellt", rightString: product.created != nil ? dateFormatter.string(from: product.created!) : "k.A.")
                             rowView(leftString: "Letzte Änderung", rightString: product.lastModified != nil ? dateFormatter.string(from: product.lastModified!) : "k.A.")
                         }
