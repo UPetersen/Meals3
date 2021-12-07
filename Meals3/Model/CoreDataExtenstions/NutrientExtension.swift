@@ -45,6 +45,7 @@ extension Nutrient {
         
         let request: NSFetchRequest<Nutrient> = Nutrient.fetchRequest()
         request.predicate = NSPredicate(format:"key = %@", key)
+        request.fetchLimit = 1
         
         do {
             let nutrients = try managedObjectContext.fetch(request)

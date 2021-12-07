@@ -82,13 +82,19 @@ extension Meal {
     
     
     /// Fetches the newest meal from the core data database.
+    // TODO: get newes meal directly and not all meals and then the newest one. We meanwhile have over 13800 meals as of 2021-12-06
     class func fetchNewestMeal(managedObjectContext context: NSManagedObjectContext) -> Meal? {
 
         let request: NSFetchRequest<Meal> = Meal.fetchRequest()
+        request.fetchLimit = 1
         request.sortDescriptors = [NSSortDescriptor(key: "dateOfCreation", ascending: false)]
         
         do {
             let meals = try context.fetch(request)
+            print("Wir haben inzwischen \(meals.count) Mahlzeiten.")
+            print("Letztes")
+//            print(meals.last?.description)
+            print("Letztes")
             return meals.first
         } catch {
             print("Error fetching newest meal: \(error)")

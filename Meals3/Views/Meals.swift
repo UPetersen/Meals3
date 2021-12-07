@@ -36,9 +36,10 @@ struct Meals: View {
 //        request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(searchText.wrappedValue)
         request.fetchBatchSize = 25
         request.fetchLimit = 25  // Speeds up a lot, especially inital loading of this view controller, but needs care
-        request.returnsObjectsAsFaults = true   // objects are only loaded, when needed/used -> faster but more frequent disk reads
+        // TODO: double check whether request.returnsObjectsAsFaults = true really speeds up in our case. 2021-12-05: Seems no difference
+//        request.returnsObjectsAsFaults = true   // objects are only loaded, when needed/used -> faster but more frequent disk reads
         request.includesPropertyValues = true   // usefull only, when only relevant properties are read
-        request.propertiesToFetch = ["dateOfCreation"] // read only certain properties (others are fetched automatically on demand)
+//        request.propertiesToFetch = ["dateOfCreation", "dateOfLastModification"] // read only certain properties (others are fetched automatically on demand (and that is the problem for entities with only frew properties like Meal, so do not use on meal!!!!)
         request.relationshipKeyPathsForPrefetching = ["ingredients", "food"]
         request.sortDescriptors = [NSSortDescriptor(keyPath: \Meal.dateOfCreation, ascending: false)]
         self._meals = FetchRequest(fetchRequest: request)
@@ -61,10 +62,10 @@ struct Meals: View {
                         .environment(\.managedObjectContext, self.viewContext)
                         .environmentObject(self.currentMeal)
                     ) {
-//                        LazyView( MealsNutrients(meal: meal) )
+                        LazyView( MealsNutrients(meal: meal) )
 //                        LazyView( MealsNutrients(meal: meal).equatable() )
 //                        MealsNutrients(meal: meal).equatable()
-                        MealsNutrients(meal: meal)
+//                        MealsNutrients(meal: meal)
                     }
                 ) {
                     ForEach(meal.filteredAndSortedMealIngredients(predicate: self.ingredientsPredicate)!) { (mealIngredient: MealIngredient) in
@@ -87,9 +88,10 @@ struct Meals: View {
             currentMeal.objectWillChange.send() // update this ui
          }
 
-        .onAppear() {
-            self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
-        }
+        
+//        .onAppear() {
+//            self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
+//        }
             
         .alert(isPresented: self.$showingDeleteConfirmation){
             return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
@@ -105,8 +107,9 @@ struct Meals: View {
     }
     
     @ViewBuilder func lazyFoodDetail(food: Food) -> some View {
+//        FoodDetail(ingredientCollection: self.currentMeal.meal, food: food)
+//            .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
         FoodDetail(ingredientCollection: self.currentMeal.meal, food: food)
-            .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
     }
 
     func deleteIngredients(atIndexSet indexSet: IndexSet, fromMeal meal: Meal) {

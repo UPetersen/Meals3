@@ -83,14 +83,14 @@ struct MealDetailView: View {
         .navigationBarTitle("Mahlzeit-Details")
         .navigationBarItems(trailing: EditButton().padding())
         .onDisappear(){
-//            print("MealDetailView disappeared.")
+            print("MealDetailView disappeared.")
             if self.viewContext.hasChanges {
                 try? self.meal.managedObjectContext?.save()
 //                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
             }
         }
         .onAppear() {
-//            print("MealDetaliView appeared.")
+            print("MealDetaliView appeared.")
             self.currentMeal.meal = self.meal
         }
     }
@@ -114,6 +114,7 @@ struct MealDetailView: View {
     }
     
     func reducedNutrientString(meal: Meal?) -> String {
+        print("In reducedNutrientString in MealsDetailView: \(String(describing: meal?.description))")
         if let meal = meal {
             let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"),    formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
             var fpu = 0.0

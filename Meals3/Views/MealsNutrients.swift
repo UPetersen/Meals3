@@ -35,8 +35,8 @@ fileprivate let numberFormatter: NumberFormatter = {
 /// `"35 g KH  und 2 FPE"`
 
 
-//struct MealsNutrients: View, Equatable {
-struct MealsNutrients: View {
+struct MealsNutrients: View, Equatable {
+//struct MealsNutrients: View {
     @ObservedObject var meal: Meal
     
     @Environment(\.managedObjectContext) var viewContext
@@ -54,16 +54,18 @@ struct MealsNutrients: View {
             Button(action: { withAnimation{ self.copyMeal() } },
                    label: { Image(systemName: "doc.on.doc").padding(.leading)
             })
+        }.onAppear() {
+            print("In MealsNutrients")
         }
     }
     
-//    static func == (lhs: MealsNutrients, rhs: MealsNutrients) -> Bool {
-////        print("Using equatable on MealNutriensView")
-//        return lhs.meal.dateOfCreation == rhs.meal.dateOfCreation && lhs.meal.dateOfLastModification == rhs.meal.dateOfLastModification
-//    }
+    static func == (lhs: MealsNutrients, rhs: MealsNutrients) -> Bool {
+        print("Using equatable on MealNutriensView")
+        return lhs.meal.dateOfCreation == rhs.meal.dateOfCreation && lhs.meal.dateOfLastModification == rhs.meal.dateOfLastModification
+    }
 
     func reducedNutrientString(meal: Meal) -> String {
-//        print("MealNutrients viev func reducedutrientString(meal:): \(String(describing: meal.description))")
+        print("MealNutrients viev func reducedutrientString(meal:): \(String(describing: meal.description))")
         let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"), formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
         return String("\(totalCarb) KH  und   \(numberFormatter.string(from: NSNumber(value: meal.fpu ?? 0.0)) ?? "") FPE  (\(numberFormatter.string(from: NSNumber(value: meal.fpuFalse ?? 0.0)) ?? "") FPE)")
     }

@@ -22,11 +22,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Get the managed object context from the shared persistent container
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy // recommendation from hackingwithswift.com
-
+        
         // The meal to which foods will be added to as ingredients.
         // Has to be changed, if a new meal is created or the current meal is deleted.
+        print("get current meal")
         let currentMeal = CurrentMeal(Meal.newestMeal(managedObjectContext: context))
-        
+        print(currentMeal.meal.entity.indexes)
+        print("end get current meal")
+
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath
         let search = Search()
         let contentView = ContentView(search: search)

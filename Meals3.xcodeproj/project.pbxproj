@@ -72,6 +72,7 @@
 		C6C61F17238EE87F009E2F98 /* NSNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */; };
 		C6D58A7523B7CB9A0037A589 /* FoodNutrientsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D58A7423B7CB9A0037A589 /* FoodNutrientsRow.swift */; };
 		C6E20A2626BD45710021E1FB /* OffJsonSampleFile in Resources */ = {isa = PBXBuildFile; fileRef = C6E20A2526BD45710021E1FB /* OffJsonSampleFile */; };
+		C6F457162758EB9F00B23092 /* Meals.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C6F457132758EB9F00B23092 /* Meals.xcdatamodeld */; };
 		C6F45B84236B65AD00C4FAC3 /* GeoLocation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F45B62236B65AD00C4FAC3 /* GeoLocation+CoreDataClass.swift */; };
 		C6F45B85236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F45B63236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift */; };
 		C6F45B86236B65AD00C4FAC3 /* Group+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F45B64236B65AD00C4FAC3 /* Group+CoreDataClass.swift */; };
@@ -118,9 +119,6 @@
 		C6FE88CA236B5A3300881ACB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6FE88C8236B5A3300881ACB /* LaunchScreen.storyboard */; };
 		C6FE88D5236B5A3300881ACB /* Meals3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FE88D4236B5A3300881ACB /* Meals3Tests.swift */; };
 		C6FE88E0236B5A3300881ACB /* Meals3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FE88DF236B5A3300881ACB /* Meals3UITests.swift */; };
-		C6FE88EE236B5B1700881ACB /* Meals.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C6FE88ED236B5B1700881ACB /* Meals.xcdatamodel */; };
-		C6FE88EF236B5B1700881ACB /* Meals.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C6FE88ED236B5B1700881ACB /* Meals.xcdatamodel */; };
-		C6FE88F0236B5B1700881ACB /* Meals.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = C6FE88ED236B5B1700881ACB /* Meals.xcdatamodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -207,6 +205,8 @@
 		C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNumberTextField.swift; sourceTree = "<group>"; };
 		C6D58A7423B7CB9A0037A589 /* FoodNutrientsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutrientsRow.swift; sourceTree = "<group>"; };
 		C6E20A2526BD45710021E1FB /* OffJsonSampleFile */ = {isa = PBXFileReference; lastKnownFileType = text; path = OffJsonSampleFile; sourceTree = "<group>"; };
+		C6F457142758EB9F00B23092 /* Meals 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Meals 2.xcdatamodel"; sourceTree = "<group>"; };
+		C6F457152758EB9F00B23092 /* Meals.xcdatamodel */ = {isa = PBXFileReference; explicitFileType = wrapper.xcdatamodeld; path = Meals.xcdatamodel; sourceTree = "<group>"; };
 		C6F45B62236B65AD00C4FAC3 /* GeoLocation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GeoLocation+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C6F45B63236B65AD00C4FAC3 /* GeoLocation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GeoLocation+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C6F45B64236B65AD00C4FAC3 /* Group+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Group+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -259,7 +259,6 @@
 		C6FE88DB236B5A3300881ACB /* Meals3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Meals3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6FE88DF236B5A3300881ACB /* Meals3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meals3UITests.swift; sourceTree = "<group>"; };
 		C6FE88E1236B5A3300881ACB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C6FE88ED236B5B1700881ACB /* Meals.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Meals.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -452,6 +451,7 @@
 		C6FE88AC236B5A3100881ACB = {
 			isa = PBXGroup;
 			children = (
+				C6F457132758EB9F00B23092 /* Meals.xcdatamodeld */,
 				C6FE88B7236B5A3100881ACB /* Meals3 */,
 				C6FE88D3236B5A3300881ACB /* Meals3Tests */,
 				C6FE88DE236B5A3300881ACB /* Meals3UITests */,
@@ -485,7 +485,6 @@
 				C6FE88C8236B5A3300881ACB /* LaunchScreen.storyboard */,
 				C6FE88CB236B5A3300881ACB /* Info.plist */,
 				C6FE88BA236B5A3100881ACB /* Meals3.xcdatamodeld */,
-				C6FE88ED236B5B1700881ACB /* Meals.xcdatamodel */,
 				C6FE88C5236B5A3300881ACB /* Preview Content */,
 			);
 			path = Meals3;
@@ -743,6 +742,7 @@
 				C6F45B8E236B65AD00C4FAC3 /* Food+CoreDataClass.swift in Sources */,
 				C68AE91923C1DE4A00A1348B /* Collection+Extension.swift in Sources */,
 				C6F45B90236B65AD00C4FAC3 /* Source+CoreDataClass.swift in Sources */,
+				C6F457162758EB9F00B23092 /* Meals.xcdatamodeld in Sources */,
 				C62BB6D423B0AC2E000132F0 /* GeneralSearchResults.swift in Sources */,
 				C6F45B99236B65AD00C4FAC3 /* Preparation+CoreDataProperties.swift in Sources */,
 				C604B2B4236C247A006BFE9E /* NutrientExtension.swift in Sources */,
@@ -752,7 +752,6 @@
 				C68AE91D23C1DFCE00A1348B /* RecipeDetailIngredients.swift in Sources */,
 				C6F45B98236B65AD00C4FAC3 /* Preparation+CoreDataClass.swift in Sources */,
 				C6AD65F5236B5D750021D5A6 /* Event+CoreDataProperties.swift in Sources */,
-				C6FE88EE236B5B1700881ACB /* Meals.xcdatamodel in Sources */,
 				C6F45B9A236B65AD00C4FAC3 /* ReferenceWeight+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -762,7 +761,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6FE88D5236B5A3300881ACB /* Meals3Tests.swift in Sources */,
-				C6FE88EF236B5B1700881ACB /* Meals.xcdatamodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -771,7 +769,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6FE88E0236B5A3300881ACB /* Meals3UITests.swift in Sources */,
-				C6FE88F0236B5B1700881ACB /* Meals.xcdatamodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1088,6 +1085,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
+		C6F457132758EB9F00B23092 /* Meals.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C6F457142758EB9F00B23092 /* Meals 2.xcdatamodel */,
+				C6F457152758EB9F00B23092 /* Meals.xcdatamodel */,
+			);
+			currentVersion = C6F457142758EB9F00B23092 /* Meals 2.xcdatamodel */;
+			path = Meals.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		C6FE88BA236B5A3100881ACB /* Meals3.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (

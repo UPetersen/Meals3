@@ -12,6 +12,7 @@ import CoreData
 extension Meal {
     
     func filteredAndSortedMealIngredients(predicate: NSPredicate? = nil) -> [MealIngredient]? {
+        print("In filteredAndSortedMealIngredients")
         if let mealIngredients = ingredients {
             // Meal has meal ingredients.
             var filteredAndSortedMealIngredients = mealIngredients
