@@ -19,7 +19,8 @@ extension Meal {
 
     @NSManaged public var comment: String?
     @NSManaged public var dateOfCreation: Date?
-    @NSManaged public var dateOfCreationAsString: String?
+//    @NSManaged public var dateOfCreationAsString: String?
+    @NSManaged public var mealID: String?
     @NSManaged public var dateOfLastModification: Date?
     @NSManaged public var ingredients: NSSet?
 

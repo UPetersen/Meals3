@@ -12,7 +12,7 @@ import CoreData
 extension Meal {
     
     func filteredAndSortedMealIngredients(predicate: NSPredicate? = nil) -> [MealIngredient]? {
-        print("In filteredAndSortedMealIngredients")
+//        print("In filteredAndSortedMealIngredients")
         if let mealIngredients = ingredients {
             // Meal has meal ingredients.
             var filteredAndSortedMealIngredients = mealIngredients
@@ -35,7 +35,7 @@ extension Meal {
 
 
 extension Meal: Identifiable {
-    public var id: Date {
-        self.dateOfCreation ?? Date() // dateOfCreation should never be nil, but avoid forced unwrapping anyways.
-    }
+//    public var id: Date {
+//        self.dateOfCreation ?? Date() // dateOfCreation should never be nil, but avoid forced unwrapping anyways.
+//    }
 }

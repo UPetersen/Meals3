@@ -9,7 +9,7 @@
 import Foundation
 
 /// Handle whether a certain amount of food is to be added to an IngredientCollection (aka meal or recipe) or an the amount of an ingredient (of an IngredientCollection) is to be changed
-enum Task {
+enum AddOrChangeTask {
     case addAmountOfFoodToIngredientCollection(IngredientCollection)
     case changeAmountOfIngredient(Ingredient)
 }

@@ -14,7 +14,7 @@ struct RecipeIngredientRow: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredient: RecipeIngredient
 
-    @State private var task: Task?
+    @State private var task: AddOrChangeTask?
     @State private var showingAddOrChangeAmountOfFoodView = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode> // This is a dummy, unfortunately I do not know a better way
 

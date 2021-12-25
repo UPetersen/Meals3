@@ -59,15 +59,15 @@ extension Nutrient {
         return nil
     }
     
-    /// Return the value as a String in the unit specified by hkDispUnit in nutrients, e.g. "12.3 µg"
-    /// If something fails, either nil or an empty unit string (e.g. "g") is returned, depending on showUnit
-    func valueForDisp(_ dispString: String, formatter: NumberFormatter) -> Double? {
-        if let dispValue = formatter.number(from: dispString)?.doubleValue {
-            return HKQuantity(unit: hkDispUnit, doubleValue: dispValue).doubleValue(for: hkUnit)
-//            return HKQuantity(unit: self.hkDispUnit, doubleValue: dispValue).doubleValueForUnit(self.hkUnit) ?? nil
-        }
-        return nil
-    }
+//    /// Return the value as a String in the unit specified by hkDispUnit in nutrients, e.g. "12.3 µg"
+//    /// If something fails, either nil or an empty unit string (e.g. "g") is returned, depending on showUnit
+//    func valueForDisp(_ dispString: String, formatter: NumberFormatter) -> Double? {
+//        if let dispValue = formatter.number(from: dispString)?.doubleValue {
+//            return HKQuantity(unit: hkDispUnit, doubleValue: dispValue).doubleValue(for: hkUnit)
+////            return HKQuantity(unit: self.hkDispUnit, doubleValue: dispValue).doubleValueForUnit(self.hkUnit) ?? nil
+//        }
+//        return nil
+//    }
 
     /// Returns a String for a given value of this nutrient in the unit specified by the dispUnit property of the nutrient, e.g. returns "12.3 µg"
     /// If something fails, either nil or an empty unit string (e.g. "g") is returned, depending on the showUnit parameter

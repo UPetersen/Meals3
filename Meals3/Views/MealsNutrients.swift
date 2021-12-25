@@ -60,12 +60,12 @@ struct MealsNutrients: View, Equatable {
     }
     
     static func == (lhs: MealsNutrients, rhs: MealsNutrients) -> Bool {
-        print("Using equatable on MealNutriensView")
+//        print("Using equatable on MealNutriensView")
         return lhs.meal.dateOfCreation == rhs.meal.dateOfCreation && lhs.meal.dateOfLastModification == rhs.meal.dateOfLastModification
     }
 
     func reducedNutrientString(meal: Meal) -> String {
-        print("MealNutrients viev func reducedutrientString(meal:): \(String(describing: meal.description))")
+//        print("MealNutrients viev func reducedutrientString(meal:): \(String(describing: meal.description))")
         let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"), formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
         return String("\(totalCarb) KH  und   \(numberFormatter.string(from: NSNumber(value: meal.fpu ?? 0.0)) ?? "") FPE  (\(numberFormatter.string(from: NSNumber(value: meal.fpuFalse ?? 0.0)) ?? "") FPE)")
     }
@@ -74,7 +74,7 @@ struct MealsNutrients: View, Equatable {
     func copyMeal() {
         debugPrint("Will copy the meal \(meal) and make it the new current meal")
         if let newMeal = Meal.fromMeal(meal, inManagedObjectContext: viewContext) {
-            HealthManager.synchronize(newMeal, withSynchronisationMode: .save)
+            HealthManager.synchronize(newMeal, withSynchronisationMode: .store)
             currentMeal.meal = Meal.newestMeal(managedObjectContext: viewContext)
             try? viewContext.save()
         }

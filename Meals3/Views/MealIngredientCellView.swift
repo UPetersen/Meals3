@@ -54,7 +54,7 @@ struct MealIngredientCellView: View, Equatable {
         // TODO: hier geht's weiter: optionals rausmachen
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
              AddOrChangeAmountOfIngredientView(food: self.mealIngredient.food!,
-                                               task: Task.changeAmountOfIngredient(self.mealIngredient as Ingredient),
+                                               task: .changeAmountOfIngredient(self.mealIngredient as Ingredient),
                                          isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
                 .environment(\.managedObjectContext, self.viewContext)
         })
@@ -62,7 +62,7 @@ struct MealIngredientCellView: View, Equatable {
     
     // FIXME: equatable is probably not correct here, if this view is also used, within a search where only the ingredients are displayed that match the search term.
     static func == (lhs: MealIngredientCellView, rhs: MealIngredientCellView) -> Bool {
-        print("Using equatable on MealIngredientCellView")
+//        print("Using equatable on MealIngredientCellView")
         return lhs.mealIngredient.food?.name == rhs.mealIngredient.food?.name &&
             lhs.mealIngredient.amount == rhs.mealIngredient.amount &&
             lhs.mealIngredient.meal?.dateOfLastModification == rhs.mealIngredient.meal?.dateOfLastModification
@@ -75,7 +75,7 @@ struct MealIngredientCellView: View, Equatable {
     // TODO: put formatter into environment or pass it along as parameter
     /// Returns a String like "44 kcal, 10 g, KH, ..."
     func contentFor(mealIngredient: MealIngredient) -> String {
-        print("MealIngredientCellView func contentFor(MealIngredient:): \(mealIngredient.description)")
+//        print("MealIngredientCellView func contentFor(MealIngredient:): \(mealIngredient.description)")
         let totalEnergyCals = Nutrient.dispStringForNutrientWithKey("totalEnergyCals", value: mealIngredient.doubleForKey("totalEnergyCals"), formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
         let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: mealIngredient.doubleForKey("totalCarb"),    formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
         let totalProtein = Nutrient.dispStringForNutrientWithKey("totalProtein", value: mealIngredient.doubleForKey("totalProtein"), formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
@@ -86,8 +86,9 @@ struct MealIngredientCellView: View, Equatable {
     }
     
     func smallContentFor(mealIngredient: MealIngredient) -> String {
-        print("MealIngredientCellView func smallContentFor(MealIngredient:): \(mealIngredient.description)")
+//        print("MealIngredientCellView func smallContentFor(MealIngredient:): \(mealIngredient.description)")
         let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: mealIngredient.doubleForKey("totalCarb"),    formatter: numberFormatter, inManagedObjectContext: viewContext) ?? ""
+//        return "fünf"
         return totalCarb + " KH"
     }
 }

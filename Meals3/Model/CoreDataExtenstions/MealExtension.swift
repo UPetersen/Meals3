@@ -21,6 +21,7 @@ extension Meal {
         super.awakeFromInsert()
         dateOfCreation = Date() as NSDate as Date
         dateOfLastModification = Date() as NSDate as Date
+        mealID = ISO8601DateFormatter().string(from: dateOfCreation ?? Date())
     }
     
 //    override public func didChange(_ changeKind: NSKeyValueChange, valuesAt indexes: IndexSet, forKey key: String) {
@@ -91,7 +92,7 @@ extension Meal {
         
         do {
             let meals = try context.fetch(request)
-            print("Wir haben inzwischen \(meals.count) Mahlzeiten.")
+//            print("Wir haben inzwischen \(meals.count) Mahlzeiten.")
             print("Letztes")
 //            print(meals.last?.description)
             print("Letztes")

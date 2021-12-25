@@ -61,15 +61,15 @@ struct OneFingerRoationView: View {
         .onChanged { value in
             switch self.dragState {
             case .began: // This is the first registered touch. Store as old location
-                print("State: \(self.dragState), origin: \(value.startLocation), \(value.location)")
+//                print("State: \(self.dragState), origin: \(value.startLocation), \(value.location)")
                 self.oldLocation = CGPoint(x: value.location.x, y: value.location.y)
-                print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
+//                print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
             case .oldLocationInitilized: // we have an old location and can now do all the drag calculation
                 self.translation = CGVector(dx: value.location.x - self.oldLocation.x, dy: value.location.y - self.oldLocation.y)
                 // Distance (length) from old location to the current location.
                 let distance = sqrt((self.translation.dx * self.translation.dx) + (self.translation.dy * self.translation.dy))
                 if distance >= 5 {
-                    print("State: \(self.dragState), origin: \(value.startLocation), \(value.location)")
+//                    print("State: \(self.dragState), origin: \(value.startLocation), \(value.location)")
                     // This is important: To avoid jumps over 360 degrees, we transfer the translation vector into the coordinate system of the old translation vector. I.e. the x-axis of this coordinate system is the old translation vector. Then we determine the angle between the vector from the center of the view to the old location and the last drag segment.
                     self.angle2 = -Angle(radians: Double(atan2(self.oldLocation.y - 150.0, self.oldLocation.x - 150.0))) // Winkel oldTranslation gegenüber Mitte Kreis
                     let x = ( cos(self.angle2.radians) * Double(self.translation.dx) - sin(self.angle2.radians) * Double(self.translation.dy) )
@@ -80,12 +80,12 @@ struct OneFingerRoationView: View {
                     
                     self.distance = self.distance + 0.125 * (angle.degrees >= 0 ? distance : -distance)
                     
-                    print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
-                    print(String(format: "Trans. new: (%6.4f, %6.4f)", self.translation.dx, self.translation.dy))
-                    print("x und y: (\(x), \(y)), angle2: \(self.angle2.degrees), angle: \(angle.degrees)")
-                    print(String(format: "Angle: %6.2f, %6.3f delta: %6.2f ", self.angle.degrees, self.angle2.degrees, angle.degrees))
-                    print(String(format: "Distance: %d, delta: %6.2f ,Start: (%6.2f, %6.2f)", Int(self.distance), distance, value.startLocation.x, value.startLocation.y))
-                    print("")
+//                    print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
+//                    print(String(format: "Trans. new: (%6.4f, %6.4f)", self.translation.dx, self.translation.dy))
+//                    print("x und y: (\(x), \(y)), angle2: \(self.angle2.degrees), angle: \(angle.degrees)")
+//                    print(String(format: "Angle: %6.2f, %6.3f delta: %6.2f ", self.angle.degrees, self.angle2.degrees, angle.degrees))
+//                    print(String(format: "Distance: %d, delta: %6.2f ,Start: (%6.2f, %6.2f)", Int(self.distance), distance, value.startLocation.x, value.startLocation.y))
+//                    print("")
                     
                     self.oldLocation = value.location
 //                    let hugo = max(0.0, (self.amount?.doubleValue ?? 0.0) + 0.2 * (angle.degrees >= 0 ? Double(distance) : Double(-distance)) )
@@ -107,7 +107,7 @@ struct OneFingerRoationView: View {
 struct AddOrChangeAmountOfIngredientView: View {
     @Environment(\.managedObjectContext) var viewContext
     var food: Food
-    var task: Task
+    var task: AddOrChangeTask
     @Binding var isPresented: Bool
     @Binding var presentationModeOfParentView: PresentationMode
 
@@ -171,14 +171,14 @@ struct AddOrChangeAmountOfIngredientView: View {
                 print("State: \(self.dragState), origin: \(value.startLocation), \(value.location)")
                 //                                        self.oldLocation = CGPoint(x: value.startLocation.x, y: value.startLocation.y)
                 self.oldLocation = CGPoint(x: value.location.x, y: value.location.y)
-                print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
+//                print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
             case .oldLocationInitilized:
                 self.newTranslation = CGVector(dx: value.location.x - self.oldLocation.x, dy: value.location.y - self.oldLocation.y)
 //                self.newTranslation = CGVector(dx: value.predictedEndLocation.x - self.oldLocation.x, dy: value.predictedEndLocation.y - self.oldLocation.y)
                 let distance = sqrt((self.newTranslation.dx * self.newTranslation.dx) + (self.newTranslation.dy * self.newTranslation.dy))
                 if distance >= 5 {
                     
-                    print("State: \(self.dragState), origin: \(value.startLocation), \(value.location)")
+//                    print("State: \(self.dragState), origin: \(value.startLocation), \(value.location)")
                     self.angle2 = -Angle(radians: Double(atan2(self.oldLocation.y - 150.0, self.oldLocation.x - 150.0))) // Winkel oldTranslation gegenüber Mitte Kreis
                     let x = ( cos(self.angle2.radians) * Double(self.newTranslation.dx) - sin(self.angle2.radians) * Double(self.newTranslation.dy) )
                     let y = ( sin(self.angle2.radians) * Double(self.newTranslation.dx) + cos(self.angle2.radians) * Double(self.newTranslation.dy) )
@@ -188,12 +188,12 @@ struct AddOrChangeAmountOfIngredientView: View {
                     
                     self.distance = self.distance + 0.125 * (angle.degrees >= 0 ? distance : -distance)
 
-                    print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
-                    print(String(format: "Trans. new: (%6.4f, %6.4f)", self.newTranslation.dx, self.newTranslation.dy))
-                    print("x und y: (\(x), \(y)), angle2: \(self.angle2.degrees), angle: \(angle.degrees)")
-                    print(String(format: "Angle: %6.2f, %6.3f delta: %6.2f ", self.angle.degrees, self.angle2.degrees, angle.degrees))
-                    print(String(format: "Distance: %d, delta: %6.2f ,Start: (%6.2f, %6.2f)", Int(self.distance), distance, value.startLocation.x, value.startLocation.y))
-                    print("")
+//                    print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
+//                    print(String(format: "Trans. new: (%6.4f, %6.4f)", self.newTranslation.dx, self.newTranslation.dy))
+//                    print("x und y: (\(x), \(y)), angle2: \(self.angle2.degrees), angle: \(angle.degrees)")
+//                    print(String(format: "Angle: %6.2f, %6.3f delta: %6.2f ", self.angle.degrees, self.angle2.degrees, angle.degrees))
+//                    print(String(format: "Distance: %d, delta: %6.2f ,Start: (%6.2f, %6.2f)", Int(self.distance), distance, value.startLocation.x, value.startLocation.y))
+//                    print("")
                     
                     self.oldLocation = value.location
                     let hugo = max(0.0, (self.amount?.doubleValue ?? 0.0) + 0.2 * (angle.degrees >= 0 ? Double(distance) : Double(-distance)) ).rounded()
@@ -262,12 +262,13 @@ struct AddOrChangeAmountOfIngredientView: View {
                 case .changeAmountOfIngredient(let ingredient):
                     self.amount = ingredient.amount
                     self.title = "Menge ändern"
+                    print("AddOrChangeamountOfIngredientView: in onAppear")
                 default: break
                 }
             }
             .navigationBarTitle(Text(self.title), displayMode: .inline)
             .navigationBarItems(leading:
-                                    Button("Zurück") { self.isPresented = false }.padding(),
+                                    Button("Abbrechen") { self.isPresented = false }.padding(),
                                 trailing:
                                     Button("Speichern") {
                                         self.save()
