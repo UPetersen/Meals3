@@ -100,8 +100,8 @@ final class HealthManager {
     ///
     /// BEWARE: A deletion should be made before the meal is deleted in the Meals Application. Otherwhise the mealID is not yet existent any more and it is not possible any more to get a hold on the respecitve entry in HealthKit.
     ///
-    /// HealthKit does not allow to update the quantities of a food correlation, thus, if an update is requested, the already stored food correlation will be deleted and afterwards a new food correlation for the meal will be saved in HealthKit.
-
+    /// HealthKit does not allow to update the quantities of a food correlation, thus, if an update is requested, the already stored food correlation
+    /// will be deleted and afterwards a new food correlation for the meal will be saved in HealthKit.
     /// - Parameters:
     ///   - meal: the meal which to be synchronized with HealthKit
     ///   - synchronisationMode: .store, .delete or .update
@@ -128,8 +128,43 @@ final class HealthManager {
                 await storeFoodCorrelationForMeal(meal)
             }
         }
+        
+        print("Finished sychronizing at Date ---- \(Date()) -----")
     }
     
+    class func synchronizeMeals(_ meals: [Meal]?) {
+
+        guard HKHealthStore.isHealthDataAvailable() else {
+            print("HealthKit is not available on this Device")
+            // let error = NSError(domain: "UPP.healthkit", code: 2, userInfo: [NSLocalizedDescriptionKey:"HealthKit is not available in this Device"])
+            return
+        }
+        
+        if let meals = meals {
+                        
+            Task {
+                print("#---------------------------------------------------")
+                print("Start Date: \(Date())")
+                print("We have \(meals.count) meals to store to HealthKit")
+                
+                for meal in Array(meals.reversed()) { // start with oldest entries.
+                    if meal.mealID == nil, meal.dateOfCreation != nil {
+                        meal.mealID = ISO8601DateFormatter().string(from: meal.dateOfCreation!)
+                    } else if meal.dateOfCreation == nil {
+                        print("Skipping this meal, since it has no mealID and no dateOfCreation.")
+                        continue
+                    }
+                    
+                    await deleteFoodCorrelationForMealID(meal.mealID!)
+                    await storeFoodCorrelationForMeal(meal)
+                }
+                
+                print("End Date: \(Date())")
+                print("#===================================================")
+            }
+        }
+    }
+
     
     /// Stores a meal as food correlation in HealthKit.
     ///
@@ -203,7 +238,7 @@ final class HealthManager {
         
         guard let sampleType = HKSampleType.correlationType(forIdentifier: .food)  else { return nil }
 
-        // Trick with Contiuation, see https://brunoscheufler.com/blog/2021-11-07-accessing-workouts-with-healthkit-and-swift
+        // Trick with Contiunation, see https://brunoscheufler.com/blog/2021-11-07-accessing-workouts-with-healthkit-and-swift
         let foodCorrelations = try? await withCheckedThrowingContinuation { (continuation: CheckedContinuation<[HKCorrelation], Error>) in
 
             healthKitStore.execute(

@@ -30,9 +30,9 @@ struct ContentView: View {
                 SearchBarView(searchText: self.$search.text)
                     .padding(.top, topMargin)
                 
-                Meals(search: self.search)
+                MealsView(search: self.search)
                 
-                MealsToolbar() //‚.environment(\.managedObjectContext, self.viewContext)
+                MealsViewToolbar() //‚.environment(\.managedObjectContext, self.viewContext)
             }
             .navigationViewStyle(StackNavigationViewStyle())
                 //            .navigationViewStyle(DoubleColumnNavigationViewStyle())

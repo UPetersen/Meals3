@@ -13,6 +13,7 @@ import CoreData
 
 struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     @Environment(\.managedObjectContext) var viewContext
+    @EnvironmentObject var currentMeal: CurrentMeal
     @ObservedObject var ingredientCollection: T
     @ObservedObject var search: Search
         
@@ -96,7 +97,6 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
                 }
             }
                 .environment(\.defaultMinListRowHeight, 1) // for invisible header and footer, which keep this space unfortunately
-//                .resignKeyboardOnDragGesture() // must be outside of the list
 
 //                .onTapGesture(count: 2) {
 //                    print("double tap")
@@ -121,7 +121,7 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
         
     @ViewBuilder func foodDetailView(food: Food) -> some View {
         FoodDetail(ingredientCollection: ingredientCollection, food: food)
-            .environmentObject( Meal.newestMeal(managedObjectContext: viewContext))
+//            .environmentObject(currentMeal)
     }
     
     func shouldLoadNextPage() {

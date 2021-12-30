@@ -9,7 +9,7 @@
 import SwiftUI
 import CoreData
 
-struct Meals: View {
+struct MealsView: View {
     
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var search: Search
@@ -59,8 +59,8 @@ struct Meals: View {
             ForEach(meals) {(meal: Meal) in
                 Section(header:
                     NavigationLink(destination: MealDetailView(meal: meal)
-                        .environment(\.managedObjectContext, self.viewContext)
-                        .environmentObject(self.currentMeal)
+                        .environment(\.managedObjectContext, viewContext)
+                        .environmentObject(currentMeal)
                     ) {
                         LazyView( MealsNutrients(meal: meal) )
 //                        LazyView( MealsNutrients(meal: meal).equatable() )

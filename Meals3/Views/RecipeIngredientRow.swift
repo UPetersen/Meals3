@@ -38,9 +38,9 @@ struct RecipeIngredientRow: View {
         }
             // TODO: hier geht's weiter: optionals rausmachen
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
-             AddOrChangeAmountOfIngredientView(food: self.ingredient.food!,
-                                         task: self.task!,
-                                         isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
+            AddOrChangeAmountOfIngredientView(food: self.ingredient.food!,
+                                              task: .changeAmountOfIngredient(self.ingredient as Ingredient),
+                                        isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
                 .environment(\.managedObjectContext, self.viewContext)
         })
     }

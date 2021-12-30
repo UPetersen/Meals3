@@ -10,7 +10,7 @@ import SwiftUI
 import CoreData
 import AVFoundation
 
-struct MealsToolbar: View {
+struct MealsViewToolbar: View {
     
     @Environment(\.managedObjectContext) var viewContext
     @State private var healthKitIsAuthorized: Bool = false
@@ -56,10 +56,11 @@ struct MealsToolbar: View {
     
     func menuActionSheet() -> ActionSheet {
         ActionSheet(title: Text("Es ist angerichtet."), message: nil, buttons: [
-            .default(Text("Neues Lebensmittel")){ self.createNewFood() },
-            .default(Text("Neues Rezept")){ self.createNewRecipe() },
-            .default(Text("Neue Mahlzeit")){ self.createNewMeal() },
-            .default(Text("Authorisiere Healthkit")){ self.authorizeHealthKit() },
+            .default(Text("Neues Lebensmittel"))         { self.createNewFood() },
+            .default(Text("Neues Rezept"))               { self.createNewRecipe() },
+            .default(Text("Neue Mahlzeit"))              { self.createNewMeal() },
+            .default(Text("Authorisiere Healthkit"))     { self.authorizeHealthKit() },
+//            .default(Text("Copy all meals to HealthKit")){ self.copyMealsToHealthKit() },
             .cancel(Text("Zurück"))
             ]
         )
@@ -87,7 +88,13 @@ struct MealsToolbar: View {
         self.isPresentingHealthAuthorizationConfirmationAlert = true
     }
 
-    
+//    func copyMealsToHealthKit() {
+//        print("Copy Meals to Healthkit")
+//        let meals = Meal.fetchAllMeals(managedObjectContext: viewContext)
+//        HealthManager.synchronizeMeals(meals)
+//    }
+
+
     func createNewFood() {
         try? self.viewContext.save()
         newFood = Food(context: viewContext)
@@ -105,7 +112,8 @@ struct MealsToolbar: View {
     
     func createNewMeal() {
         let meal = Meal(context: viewContext)
-        currentMeal.meal = meal
+//        currentMeal.meal = meal
+        currentMeal.meal = currentMeal.meal.dateOfCreation! > meal.dateOfCreation! ? currentMeal.meal : meal // faster than looking in the database.
         try? viewContext.save()
         HealthManager.synchronize(meal, withSynchronisationMode: .store)
     }
@@ -121,7 +129,7 @@ struct MainViewToolbar_Previews: PreviewProvider {
         let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
         return NavigationView {
-            return MealsToolbar()
+            return MealsViewToolbar()
                 .environment(\.managedObjectContext, viewContext)
                 .navigationBarTitle("Main view toolbar")
         }

@@ -75,7 +75,8 @@ struct MealsNutrients: View, Equatable {
         debugPrint("Will copy the meal \(meal) and make it the new current meal")
         if let newMeal = Meal.fromMeal(meal, inManagedObjectContext: viewContext) {
             HealthManager.synchronize(newMeal, withSynchronisationMode: .store)
-            currentMeal.meal = Meal.newestMeal(managedObjectContext: viewContext)
+//            currentMeal.meal = Meal.newestMeal(managedObjectContext: viewContext)
+            currentMeal.meal = currentMeal.meal.dateOfCreation! > newMeal.dateOfCreation! ? currentMeal.meal : newMeal // faster than looking in the database.
             try? viewContext.save()
         }
     }

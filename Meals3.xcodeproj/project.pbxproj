@@ -30,7 +30,7 @@
 		C60A871426BDAC280062944E /* TorchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60A871326BDAC280062944E /* TorchView.swift */; };
 		C60A871926BDD7120062944E /* OFFProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60A871826BDD7120062944E /* OFFProductView.swift */; };
 		C60CD80423BF63440041502C /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60CD80323BF63430041502C /* HealthManager.swift */; };
-		C60F510223A166AB009F2CDA /* Meals.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60F510123A166AB009F2CDA /* Meals.swift */; };
+		C60F510223A166AB009F2CDA /* MealsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60F510123A166AB009F2CDA /* MealsView.swift */; };
 		C61526A423BE58D6001A4D69 /* CurrentMeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61526A323BE58D6001A4D69 /* CurrentMeal.swift */; };
 		C61526A723BE5C9E001A4D69 /* AddOrChangeTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61526A623BE5C9E001A4D69 /* AddOrChangeTask.swift */; };
 		C619E06A239830E300410D8B /* NutrientSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C619E069239830E300410D8B /* NutrientSectionViewModel.swift */; };
@@ -41,7 +41,7 @@
 		C62592EF26BAD847009F1CFB /* OFFManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62592EE26BAD847009F1CFB /* OFFManager.swift */; };
 		C62592F726BADB7F009F1CFB /* OFFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62592F626BADB7F009F1CFB /* OFFView.swift */; };
 		C62AF91A259A0E340005F044 /* CodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62AF919259A0E340005F044 /* CodeScannerView.swift */; };
-		C62BB6CC23B003D0000132F0 /* MealsToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6CB23B003D0000132F0 /* MealsToolbar.swift */; };
+		C62BB6CC23B003D0000132F0 /* MealsViewToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6CB23B003D0000132F0 /* MealsViewToolbar.swift */; };
 		C62BB6CE23B00700000132F0 /* GeneralSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6CD23B00700000132F0 /* GeneralSearch.swift */; };
 		C62BB6D023B0A603000132F0 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6CF23B0A603000132F0 /* Search.swift */; };
 		C62BB6D223B0A6D0000132F0 /* FoodListSortRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6D123B0A6D0000132F0 /* FoodListSortRule.swift */; };
@@ -164,7 +164,7 @@
 		C60A871326BDAC280062944E /* TorchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorchView.swift; sourceTree = "<group>"; };
 		C60A871826BDD7120062944E /* OFFProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OFFProductView.swift; sourceTree = "<group>"; };
 		C60CD80323BF63430041502C /* HealthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthManager.swift; sourceTree = "<group>"; };
-		C60F510123A166AB009F2CDA /* Meals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meals.swift; sourceTree = "<group>"; };
+		C60F510123A166AB009F2CDA /* MealsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsView.swift; sourceTree = "<group>"; };
 		C61526A323BE58D6001A4D69 /* CurrentMeal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMeal.swift; sourceTree = "<group>"; };
 		C61526A623BE5C9E001A4D69 /* AddOrChangeTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrChangeTask.swift; sourceTree = "<group>"; };
 		C619E069239830E300410D8B /* NutrientSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutrientSectionViewModel.swift; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 		C62592EE26BAD847009F1CFB /* OFFManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OFFManager.swift; sourceTree = "<group>"; };
 		C62592F626BADB7F009F1CFB /* OFFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OFFView.swift; sourceTree = "<group>"; };
 		C62AF919259A0E340005F044 /* CodeScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeScannerView.swift; sourceTree = "<group>"; };
-		C62BB6CB23B003D0000132F0 /* MealsToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsToolbar.swift; sourceTree = "<group>"; };
+		C62BB6CB23B003D0000132F0 /* MealsViewToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsViewToolbar.swift; sourceTree = "<group>"; };
 		C62BB6CD23B00700000132F0 /* GeneralSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSearch.swift; sourceTree = "<group>"; };
 		C62BB6CF23B0A603000132F0 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Search.swift; path = Meals3/Views/Search.swift; sourceTree = SOURCE_ROOT; };
 		C62BB6D123B0A6D0000132F0 /* FoodListSortRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodListSortRule.swift; sourceTree = "<group>"; };
@@ -374,9 +374,9 @@
 				C648804023B90EA700294EFD /* MealDetailToolbar.swift */,
 				C648803E23B8593C00294EFD /* MealDetailView.swift */,
 				C690BA9323A80CE400581E88 /* MealIngredientCellView.swift */,
-				C60F510123A166AB009F2CDA /* Meals.swift */,
+				C60F510123A166AB009F2CDA /* MealsView.swift */,
 				C69779BF2378097100B3C72C /* MealsNutrients.swift */,
-				C62BB6CB23B003D0000132F0 /* MealsToolbar.swift */,
+				C62BB6CB23B003D0000132F0 /* MealsViewToolbar.swift */,
 				C65E5CEC23C34ED2006845FA /* RecipeAmountRow.swift */,
 				C61B3B0B23C1C8B200CCDD90 /* RecipeDetail.swift */,
 				C68AE91C23C1DFCE00A1348B /* RecipeDetailIngredients.swift */,
@@ -734,10 +734,10 @@
 				C62592E226BA9A5E009F1CFB /* NetworkRequest.swift in Sources */,
 				C604B2AF236C247A006BFE9E /* ReferenceWeightExtension.swift in Sources */,
 				C604B2B7236C247A006BFE9E /* GroupExtension.swift in Sources */,
-				C62BB6CC23B003D0000132F0 /* MealsToolbar.swift in Sources */,
+				C62BB6CC23B003D0000132F0 /* MealsViewToolbar.swift in Sources */,
 				C62592F726BADB7F009F1CFB /* OFFView.swift in Sources */,
 				C604B2BB236C24E5006BFE9E /* Result.swift in Sources */,
-				C60F510223A166AB009F2CDA /* Meals.swift in Sources */,
+				C60F510223A166AB009F2CDA /* MealsView.swift in Sources */,
 				C6FB71F726B99BA6006009BD /* OFFResponse.swift in Sources */,
 				C69779C02378097100B3C72C /* MealsNutrients.swift in Sources */,
 				C690BA9423A80CE400581E88 /* MealIngredientCellView.swift in Sources */,
