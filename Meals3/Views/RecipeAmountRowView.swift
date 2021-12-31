@@ -10,7 +10,7 @@ import SwiftUI
 
 fileprivate let numberFormatter = NumberFormatter()
 
-struct RecipeAmountRow: View {
+struct RecipeAmountRowView: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var recipe: Recipe
     

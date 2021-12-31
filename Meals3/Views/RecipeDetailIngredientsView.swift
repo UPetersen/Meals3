@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct RecipeDetailIngredients: View {
+struct RecipeDetailIngredientsView: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var recipe: Recipe
     
@@ -18,7 +18,7 @@ struct RecipeDetailIngredients: View {
                 Text("Leeres Rezept").foregroundColor(Color(.placeholderText))
             } else {
                 ForEach(recipe.filteredAndSortedIngredients()!) { (recipeIngredient: RecipeIngredient) in
-                    RecipeIngredientRow(ingredient: recipeIngredient)
+                    RecipeIngredientRowView(ingredient: recipeIngredient)
                 }
                 .onDelete() { IndexSet in
                     print("Deleting recipe ingredient from food.")

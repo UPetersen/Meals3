@@ -78,7 +78,7 @@ struct MealDetailView: View {
                     MealDetailIngredients(meal: meal)
                 }
             }
-            MealDetailToolbar(meal: meal)
+            MealDetailViewToolbar(meal: meal)
         }
         .navigationBarTitle("Mahlzeit-Details")
         .navigationBarItems(trailing: EditButton().padding())

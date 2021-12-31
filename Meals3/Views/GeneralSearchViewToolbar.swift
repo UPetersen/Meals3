@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct GeneralSearchToolbar: View {
+struct GeneralSearchViewToolbar: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var search: Search
@@ -79,7 +79,7 @@ struct GeneralSearchToolbar_Previews: PreviewProvider {
         NavigationView {
             VStack {
                 Spacer()
-                GeneralSearchToolbar(search: Search())
+                GeneralSearchViewToolbar(search: Search())
             }
         }
         .navigationBarTitle("Lebensmittel")

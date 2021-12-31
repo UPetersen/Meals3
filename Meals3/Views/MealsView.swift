@@ -62,7 +62,7 @@ struct MealsView: View {
                         .environment(\.managedObjectContext, viewContext)
                         .environmentObject(currentMeal)
                     ) {
-                        LazyView( MealsNutrients(meal: meal) )
+                        LazyView( MealsNutrientsView(meal: meal) )
 //                        LazyView( MealsNutrients(meal: meal).equatable() )
 //                        MealsNutrients(meal: meal).equatable()
 //                        MealsNutrients(meal: meal)
@@ -109,7 +109,7 @@ struct MealsView: View {
     @ViewBuilder func lazyFoodDetail(food: Food) -> some View {
 //        FoodDetail(ingredientCollection: self.currentMeal.meal, food: food)
 //            .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
-        FoodDetail(ingredientCollection: self.currentMeal.meal, food: food)
+        FoodDetailView(ingredientCollection: self.currentMeal.meal, food: food)
     }
 
     func deleteIngredients(atIndexSet indexSet: IndexSet, fromMeal meal: Meal) {

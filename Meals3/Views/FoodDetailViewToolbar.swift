@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct FoodDetailToolbar<T>: View where T: IngredientCollection {
+struct FoodDetailViewToolbar<T>: View where T: IngredientCollection {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.managedObjectContext) var viewContext
 

@@ -25,7 +25,7 @@ fileprivate let dateFormatter: DateFormatter = {
 }()
 
 
-struct FoodDetail<T>: View where T: IngredientCollection {
+struct FoodDetailView<T>: View where T: IngredientCollection {
 
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
@@ -218,11 +218,11 @@ struct FoodDetail<T>: View where T: IngredientCollection {
             }
             .environment(\.defaultMinListRowHeight, 1)
 
-            FoodDetailToolbar(food: food, ingredientCollection: ingredientCollection, showingAddOrChangeAmountOfFoodView: $showingAddOrChangeAmountOfFoodView)
+            FoodDetailViewToolbar(food: food, ingredientCollection: ingredientCollection, showingAddOrChangeAmountOfFoodView: $showingAddOrChangeAmountOfFoodView)
             
             // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!
             if showingRecipeDetail && food.recipe != nil {
-                NavigationLink(destination: RecipeDetail(recipe: self.food.recipe!), isActive: self.$showingRecipeDetail, label: { EmptyView() })
+                NavigationLink(destination: RecipeDetailView(recipe: self.food.recipe!), isActive: self.$showingRecipeDetail, label: { EmptyView() })
                         .hidden()
             }
 
@@ -330,7 +330,7 @@ struct FoodDetail_Previews: PreviewProvider {
         return SwiftUI.Group {
             SwiftUI.Group {
                 NavigationView {
-                    FoodDetail(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
+                    FoodDetailView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
                         .environment(\.managedObjectContext, context)
                         .navigationBarTitle(food.name ?? "Lebensmittel")
                 }
@@ -340,7 +340,7 @@ struct FoodDetail_Previews: PreviewProvider {
             
             SwiftUI.Group {
                 NavigationView {
-                    FoodDetail(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
+                    FoodDetailView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
                         .environment(\.managedObjectContext, context)
                         .navigationBarTitle(food.name ?? "Lebensmittel")
                 }
@@ -350,7 +350,7 @@ struct FoodDetail_Previews: PreviewProvider {
             
             SwiftUI.Group {
                 NavigationView {
-                    FoodDetail(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
+                    FoodDetailView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
                         .environment(\.managedObjectContext, context)
                         .navigationBarTitle(food.name ?? "Lebensmittel")
                 }

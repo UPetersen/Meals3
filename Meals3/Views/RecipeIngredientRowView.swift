@@ -1,5 +1,5 @@
 //
-//  RecipeIngredientRow.swift
+//  RecipeIngredientRowView.swift
 //  Meals3
 //
 //  Created by Uwe Petersen on 05.01.20.
@@ -10,7 +10,7 @@ import SwiftUI
 
 fileprivate let formatter = NumberFormatter()
 
-struct RecipeIngredientRow: View {
+struct RecipeIngredientRowView: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredient: RecipeIngredient
 

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct RecipeDetailToolbar: View {
+struct RecipeDetailViewToolbar: View {
     @ObservedObject var recipe: Recipe
     
     @Environment(\.managedObjectContext) var viewContext
@@ -26,7 +26,7 @@ struct RecipeDetailToolbar: View {
 
             Spacer()
             
-            NavigationLink(destination: GeneralSearch(ingredientCollection: self.recipe).environment(\.managedObjectContext, viewContext)) {
+            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.recipe).environment(\.managedObjectContext, viewContext)) {
                 Image(systemName: "magnifyingglass").padding(.horizontal)
             }
 

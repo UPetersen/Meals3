@@ -11,7 +11,7 @@ import CoreData
 
 
 
-struct GeneralSearchResults<T>: View where T: IngredientCollection  {
+struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
     @Environment(\.managedObjectContext) var viewContext
     @EnvironmentObject var currentMeal: CurrentMeal
     @ObservedObject var ingredientCollection: T
@@ -81,7 +81,7 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
                 
                 ForEach(foods) { (food: Food) in
                     NavigationLink(destination: LazyView(self.foodDetailView(food: food)) ) {
-                             FoodNutrientsRow(food: food)
+                             FoodNutrientsRowView(food: food)
                     }
                 }
                 
@@ -120,7 +120,7 @@ struct GeneralSearchResults<T>: View where T: IngredientCollection  {
     }
         
     @ViewBuilder func foodDetailView(food: Food) -> some View {
-        FoodDetail(ingredientCollection: ingredientCollection, food: food)
+        FoodDetailView(ingredientCollection: ingredientCollection, food: food)
 //            .environmentObject(currentMeal)
     }
     

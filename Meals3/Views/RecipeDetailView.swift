@@ -35,11 +35,11 @@ import CoreData
 //    }()
 //}
 
-struct RecipeDetail: View {
+struct RecipeDetailView: View {
     @ObservedObject var recipe: Recipe
     @Environment(\.managedObjectContext) var viewContext
     
-    let explanationString = "Beim Zubereiten eines Rezeptes kann sich das Gewicht durch erhitzen (und einhergehendem Verdampfen von Wasseranteilen) verringern und dadurch der Nährwertanteil pro 100g erhöhen. Geben sie hier das Gewicht des fertig zubereiteten Gerichts an, damit dies bei der Nährwertberechnung entsprechend berücksichtigt wird.\nBeachten Sie dass, dieser Wert mit jeder Änderung von Zutaten überschrieben wird."
+    let explanationString = "Beim Zubereiten eines Rezeptes kann sich das Gewicht durch erhitzen (und einhergehendem Verdampfen von Wasseranteilen) verringern und dadurch der Nährwertanteil pro 100g erhöhen. Geben sie hier das Gewicht des fertig zubereiteten Gerichts an, damit dies bei der Nährwertberechnung entsprechend berücksichtigt wird.\nBeachten Sie, dass dieser Wert mit jeder Änderung von Zutaten überschrieben wird."
     
     var body: some View {
     
@@ -72,16 +72,16 @@ struct RecipeDetail: View {
 
                 Section(footer: Text(explanationString)) {
                     // TODO: make this a multiline TextField, there are various solutions on stackoverflow
-                    RecipeAmountRow(recipe: recipe)
+                    RecipeAmountRowView(recipe: recipe)
                     Text("Amount is \(recipe.amount ?? NSNumber(value: -999))")
 //                    TextField(<#T##title: StringProtocol##StringProtocol#>, value: <#T##Binding<T>#>, formatter: <#T##Formatter#>, onEditingChanged: <#T##(Bool) -> Void#>, onCommit: <#T##() -> Void#>)
                 }
 
                 Section(header: headerView(), footer: footerView()) {
-                    RecipeDetailIngredients(recipe: recipe)
+                    RecipeDetailIngredientsView(recipe: recipe)
                 }
             }
-            RecipeDetailToolbar(recipe: recipe)
+            RecipeDetailViewToolbar(recipe: recipe)
         }
             .navigationBarTitle("Rezept-Details")
             .navigationBarItems(trailing: EditButton().padding())
@@ -153,7 +153,7 @@ struct RecipeDetail_Previews: PreviewProvider {
     
         static var previews: some View {
             return NavigationView {
-            RecipeDetail(recipe: Recipe())
+            RecipeDetailView(recipe: Recipe())
         }
     }
 

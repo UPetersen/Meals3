@@ -33,7 +33,7 @@ struct MealsViewToolbar: View {
 
             Spacer()
 
-            NavigationLink(destination: GeneralSearch(ingredientCollection: self.currentMeal.meal).environment(\.managedObjectContext, viewContext)) {
+            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.currentMeal.meal).environment(\.managedObjectContext, viewContext)) {
                 Image(systemName: "magnifyingglass").padding(.horizontal)
             }
             

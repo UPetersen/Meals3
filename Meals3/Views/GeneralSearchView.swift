@@ -9,7 +9,7 @@
 import SwiftUI
 
 
-struct GeneralSearch<T>: View where T: IngredientCollection  {
+struct GeneralSearchView<T>: View where T: IngredientCollection  {
 //struct GeneralSearchView: View  {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
@@ -20,12 +20,11 @@ struct GeneralSearch<T>: View where T: IngredientCollection  {
         
          VStack {
             SearchBarView(searchText: $search.text)
-//                .resignKeyboardOnDragGesture()
 
-            GeneralSearchResults(search: search, ingredientCollection: self.ingredientCollection)
+            GeneralSearchResultsView(search: search, ingredientCollection: self.ingredientCollection)
 
             // Bottom tool bar
-            GeneralSearchToolbar(search: search)
+            GeneralSearchViewToolbar(search: search)
          }
          .onAppear() {
         }

@@ -28,7 +28,7 @@ fileprivate let numberFormatter: NumberFormatter =  {() -> NumberFormatter in
 ///
 /// `"65 kcal, 4,7 g KH, 3,4 g P, 3,6 g F, 0 g Fr., 0 g Gl."`
 
-struct FoodNutrientsRow: View {
+struct FoodNutrientsRowView: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var food: Food
 //    var formatter: NumberFormatter
@@ -75,7 +75,7 @@ struct FoodNutrientsView_Previews: PreviewProvider {
         
         return NavigationView {
             List {
-                FoodNutrientsRow(food: food)
+                FoodNutrientsRowView(food: food)
                     .environment(\.managedObjectContext, context)
                     .navigationBarTitle("Lebensmittelsuche")
             }
