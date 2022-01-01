@@ -14,7 +14,7 @@ struct GeneralSearchView<T>: View where T: IngredientCollection  {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
 
-    @ObservedObject var search = Search()
+    @ObservedObject var search = SearchViewModel()
 
     var body: some View {
         

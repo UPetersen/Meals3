@@ -15,7 +15,7 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
     @Environment(\.managedObjectContext) var viewContext
     @EnvironmentObject var currentMeal: CurrentMeal
     @ObservedObject var ingredientCollection: T
-    @ObservedObject var search: Search
+    @ObservedObject var search: SearchViewModel
         
     private var nsFetchRequest: NSFetchRequest<Food> // used to derive the number of fetched foods without actually fetching any
     @FetchRequest var foods: FetchedResults<Food>    // result of the fetch
@@ -37,7 +37,7 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
     @State private var footerAppeared = false
     @State private var footerDisAppeared = false
 
-    init(search: Search, ingredientCollection: T) {
+    init(search: SearchViewModel, ingredientCollection: T) {
         print("initialization of search results")
         
         self.search = search

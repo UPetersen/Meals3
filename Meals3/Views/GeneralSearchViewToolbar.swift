@@ -11,7 +11,7 @@ import SwiftUI
 struct GeneralSearchViewToolbar: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.managedObjectContext) var viewContext
-    @ObservedObject var search: Search
+    @ObservedObject var search: SearchViewModel
     
     @State private var showingSelection = false
     @State private var showingSortRules = false
@@ -79,7 +79,7 @@ struct GeneralSearchToolbar_Previews: PreviewProvider {
         NavigationView {
             VStack {
                 Spacer()
-                GeneralSearchViewToolbar(search: Search())
+                GeneralSearchViewToolbar(search: SearchViewModel())
             }
         }
         .navigationBarTitle("Lebensmittel")

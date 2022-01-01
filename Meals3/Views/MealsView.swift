@@ -12,7 +12,7 @@ import CoreData
 struct MealsView: View {
     
     @Environment(\.managedObjectContext) var viewContext
-    @ObservedObject var search: Search
+    @ObservedObject var search: SearchViewModel
     private var ingredientsPredicate: NSPredicate?
         
     @State private var showingDeleteConfirmation = false
@@ -25,7 +25,7 @@ struct MealsView: View {
 //    @State private var scrollingProxy: ListScrollingProxy = ListScrollingProxy() // proxy helper
     private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
         
-    init(search: Search) {
+    init(search: SearchViewModel) {
         print("Init of meals view")
         self.search = search
         let searchFilter = SearchFilter.contains

@@ -8,7 +8,7 @@
 import Combine
 import CoreData
 
-class Search: ObservableObject {
+class SearchViewModel: ObservableObject {
     @Published var text: String = "" {
         didSet {
             fetchOffset = 0

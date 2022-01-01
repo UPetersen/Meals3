@@ -21,7 +21,7 @@ private let dateFormatter: DateFormatter = {
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
-    @ObservedObject var search: Search // = Search()
+    @ObservedObject var search: SearchViewModel // = Search()
     
     var body: some View {
         
@@ -52,7 +52,7 @@ let topMargin: CGFloat = 9
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let search = Search()
+        let search = SearchViewModel()
         return ContentView(search: search).environment(\.managedObjectContext, context)
     }
 }
