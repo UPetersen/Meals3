@@ -19,6 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
+        // Resign keyboard on drag gesture, new version from https://stackoverflow.com/a/64536489/3687284 that has no side effects on the back button (as head the previous one)
+        UIScrollView.appearance().keyboardDismissMode = .onDrag
+        
         // Get the managed object context from the shared persistent container
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy // recommendation from hackingwithswift.com
@@ -45,14 +48,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // Speed up all animations (view transitions)
             window.layer.speed = 2.0
             
-            // Resign keyboard on pan gesture, modified version of https://stackoverflow.com/a/60010955/3687284
-//            let panGesture = AnyPanGestureRecognizer(target: self, action: nil)
-            let panGesture = AnyPanGestureRecognizer(target: self, action:#selector(handlePan(sender:)))
-            panGesture.requiresExclusiveTouchType = false
-            panGesture.cancelsTouchesInView = false
-            panGesture.delegate = self //I don't use window as delegate to minimize possible side effects
-            window.addGestureRecognizer(panGesture)
-
             self.window = window
             window.makeKeyAndVisible()
         }
