@@ -69,7 +69,6 @@
 		C69779C02378097100B3C72C /* MealsNutrientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69779BF2378097100B3C72C /* MealsNutrientsView.swift */; };
 		C6AD65F4236B5D750021D5A6 /* Event+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AD65F2236B5D750021D5A6 /* Event+CoreDataClass.swift */; };
 		C6AD65F5236B5D750021D5A6 /* Event+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AD65F3236B5D750021D5A6 /* Event+CoreDataProperties.swift */; };
-		C6BEFF0E2440CDEE00A4C051 /* AnyPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BEFF0D2440CDEE00A4C051 /* AnyPanGestureRecognizer.swift */; };
 		C6C61F17238EE87F009E2F98 /* NSNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */; };
 		C6D58A7523B7CB9A0037A589 /* FoodNutrientsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D58A7423B7CB9A0037A589 /* FoodNutrientsRowView.swift */; };
 		C6E20A2626BD45710021E1FB /* OffJsonSampleFile in Resources */ = {isa = PBXBuildFile; fileRef = C6E20A2526BD45710021E1FB /* OffJsonSampleFile */; };
@@ -205,7 +204,6 @@
 		C69779BF2378097100B3C72C /* MealsNutrientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsNutrientsView.swift; sourceTree = "<group>"; };
 		C6AD65F2236B5D750021D5A6 /* Event+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C6AD65F3236B5D750021D5A6 /* Event+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		C6BEFF0D2440CDEE00A4C051 /* AnyPanGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyPanGestureRecognizer.swift; sourceTree = "<group>"; };
 		C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNumberTextField.swift; sourceTree = "<group>"; };
 		C6D58A7423B7CB9A0037A589 /* FoodNutrientsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutrientsRowView.swift; sourceTree = "<group>"; };
 		C6E20A2526BD45710021E1FB /* OffJsonSampleFile */ = {isa = PBXFileReference; lastKnownFileType = text; path = OffJsonSampleFile; sourceTree = "<group>"; };
@@ -345,7 +343,6 @@
 				C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */,
 				C65768432376B94800D6CB98 /* SearchBarView.swift */,
 				C62E11742440485500F637AC /* ListScrollingHelper.swift */,
-				C6BEFF0D2440CDEE00A4C051 /* AnyPanGestureRecognizer.swift */,
 			);
 			path = HelperViews;
 			sourceTree = "<group>";
@@ -707,7 +704,6 @@
 				C6F45BA0236B65AD00C4FAC3 /* SubGroup+CoreDataClass.swift in Sources */,
 				C604B2B0236C247A006BFE9E /* PreparationExtension.swift in Sources */,
 				C6F45B93236B65AD00C4FAC3 /* Brand+CoreDataProperties.swift in Sources */,
-				C6BEFF0E2440CDEE00A4C051 /* AnyPanGestureRecognizer.swift in Sources */,
 				C6F45B86236B65AD00C4FAC3 /* Group+CoreDataClass.swift in Sources */,
 				C6FE88BE236B5A3100881ACB /* SceneDelegate.swift in Sources */,
 				C65768442376B94800D6CB98 /* SearchBarView.swift in Sources */,
