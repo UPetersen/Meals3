@@ -30,25 +30,45 @@ struct FoodNumberTextFieldWithKey: View {
             get: {self.food.value(forKey: self.key) as? NSNumber ?? nil},
             set: {self.food.setValue($0, forKey: self.key)}
         )
-        
-        if let nutrient = Nutrient.nutrientForKey(key, inManagedObjectContext: self.viewContext) {
 
-            return AnyView( HStack {
+        if let nutrient = Nutrient.nutrientForKey(key, inManagedObjectContext: self.viewContext) {
+            
+            HStack {
                 Text(nutrient.name ?? "no name given")
                 Spacer()
-
-                SwiftUI.Group {
+  
                     NSNumberTextField(label: "", value: value, formatter: numberFormatter)
+                        .foodInputFieldEditingModifier(editingDisabled: editingDisabled)
                     Text(nutrient.hkDispUnitText)
-                }
-                .foodInputFieldEditingModifier(editingDisabled: editingDisabled)
-
-            })
+            }
         } else {
-            return AnyView( HStack {
+            HStack {
                 Text("no name given")
-            })
+            }
         }
+
+//        if let nutrient = Nutrient.nutrientForKey(key, inManagedObjectContext: self.viewContext) {
+//
+//            return AnyView(
+//                HStack {
+//                    Text(nutrient.name ?? "no name given")
+//                    Spacer()
+//
+//                    SwiftUI.Group {
+//                        NSNumberTextField(label: "", value: value, formatter: numberFormatter)
+//                        Text(nutrient.hkDispUnitText)
+//                    }
+//                    .foodInputFieldEditingModifier(editingDisabled: editingDisabled)
+//
+//                }
+//            )
+//        } else {
+//            return AnyView(
+//                HStack {
+//                    Text("no name given")
+//                }
+//            )
+//        }
     }
 }
 
