@@ -57,21 +57,16 @@ struct FoodInputFieldEditingModifier: ViewModifier {
     var editingDisabled: Bool = true
     
     func body(content: Content) -> some View {
-        
+
         if editingDisabled {
-            return AnyView (
-                content
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .foregroundColor((Color(.secondaryLabel)))
-                    .disabled(editingDisabled)
-            )
+            content
+                .textFieldStyle(PlainTextFieldStyle())
+                .foregroundColor((Color(.secondaryLabel)))
+                .disabled(editingDisabled)
         } else {
-            return AnyView(
-                content
-//                    .textFieldStyle(.automatic)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .disabled(editingDisabled)
-            )
+            content
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .disabled(editingDisabled)
         }
     }
 }

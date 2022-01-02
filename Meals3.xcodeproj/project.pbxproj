@@ -347,13 +347,6 @@
 			path = HelperViews;
 			sourceTree = "<group>";
 		};
-		C65D5D22239ECB4B00E7512A /* NotNeededAnyMore */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = NotNeededAnyMore;
-			sourceTree = "<group>";
-		};
 		C66A1C222378413C0032D2A4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -477,7 +470,6 @@
 			children = (
 				C62AF918259A0D8C0005F044 /* OpenFoocFactsScanner */,
 				C648804223B912AA00294EFD /* HelperViews */,
-				C65D5D22239ECB4B00E7512A /* NotNeededAnyMore */,
 				C66A1C222378413C0032D2A4 /* Views */,
 				C604B2C0236DEDD8006BFE9E /* Meals3.entitlements */,
 				C6AD65F6236B60290021D5A6 /* Model */,
