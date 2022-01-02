@@ -127,6 +127,7 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                             Text("\(group.key ?? "") \(group.name ?? "")").tag(group as Meals3.Group?)
                         }
                     })
+                        .disabled(editingDisabled)
                     if fetchedSubGroups != nil {
                         Picker("Untergr.", selection: selectedSubGroup, content: {
                             Text("").tag(nil as SubGroup?)
@@ -134,6 +135,7 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                                 Text("\(subGroup.key ?? "") \(subGroup.name ?? "")").tag(subGroup as SubGroup?)
                             }
                         })
+                            .disabled(editingDisabled)
                     }
                     if fetchedDetails != nil {
                         Picker("Detail", selection: selectedDetail, content: {
@@ -142,6 +144,7 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                                 Text("\(detail.key ?? "") \(detail.name ?? "")").tag(detail as Detail?)
                             }
                         })
+                            .disabled(editingDisabled)
                     }
                     if fetchedPreparations != nil {
                         Picker("Zuber.", selection: selectedPreparation, content: {
@@ -150,6 +153,7 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                                 Text("\(preparation.key ?? "") \(preparation.name ?? "")").tag(preparation as Preparation?)
                             }
                         })
+                            .disabled(editingDisabled)
                     }
                     Picker("Ref.-Gew.", selection: selectedReferenceWeight, content: {
                         Text("").tag(nil as ReferenceWeight?)
@@ -157,7 +161,8 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                             Text("\(referenceWeight.key ?? "") \(referenceWeight.name ?? "")").tag(referenceWeight as ReferenceWeight?)
                         }
                     })
-                    
+                        .disabled(editingDisabled)
+
                     SwiftUI.Group() { // Group, because more than 10 elements otherwhise
                         HStack {
                             Text("Quelle")

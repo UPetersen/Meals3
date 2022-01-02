@@ -275,9 +275,9 @@ struct AddOrChangeAmountOfIngredientView: View {
                                     }.padding()
             )
         }
-        .onTapGesture(count: 2) {
-            self.save()
-        }
+//        .onTapGesture(count: 2) {
+//            self.save()
+//        }
     }
     
     
