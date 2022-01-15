@@ -21,17 +21,19 @@ struct OFFView: View {
             
             VStack {
                 if offManager.state == .isScanning {
-                    ZStack(alignment: .bottom) {
-                        CodeScannerView(
-                            codeTypes: [.ean13, .ean8],
-                            completion: { result in
-                                offManager.finishedScanningWithResult(result)
-                            }
-                        )
-                        TorchView()
-                            .padding()
+                    VStack(alignment: .center) {
+                        Text("Kamera auf den Barcode der Verpackung richten.")
+                        ZStack(alignment: .bottom) {
+                            CodeScannerView(
+                                codeTypes: [.ean13, .ean8],
+                                completion: { result in
+                                    offManager.finishedScanningWithResult(result)
+                                }
+                            )
+                            TorchView()
+                                .padding()
+                        }
                     }
-                    
                 }
                 
                 if offManager.state == .isFetching {

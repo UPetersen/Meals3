@@ -55,7 +55,7 @@ struct MealsNutrientsView: View, Equatable {
                    label: { Image(systemName: "doc.on.doc").padding(.leading)
             })
         }.onAppear() {
-            print("In MealsNutrients")
+            print("In MealsNutrients .onAppear.")
         }
     }
     

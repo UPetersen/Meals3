@@ -90,7 +90,6 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
     }
 
     
-    
     var nutrientSections = NutrientSectionViewModel.sections()
     
     
@@ -196,7 +195,6 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                             Text(food.key ?? "")
                         }
                     }
-                    
                 }.lineLimit(nil)
                 
                 // Remaining sections, Button to ask user if he wants to see all nutrients

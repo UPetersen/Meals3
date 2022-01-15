@@ -47,6 +47,17 @@ struct OFFProductView: View {
                         rowView(leftString: "Status", rightString: "\(response.status) (\(response.statusVerbose))")
                             .padding(.bottom)
                     }
+                    Section() {
+                        HStack() {
+                            Spacer()
+                            Button("Das Lebensmittel in Open Foods Facts hinzufügen.") {
+                                // I don't know how to open the app on the phone directly (if installed), thus, open the app in the app store.
+                                UIApplication.shared.open(URL(string: "https://apps.apple.com/us/app/open-food-facts-product-scan/id588797948")!, options: [:], completionHandler: nil)
+                            }
+                            .multilineTextAlignment(.center)
+                            Spacer()
+                        }
+                    }
                 }
                 
                 if let response = offManager.offResponse, let product = offManager.offResponse?.product {
