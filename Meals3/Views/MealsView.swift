@@ -58,31 +58,31 @@ struct MealsView: View {
     var body: some View {
 
         ScrollViewReader { proxy in
-                List {
-                    ForEach(meals, id: \.self) {(meal: Meal) in
-                        Section(header:
-                            NavigationLink(destination: MealDetailView(meal: meal)
-                                .environment(\.managedObjectContext, viewContext)
-                                .environmentObject(currentMeal)
-                            ) {
-                                LazyView( MealsNutrientsView(meal: meal) )
-                            }
-                        ) {
-                            ForEach(meal.filteredAndSortedMealIngredients(predicate: ingredientsPredicate)!) { (mealIngredient: MealIngredient) in
-                                NavigationLink(destination: lazyFoodDetail(food: mealIngredient.food!)) {
-                                    MealIngredientCellView(mealIngredient: mealIngredient) // .equatable()
-                                }
-                            }
-                            .onDelete() { indexSet in
-                                deleteIngredients(atIndexSet: indexSet, fromMeal: meal)
+            List {
+                ForEach(meals) { meal in
+                    Section(header:
+                                NavigationLink(destination: MealDetailView(meal: meal)
+//                                    .environment(\.managedObjectContext, viewContext)
+//                                    .environmentObject(currentMeal)
+                                ) {
+                        LazyView( MealsNutrientsView(meal: meal) )
+                    })
+                    {
+                        ForEach(meal.filteredAndSortedMealIngredients(predicate: ingredientsPredicate)!) {  mealIngredient in
+                            NavigationLink(destination: lazyFoodDetail(food: mealIngredient.food!)) {
+                                MealIngredientCellView(mealIngredient: mealIngredient) // .equatable()
                             }
                         }
-                        .id(meal) // needed for scrolling to top
+                        .onDelete() { indexSet in
+                            deleteIngredients(atIndexSet: indexSet, fromMeal: meal)
+                        }
                     }
-                    .onMove(perform: move)
+                    .id(meal) // needed for scrolling to top
                 }
-                .onChange(of: currentMeal.meal) { meal in proxy.scrollTo(meal) } // scroll to current meal if current meal changes
-
+                .onMove(perform: move)
+            }
+            .onChange(of: currentMeal.meal) { meal in proxy.scrollTo(meal) } // scroll to current meal if current meal changes
+            
         }
         .onReceive(didSave) { _ in
 //            print("Received self.didSave")
