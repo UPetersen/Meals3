@@ -81,7 +81,8 @@ struct MealsView: View {
                 }
                 .onMove(perform: move)
             }
-            .onChange(of: currentMeal.meal) { meal in proxy.scrollTo(meal) } // scroll to current meal if current meal changes
+            .onChange(of: search.text, perform: {_ in proxy.scrollTo(meals.first, anchor: .top)}) // scroll to top, when editing search field (incl. cancel)
+            .onChange(of: currentMeal.meal) { meal in proxy.scrollTo(meal, anchor: .top) } // scroll to current meal if current meal changes
             
         }
         .onReceive(didSave) { _ in

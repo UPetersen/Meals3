@@ -20,8 +20,7 @@ private let dateFormatter: DateFormatter = {
 }()
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) var viewContext
-    @ObservedObject var search: SearchViewModel // = Search()
+    @ObservedObject var search: SearchViewModel 
     
     var body: some View {
         
@@ -32,7 +31,7 @@ struct ContentView: View {
                 
                 MealsView(search: self.search)
                 
-                MealsViewToolbar() //‚.environment(\.managedObjectContext, self.viewContext)
+                MealsViewToolbar()
             }
             .navigationViewStyle(StackNavigationViewStyle())
                 //            .navigationViewStyle(DoubleColumnNavigationViewStyle())
