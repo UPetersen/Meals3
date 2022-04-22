@@ -5,10 +5,8 @@
 //  Created by Uwe Petersen on 05.01.20.
 //  Copyright © 2020 Uwe Petersen. All rights reserved.
 //
-
 import SwiftUI
 import CoreData
-
 
  fileprivate let calsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
     
@@ -24,16 +22,6 @@ import CoreData
     numberFormatter.zeroSymbol = "0"
     return numberFormatter
 }()
-
-// Alternatively this could be used. With a var in the view, this can then be used and even changed. 
-//private extension RecipeDetail {
-//    static let defaultCalsNumberFormatter: NumberFormatter =  {() -> NumberFormatter in
-//        let numberFormatter = NumberFormatter()
-//        numberFormatter.numberStyle = NumberFormatter.Style.none
-//        numberFormatter.zeroSymbol = "0"
-//        return numberFormatter
-//    }()
-//}
 
 struct RecipeDetailView: View {
     @ObservedObject var recipe: Recipe

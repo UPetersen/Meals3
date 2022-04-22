@@ -40,9 +40,10 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
     @State private var showingAllIngredients = false
     
     @FetchRequest(entity: Meals3.Group.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Meals3.Group.key, ascending: true)]) var groups: FetchedResults<Meals3.Group>
-    private var selectedGroup: Binding<Meals3.Group?> {
-        Binding<Meals3.Group?> ( get: { self.food.group },
-                          set: { newValue in self.food.group = newValue })
+    private var selectedGroup: Binding<Meals3.Group?> { Binding<Meals3.Group?> (
+            get: { self.food.group },
+            set: { newValue in self.food.group = newValue
+            })
     }
 
     var fetchedSubGroups: [SubGroup]? {
@@ -347,19 +348,20 @@ struct FoodDetail_Previews: PreviewProvider {
                         .environment(\.managedObjectContext, context)
                         .navigationBarTitle(food.name ?? "Lebensmittel")
                 }
-                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-                .previewDisplayName("iPhone SE")
+                .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro"))
+                .previewDisplayName("iPhone 13 Pro")
             }
-            
+
             SwiftUI.Group {
                 NavigationView {
                     FoodDetailView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
                         .environment(\.managedObjectContext, context)
                         .navigationBarTitle(food.name ?? "Lebensmittel")
                 }
-                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-                .previewDisplayName("iPhone 11 Pro Max")
+                .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro Max"))
+                .previewDisplayName("iPhone 13 Pro Max")
             }
         }
+        .previewInterfaceOrientation(.portrait)
     }
 }

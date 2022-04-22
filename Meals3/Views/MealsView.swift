@@ -56,32 +56,33 @@ struct MealsView: View {
     }
     
     var body: some View {
-        List {
-            ForEach(meals) {(meal: Meal) in
-                Section(header:
-                    NavigationLink(destination: MealDetailView(meal: meal)
-                        .environment(\.managedObjectContext, viewContext)
-                        .environmentObject(currentMeal)
-                    ) {
-                        LazyView( MealsNutrientsView(meal: meal) )
-//                        LazyView( MealsNutrients(meal: meal).equatable() )
-//                        MealsNutrients(meal: meal).equatable()
-//                        MealsNutrients(meal: meal)
-                    }
-                ) {
-                    ForEach(meal.filteredAndSortedMealIngredients(predicate: ingredientsPredicate)!) { (mealIngredient: MealIngredient) in
-                        NavigationLink(destination: lazyFoodDetail(food: mealIngredient.food!)) {
-                            MealIngredientCellView(mealIngredient: mealIngredient) // .equatable()
+
+        ScrollViewReader { proxy in
+                List {
+                    ForEach(meals, id: \.self) {(meal: Meal) in
+                        Section(header:
+                            NavigationLink(destination: MealDetailView(meal: meal)
+                                .environment(\.managedObjectContext, viewContext)
+                                .environmentObject(currentMeal)
+                            ) {
+                                LazyView( MealsNutrientsView(meal: meal) )
+                            }
+                        ) {
+                            ForEach(meal.filteredAndSortedMealIngredients(predicate: ingredientsPredicate)!) { (mealIngredient: MealIngredient) in
+                                NavigationLink(destination: lazyFoodDetail(food: mealIngredient.food!)) {
+                                    MealIngredientCellView(mealIngredient: mealIngredient) // .equatable()
+                                }
+                            }
+                            .onDelete() { indexSet in
+                                deleteIngredients(atIndexSet: indexSet, fromMeal: meal)
+                            }
                         }
+                        .id(meal) // needed for scrolling to top
                     }
-                    .onDelete() { indexSet in
-                        deleteIngredients(atIndexSet: indexSet, fromMeal: meal)
-                    }
+                    .onMove(perform: move)
                 }
-                // FIXME: not sure, if this line is good. When searching, the meal date does not change, but the rows that will be displayed with a meal in this view.
-//                .id(meal.dateOfCreationAsString) // This line makes list scroll to top, when new meal is added (via copying another meal), do not ask me why.
-            }
-            .onMove(perform: move)
+                .onChange(of: currentMeal.meal) { meal in proxy.scrollTo(meal) } // scroll to current meal if current meal changes
+
         }
         .onReceive(didSave) { _ in
 //            print("Received self.didSave")
