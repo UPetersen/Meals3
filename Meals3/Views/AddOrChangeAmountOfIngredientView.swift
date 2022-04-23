@@ -59,7 +59,7 @@ struct AddOrChangeAmountOfIngredientView: View {
                     Section() {
                         ZStack {
                             IPodStyleRotationWheel(amount: $amount)
-                                .frame(width: geometry.size.width * 0.8, height: geometry.size.width * 0.8, alignment: .center)
+                                .frame(width: geometry.size.width * 0.8, height: geometry.size.width * 0.8)
                                 .onTapGesture { self.save() } // Tapping anywhere saves.
                             
                             Button("Speichern", action:{ self.save() })
