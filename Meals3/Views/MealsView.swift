@@ -110,9 +110,6 @@ struct MealsView: View {
     }
     
     @ViewBuilder func lazyFoodDetail(food: Food) -> some View {
-//        FoodDetail(ingredientCollection: self.currentMeal.meal, food: food)
-//            .environmentObject( Meal.newestMeal(managedObjectContext: self.viewContext))
-        
         LazyView( FoodDetailView(ingredientCollection: currentMeal.meal, food: food))
 //        FoodDetailView(ingredientCollection: self.currentMeal.meal, food: food)
     }

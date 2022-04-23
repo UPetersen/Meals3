@@ -15,94 +15,6 @@ fileprivate let numberFormatter: NumberFormatter = {
     return numberFormatter
 }()
 
-struct OneFingerRoationView: View {
-    /// The value that is changed with the one finger rotation gesture
-    @Binding var value: Double
-    /// The size of the circle view that is used for the one finger roatione gesture
-    var size: CGSize? = CGSize(width: 150.0, height: 150.0)
-    /// Angle of the overall one finger rotation gesture
-    @State var angle = Angle(degrees: 0.0)
-    /// Angle between vector from center of view to last location of drag and vector from last to current location of drag. The sign of this angle determines whether the rotation direction is clockwise or counter clockwise.
-    @State var angle2 = Angle(degrees: 0.0)
-    /// length of the path of the one finger rotation gesture
-    @State var distance = CGFloat(0.0)
-    /// State of the one finger rotation drag.
-    ///
-    /// The following states are used:
-    ///   - inactive: drag not yet started or already ended.
-    ///   - began: drag has begun, but there is was only one inital (current) value. So we can store this to be used as old value when the next drag location is registered.
-    ///   - oldLocationInitialized: there have been at least two drag values registerd, such that an old position could be set.
-    enum DragState {
-        case inactive, began, oldLocationInitilized
-    }
-    // State of the drag
-    @GestureState var dragState: DragState = .inactive
-    // Location of the previous touch
-    @State var oldLocation = CGPoint()
-    @State var translation = CGVector()
-
-    var drag: some Gesture {
-        DragGesture(minimumDistance: 10, coordinateSpace: .local)
-            .updating($dragState) { value, gestureState, transaction in
-                // use .updating only to change and adapt the state of the gesture
-                switch gestureState {
-                case .inactive:
-                    gestureState = .began
-                case .began:
-                    gestureState = .oldLocationInitilized
-                case .oldLocationInitilized:
-                    break
-                }
-        }
-        .onEnded {value in
-            self.oldLocation = CGPoint(x: 0.0, y: 0.0)
-            //            self.oldTranslation = CGVector(dx: 0.0, dy: 0.0)
-        }
-        .onChanged { value in
-            switch self.dragState {
-            case .began: // This is the first registered touch. Store as old location
-//                print("State: \(self.dragState), origin: \(value.startLocation), \(value.location)")
-                self.oldLocation = CGPoint(x: value.location.x, y: value.location.y)
-//                print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
-            case .oldLocationInitilized: // we have an old location and can now do all the drag calculation
-                self.translation = CGVector(dx: value.location.x - self.oldLocation.x, dy: value.location.y - self.oldLocation.y)
-                // Distance (length) from old location to the current location.
-                let distance = sqrt((self.translation.dx * self.translation.dx) + (self.translation.dy * self.translation.dy))
-                if distance >= 5 {
-//                    print("State: \(self.dragState), origin: \(value.startLocation), \(value.location)")
-                    // This is important: To avoid jumps over 360 degrees, we transfer the translation vector into the coordinate system of the old translation vector. I.e. the x-axis of this coordinate system is the old translation vector. Then we determine the angle between the vector from the center of the view to the old location and the last drag segment.
-                    self.angle2 = -Angle(radians: Double(atan2(self.oldLocation.y - 150.0, self.oldLocation.x - 150.0))) // Winkel oldTranslation gegenüber Mitte Kreis
-                    let x = ( cos(self.angle2.radians) * Double(self.translation.dx) - sin(self.angle2.radians) * Double(self.translation.dy) )
-                    let y = ( sin(self.angle2.radians) * Double(self.translation.dx) + cos(self.angle2.radians) * Double(self.translation.dy) )
-                    let angle = Angle(radians: Double( atan2(y, x) ))
-                    
-                    self.angle += Angle(degrees: angle.degrees)
-                    
-                    self.distance = self.distance + 0.125 * (angle.degrees >= 0 ? distance : -distance)
-                    
-//                    print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
-//                    print(String(format: "Trans. new: (%6.4f, %6.4f)", self.translation.dx, self.translation.dy))
-//                    print("x und y: (\(x), \(y)), angle2: \(self.angle2.degrees), angle: \(angle.degrees)")
-//                    print(String(format: "Angle: %6.2f, %6.3f delta: %6.2f ", self.angle.degrees, self.angle2.degrees, angle.degrees))
-//                    print(String(format: "Distance: %d, delta: %6.2f ,Start: (%6.2f, %6.2f)", Int(self.distance), distance, value.startLocation.x, value.startLocation.y))
-//                    print("")
-                    
-                    self.oldLocation = value.location
-//                    let hugo = max(0.0, (self.amount?.doubleValue ?? 0.0) + 0.2 * (angle.degrees >= 0 ? Double(distance) : Double(-distance)) )
-//                    self.amount = NSNumber(value: hugo)
-                }
-                case .inactive:
-                    break
-            }
-        }
-    }
-    
-
-    var body: some View {
-        Text("schorsch")
-    }
-}
-
 
 struct AddOrChangeAmountOfIngredientView: View {
     @Environment(\.managedObjectContext) var viewContext
@@ -120,88 +32,7 @@ struct AddOrChangeAmountOfIngredientView: View {
         )
     }
 
-    
-    @State var angle = Angle(degrees: 0.0)
-    @State var angle2 = Angle(degrees: 0.0)
-    @State var distance = CGFloat(0.0)
     @State var title = "Menge hinzufügen" // "Menge hinzufügen" for new food or "Menge ändern" for updating the amount of a food
-    
-    /// State of the one finger rotation drag.
-    ///
-    /// The following states are used:
-    ///   - inactive: drag not yet started or already ended.
-    ///   - began: drag has begun, but there is was only one inital (current) value. So we can store this to be used as old value when the next drag location is registered.
-    ///   - oldLocationInitialized: there have been at least two drag values registerd, such that an old position could be set.
-    enum DragState {
-        case inactive, began, oldLocationInitilized
-    }
-    // State of the drag
-    @GestureState var dragState: DragState = .inactive
-    // Location of the previous touch
-    @State var oldLocation = CGPoint()
-    // Translation from the previous touch to the current touch
-    @State var newTranslation = CGVector()
-    // Animation of the plus icon, when rotation gesture finished (and stopped while rotating)
-    @State private var isAnimatingSafeButton = false
-
-    var drag: some Gesture {
-        DragGesture(minimumDistance: 10, coordinateSpace: .local)
-            .updating($dragState) { value, gestureState, transaction in
-                // use .updating only to change and adapt the state of the gesture
-                switch gestureState {
-                case .inactive:
-                    gestureState = .began
-                case .began:
-                    gestureState = .oldLocationInitilized
-                case .oldLocationInitilized:
-                    break
-                }
-        }
-        .onEnded {value in
-            self.oldLocation = CGPoint(x: 0.0, y: 0.0)
-            self.isAnimatingSafeButton = true
-//            self.oldTranslation = CGVector(dx: 0.0, dy: 0.0)
-        }
-        .onChanged { value in
-            self.isAnimatingSafeButton = false
-            switch self.dragState {
-            case .inactive:
-                break
-            case .began:
-                print("State: \(self.dragState), origin: \(value.startLocation), \(value.location)")
-                //                                        self.oldLocation = CGPoint(x: value.startLocation.x, y: value.startLocation.y)
-                self.oldLocation = CGPoint(x: value.location.x, y: value.location.y)
-//                print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
-            case .oldLocationInitilized:
-                self.newTranslation = CGVector(dx: value.location.x - self.oldLocation.x, dy: value.location.y - self.oldLocation.y)
-//                self.newTranslation = CGVector(dx: value.predictedEndLocation.x - self.oldLocation.x, dy: value.predictedEndLocation.y - self.oldLocation.y)
-                let distance = sqrt((self.newTranslation.dx * self.newTranslation.dx) + (self.newTranslation.dy * self.newTranslation.dy))
-                if distance >= 5 {
-                    
-//                    print("State: \(self.dragState), origin: \(value.startLocation), \(value.location)")
-                    self.angle2 = -Angle(radians: Double(atan2(self.oldLocation.y - 150.0, self.oldLocation.x - 150.0))) // Winkel oldTranslation gegenüber Mitte Kreis
-                    let x = ( cos(self.angle2.radians) * Double(self.newTranslation.dx) - sin(self.angle2.radians) * Double(self.newTranslation.dy) )
-                    let y = ( sin(self.angle2.radians) * Double(self.newTranslation.dx) + cos(self.angle2.radians) * Double(self.newTranslation.dy) )
-                    let angle = Angle(radians: Double( atan2(y, x) ))
-                    
-                    self.angle += Angle(degrees: angle.degrees)
-                    
-                    self.distance = self.distance + 0.125 * (angle.degrees >= 0 ? distance : -distance)
-
-//                    print(String(format: "Loc. old: (%6.4f, %6.4f), new: (%6.4f, %6.4f)", self.oldLocation.x, self.oldLocation.y, value.location.x, value.location.y))
-//                    print(String(format: "Trans. new: (%6.4f, %6.4f)", self.newTranslation.dx, self.newTranslation.dy))
-//                    print("x und y: (\(x), \(y)), angle2: \(self.angle2.degrees), angle: \(angle.degrees)")
-//                    print(String(format: "Angle: %6.2f, %6.3f delta: %6.2f ", self.angle.degrees, self.angle2.degrees, angle.degrees))
-//                    print(String(format: "Distance: %d, delta: %6.2f ,Start: (%6.2f, %6.2f)", Int(self.distance), distance, value.startLocation.x, value.startLocation.y))
-//                    print("")
-                    
-                    self.oldLocation = value.location
-                    let hugo = max(0.0, (self.amount?.doubleValue ?? 0.0) + 0.2 * (angle.degrees >= 0 ? Double(distance) : Double(-distance)) ).rounded()
-                    self.amount = hugo <= 0.0000001 ? nil : NSNumber(value: hugo) // if amount is zero -> make it nil to show the placeholder (and do not allow to store the value)
-                }
-            }
-        }
-    }
     
     var body: some View {
         
@@ -209,7 +40,7 @@ struct AddOrChangeAmountOfIngredientView: View {
             GeometryReader() { geometry in
                 
                 Form {
-                    Section(header: Text("Lebensmittel"), footer: Text(" ")) {
+                    Section() {
                         Text(self.food.name ?? " ")
                     }
                     
@@ -224,61 +55,40 @@ struct AddOrChangeAmountOfIngredientView: View {
                             Spacer()
                         }
                     }
-                    
-                    Section(header: Text(" ")) {
-                        
-                        HStack {
-                            Spacer()
-                            ZStack {
-//                                Rectangle()
-//                                    .frame(width: geometry.size.width, height: geometry.size.height)
-//                                    .foregroundColor(Color.red)
-                                Rectangle().frame(width: 10, height: 400) // Add some vertical space
-                                    .opacity(0.0)
-                                Circle()
-                                    .scaledToFit()
-                                    .frame(width: 300, height: 300) // Not bigger than 300 by 300
-//                                    .frame(width: geometry.size.width * self.circleScaleFactor, height: geometry.size.width * self.circleScaleFactor) // Not bigger than 300 by 300
-                                    .foregroundColor(Color(.systemFill))
-                                Image(systemName: "arrow.2.circlepath")
-                                    .resizable()
-                                    .foregroundColor(Color(.systemBackground))
-                                    .frame(width: 200*1.1, height: 170*1.1)
-//                                    .frame(width: geometry.size.width * self.arrowsScaleFactor, height: geometry.size.width * self.arrowsScaleFactor * self.arrowsAspectRatio)
-                                Button("Speichern", action:{ self.save() }).padding()
-                                    .foregroundColor(Color(.systemBlue))
-                                    .scaleEffect(isAnimatingSafeButton ? 1.25 : 1.0) // animate when rotation finished
-                                    .animation(Animation.default.repeat(while: isAnimatingSafeButton), value: isAnimatingSafeButton)
-                            }
-                            Spacer()
+
+                    Section() {
+                        ZStack {
+                            IPodStyleRotationWheel(amount: $amount)
+                                .frame(width: geometry.size.width * 0.8, height: geometry.size.width * 0.8, alignment: .center)
+                                .onTapGesture { self.save() } // Tapping anywhere saves.
+                            
+                            Button("Speichern", action:{ self.save() })
+                                .padding()
+                                .foregroundColor(Color(.systemBlue))
                         }
-                        .gesture(self.drag)
-                            .onTapGesture { self.save() } // Tapping anywhere saves.
                     }
-                }
-            }
-            .onAppear() {
-                switch self.task {
-                case .changeAmountOfIngredient(let ingredient):
-                    self.amount = ingredient.amount
-                    self.title = "Menge ändern"
-                    print("AddOrChangeamountOfIngredientView: in onAppear")
-                default: break
                 }
             }
             .navigationBarTitle(Text(self.title), displayMode: .inline)
             .navigationBarItems(leading:
                                     Button("Abbrechen") { self.isPresented = false }.padding(),
                                 trailing:
-                                    Button("Speichern") {
-                                        self.save()
-                                    }.padding()
+                                    Button("Speichern") { self.save() }.padding()
             )
+
         }
-//        .onTapGesture(count: 2) {
-//            self.save()
-//        }
+        .onAppear() {
+            switch self.task {
+            case .changeAmountOfIngredient(let ingredient):
+                self.amount = ingredient.amount
+                self.title = "Menge ändern"
+                print("AddOrChangeamountOfIngredientView: in onAppear")
+            default: break
+            }
+        }
     }
+    
+    
     
     
     // MARK: - Constants
@@ -385,11 +195,37 @@ struct AddFoodView_Previews: PreviewProvider {
         }()
 
         let meal = Meal.newestMeal(managedObjectContext: context)
+        
+        return SwiftUI.Group {
+            SwiftUI.Group {
+                AddOrChangeAmountOfIngredientView(food: food,
+                                                   task: .addAmountOfFoodToIngredientCollection(meal as IngredientCollection),
+                                                   isPresented: .constant(true),
+                                                   presentationModeOfParentView: presentationMode)
+                    .environment(\.managedObjectContext, context)
+                    .previewDevice(PreviewDevice(rawValue: "iPhone 6S Plus"))
+                    .previewDisplayName("iPhone 6S Plus")
+            }
+            SwiftUI.Group {
+                AddOrChangeAmountOfIngredientView(food: food,
+                                                   task: .addAmountOfFoodToIngredientCollection(meal as IngredientCollection),
+                                                   isPresented: .constant(true),
+                                                   presentationModeOfParentView: presentationMode)
+                    .environment(\.managedObjectContext, context)
+                .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro Max"))
+                .previewDisplayName("iPhone 13 Pro Max")
+            }
+            SwiftUI.Group {
+                AddOrChangeAmountOfIngredientView(food: food,
+                                                   task: .addAmountOfFoodToIngredientCollection(meal as IngredientCollection),
+                                                   isPresented: .constant(true),
+                                                   presentationModeOfParentView: presentationMode)
+                    .environment(\.managedObjectContext, context)
+                .previewDevice(PreviewDevice(rawValue: "iPhone 6 S"))
+                .previewDisplayName("iPhone 6 S")
+            }
+        }
 
-        return AddOrChangeAmountOfIngredientView(food: food,
-                                           task: .addAmountOfFoodToIngredientCollection(meal as IngredientCollection),
-                                           isPresented: .constant(true),
-                                           presentationModeOfParentView: presentationMode)
-            .environment(\.managedObjectContext, context)
+        
     }
 }
