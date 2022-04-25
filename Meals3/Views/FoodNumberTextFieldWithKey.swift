@@ -131,7 +131,6 @@ struct FoodNumberCellWithKey_Previews: PreviewProvider {
             nutrient.dispUnit = "g"
             nutrient.key = "totalEnergyCals"
             nutrient.name = "Energie (Teststring)"
-//            try? context.save()
             return nutrient
         }()
 

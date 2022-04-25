@@ -106,7 +106,6 @@ struct MealsViewToolbar: View {
         recipe.food = Food.fromRecipe(recipe, inManagedObjectContext: self.viewContext)
         newFood = recipe.food
         isPresentingNewFood = true
-
         try? self.viewContext.save()
     }
     

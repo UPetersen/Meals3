@@ -255,7 +255,6 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
         .onDisappear() {
             print("foodDetail disappears")
             if self.viewContext.hasChanges {
-//                self.food.dateOfLastModification = Date()
                 try? self.viewContext.save()            
             }
         }
