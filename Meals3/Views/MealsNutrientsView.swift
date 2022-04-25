@@ -54,9 +54,10 @@ struct MealsNutrientsView: View, Equatable {
             Button(action: { withAnimation{ self.copyMeal() } },
                    label: { Image(systemName: "doc.on.doc").padding(.leading)
             })
-        }.onAppear() {
-            print("In MealsNutrients .onAppear.")
         }
+//        .onAppear() {
+//            print("In MealsNutrients .onAppear.")
+//        }
     }
     
     static func == (lhs: MealsNutrientsView, rhs: MealsNutrientsView) -> Bool {

@@ -70,7 +70,7 @@ struct NSNumberTextField : View {
 //            }
         }
             .onAppear(){ // Otherwise textfield is empty when view appears
-                print("in .onAppear of NSNumberTextField.")
+//                print("in .onAppear of NSNumberTextField.")
                 if let value = self.value, let valueString =  self.formatter.string(from: value) {
                     self.b.wrappedValue = valueString
                 }

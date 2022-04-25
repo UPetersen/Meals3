@@ -191,9 +191,21 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                         }
                         DatePicker("Letzte Änderung", selection: .constant(food.dateOfLastModification ?? noDate)).disabled(true)
                         HStack {
-                            Text(food.source?.name == "world.openfoodfacts.org" ? "EAN-Code" : "Key")
-                            Spacer()
-                            Text(food.key ?? "")
+                            //
+                            if food.source?.name == "world.openfoodfacts.org" {
+                                Text("EAN-Code")
+                                Spacer()
+                                Button(food.key ?? "") {
+                                    UIApplication.shared.open(URL(string: "https://world.openfoodfacts.org/product/" + (food.key ?? ""))!, options: [:], completionHandler: nil)
+                                }
+                            } else {
+                                Text("Key")
+                                Spacer()
+                                Text(food.key ?? "")
+                            }
+//                            Text(food.source?.name == "world.openfoodfacts.org" ? "EAN-Code" : "Key")
+//                            Spacer()
+//                            Text(food.key ?? "")
                         }
                     }
                 }.lineLimit(nil)
