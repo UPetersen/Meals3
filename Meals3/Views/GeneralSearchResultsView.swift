@@ -13,7 +13,6 @@ import CoreData
 
 struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
     @Environment(\.managedObjectContext) var viewContext
-    @EnvironmentObject var currentMeal: CurrentMeal
     @ObservedObject var ingredientCollection: T
     @ObservedObject var search: SearchViewModel
         
@@ -121,7 +120,6 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
         
     @ViewBuilder func foodDetailView(food: Food) -> some View {
         FoodDetailView(ingredientCollection: ingredientCollection, food: food)
-//            .environmentObject(currentMeal)
     }
     
     func shouldLoadNextPage() {

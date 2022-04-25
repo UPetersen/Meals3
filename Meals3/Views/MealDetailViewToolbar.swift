@@ -34,7 +34,7 @@ struct MealDetailViewToolbar: View {
 
             Spacer()
 
-            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.currentMeal.meal).environment(\.managedObjectContext, viewContext)) {
+            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.meal).environment(\.managedObjectContext, viewContext)) {
                 Image(systemName: "magnifyingglass").padding(.horizontal)
             }
 
@@ -51,14 +51,14 @@ struct MealDetailViewToolbar: View {
     func deleteAlert() -> Alert {
         print("delete the meal with confirmation")
         return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
-              primaryButton: .destructive(Text("Delete")) {
-                HealthManager.synchronize(self.currentMeal.meal, withSynchronisationMode: .delete)
-                self.viewContext.delete(self.currentMeal.meal)
-                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
-                try? self.viewContext.save()
-                self.presentationMode.wrappedValue.dismiss()
-            },
-              secondaryButton: .cancel())
+                     primaryButton: .destructive(Text("Delete")) {
+            HealthManager.synchronize(self.meal, withSynchronisationMode: .delete)
+            self.viewContext.delete(self.meal)
+            currentMeal.updateToNewestMeal(viewContext: viewContext)
+            try? self.viewContext.save()
+            self.presentationMode.wrappedValue.dismiss()
+        },
+                     secondaryButton: .cancel())
     }
     
     /// Create copy of this meal an dismiss the view
@@ -66,8 +66,7 @@ struct MealDetailViewToolbar: View {
         debugPrint("Will copy the meal \(meal) and make it the new current meal")
         if let newMeal = Meal.fromMeal(meal, inManagedObjectContext: viewContext) {
             HealthManager.synchronize(newMeal, withSynchronisationMode: .store)
-//            currentMeal.meal = Meal.newestMeal(managedObjectContext: viewContext)
-            currentMeal.meal = currentMeal.meal.dateOfCreation! > newMeal.dateOfCreation! ? currentMeal.meal : newMeal // faster than looking in the database.
+            currentMeal.updateByComparisonTo(newMeal, viewContext: viewContext)
             try? viewContext.save()
             presentationMode.wrappedValue.dismiss()
         }

@@ -43,7 +43,7 @@ struct MealsViewToolbar: View {
                 Image(systemName: "barcode.viewfinder").padding(.horizontal)
             }
             .sheet(isPresented: $isPresentingScanner) {
-                OFFView()
+                OFFView(meal: currentMeal.meal)
             }
             
             Spacer()
@@ -112,8 +112,7 @@ struct MealsViewToolbar: View {
     
     func createNewMeal() {
         let meal = Meal(context: viewContext)
-//        currentMeal.meal = meal
-        currentMeal.meal = currentMeal.meal.dateOfCreation! > meal.dateOfCreation! ? currentMeal.meal : meal // faster than looking in the database.
+        currentMeal.updateByComparisonTo(meal, viewContext: viewContext)
         try? viewContext.save()
         HealthManager.synchronize(meal, withSynchronisationMode: .store)
     }

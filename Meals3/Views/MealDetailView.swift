@@ -53,7 +53,6 @@ struct MealDetailView: View {
             set: {
                 self.meal.dateOfCreation = $0
                 self.meal.dateOfLastModification = Date()
-//                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
                 HealthManager.synchronize(self.meal, withSynchronisationMode: .update)
         })
         
@@ -86,23 +85,24 @@ struct MealDetailView: View {
             print("MealDetailView disappeared.")
             if self.viewContext.hasChanges {
                 try? self.meal.managedObjectContext?.save()
-//                self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
             }
+            // current meal might have changed, since the date of the meal could have changed. Thus update it.
+            // Do not compare to this meal, since it could have been deleted and the core data would crash.
+            currentMeal.updateToNewestMeal(viewContext: viewContext)
         }
         .onAppear() {
             print("MealDetaliView appeared.")
-            self.currentMeal.meal = self.meal
         }
     }
     
     @ViewBuilder func headerView() -> some View {
-        Text(mealNutrientsString(meal: currentMeal.meal))
+        Text(mealNutrientsString(meal: meal))
     }
     
     @ViewBuilder func footerView() -> some View {
         HStack {
             Spacer()
-            Text("\(meal.ingredients?.count ?? 0) Zutaten, insgesamt \(amountString(meal: currentMeal.meal)) g")
+            Text("\(meal.ingredients?.count ?? 0) Zutaten, insgesamt \(amountString(meal: meal)) g")
         }
     }
     

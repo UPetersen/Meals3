@@ -62,8 +62,6 @@ struct MealsView: View {
                 ForEach(meals) { meal in
                     Section(header:
                                 NavigationLink(destination: MealDetailView(meal: meal)
-//                                    .environment(\.managedObjectContext, viewContext)
-//                                    .environmentObject(currentMeal)
                                 ) {
                         LazyView( MealsNutrientsView(meal: meal) )
                     })
@@ -90,22 +88,19 @@ struct MealsView: View {
             // FIXME: This could be the cause of crashes when entering text into the search field.
             currentMeal.objectWillChange.send() // update this ui
          }
-
-        
-//        .onAppear() {
-//            self.currentMeal.meal = Meal.newestMeal(managedObjectContext: self.viewContext)
-//        }
             
         .alert(isPresented: self.$showingDeleteConfirmation){
-            return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
-                         primaryButton: .destructive(Text("Delete")) {
-                            if let indices = indicesToDelete {
-                                meals.delete(at: indices, from: viewContext)
-                                try? viewContext.save()
-                                currentMeal.meal = Meal.newestMeal(managedObjectContext: viewContext)
-                            }
+            return Alert(
+                title: Text("Mahlzeit wirklich löschen?"),
+                message: Text(""),
+                primaryButton: .destructive(Text("Delete")) {
+                    if let indices = indicesToDelete {
+                        meals.delete(at: indices, from: viewContext)
+                        try? viewContext.save()
+                        currentMeal.updateToNewestMeal(viewContext: viewContext)
+                    }
                 },
-                         secondaryButton: .cancel())
+                secondaryButton: .cancel())
         }
     }
     
@@ -123,7 +118,6 @@ struct MealsView: View {
         }
         HealthManager.synchronize(meal, withSynchronisationMode: .update)
         try? viewContext.save()
-//        currentMeal.objectWillChange.send() // update this ui
     }
 
     func move (from source: IndexSet, to destination: Int) {

@@ -13,7 +13,6 @@ struct RecipeDetailViewToolbar: View {
     
     @Environment(\.managedObjectContext) var viewContext
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-//    @EnvironmentObject var currentMeal: CurrentMeal
 
     @State private var isShowingGeneralSearchView = false
     @State private var isShowingDeleteAlert = false

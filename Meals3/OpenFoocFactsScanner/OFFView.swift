@@ -9,10 +9,11 @@
 import SwiftUI
 
 struct OFFView: View {
-    
+    @ObservedObject var meal: Meal
+
     @StateObject private var offManager = OFFManager()
     @Environment(\.managedObjectContext) var viewContext
-    @EnvironmentObject var currentMeal: CurrentMeal
+//    @EnvironmentObject var currentMeal: CurrentMeal
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
@@ -97,10 +98,12 @@ struct OFFView: View {
             // Check if product is already as food in local database
             if let food = Food.foodWithKey(key: product.code, inManagedObjectContext: viewContext) {
                 food.updateFromOffProduct(product: product, inManagedObjectContext: viewContext)
-                currentMeal.meal.addIngredient(food: food, amount: NSNumber(0), managedObjectContext: viewContext)
+//                currentMeal.meal.addIngredient(food: food, amount: NSNumber(0), managedObjectContext: viewContext)
+                meal.addIngredient(food: food, amount: NSNumber(0), managedObjectContext: viewContext)
             } else {
                 let food = Food.createFromOffProduct(product: product, inManagedObjectContext: viewContext)
-                currentMeal.meal.addIngredient(food: food, amount: NSNumber(0), managedObjectContext: viewContext)
+//                currentMeal.meal.addIngredient(food: food, amount: NSNumber(0), managedObjectContext: viewContext)
+                meal.addIngredient(food: food, amount: NSNumber(0), managedObjectContext: viewContext)
             }
         }
         offManager.reset()
@@ -127,9 +130,9 @@ struct OFFView: View {
 
 
 
-struct ScanningView_Previews: PreviewProvider {
-    static var previews: some View {
-        OFFView()
-    }
-}
+//struct ScanningView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        OFFView(meal: meal)
+//    }
+//}
 

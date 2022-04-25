@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // The meal to which foods will be added to as ingredients.
         // Has to be changed, if a new meal is created or the current meal is deleted.
         print("get current meal")
-        let currentMeal = CurrentMeal(Meal.newestMeal(managedObjectContext: context))
+        let currentMeal = CurrentMeal(viewContext: context)
         print(currentMeal.meal.entity.indexes)
         print("end get current meal")
 
