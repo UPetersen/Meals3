@@ -17,7 +17,7 @@ struct MealDetailViewToolbar: View {
 
     @State private var isShowingGeneralSearchView = false
     @State private var isShowingDeleteAlert = false
-
+    @State private var isPresentingScanner: Bool = false
     
     var body: some View {
         HStack {
@@ -38,6 +38,15 @@ struct MealDetailViewToolbar: View {
                 Image(systemName: "magnifyingglass").padding(.horizontal)
             }
 
+            Spacer()
+            
+            Button(action: { isPresentingScanner = true }) {
+                Image(systemName: "barcode.viewfinder").padding(.horizontal)
+            }
+            .sheet(isPresented: $isPresentingScanner) {
+                OFFView(meal: meal)
+            }
+            
             Spacer()
             
             Button(action: { withAnimation{ copyMeal() } },
