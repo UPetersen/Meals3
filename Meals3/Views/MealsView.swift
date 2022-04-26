@@ -48,11 +48,6 @@ struct MealsView: View {
         self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(search.text)
 //        self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(search.debouncedText)
 
-// Color stuff for lists see: https://izziswift.com/swiftui-list-color-background/
-//        UITableView.appearance().backgroundColor = .red
-//        UITableViewCell.appearance().backgroundColor = .red
-//        UITableView.appearance().tableFooterView = UIView()
-
     }
     
     var body: some View {
@@ -74,6 +69,7 @@ struct MealsView: View {
                         .onDelete() { indexSet in
                             deleteIngredients(atIndexSet: indexSet, fromMeal: meal)
                         }
+                        .foregroundColor(meal == currentMeal.meal ? Color(.label) : Color(.secondaryLabel))
                     }
                     .id(meal) // needed for scrolling to top
                 }

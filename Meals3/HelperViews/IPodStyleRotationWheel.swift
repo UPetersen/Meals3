@@ -31,7 +31,6 @@ struct IPodStyleRotationWheel: View {
                     .padding()
             }
         }
-        .foregroundColor(Color.brown)
         .gesture(rotationalDragGesture(amount: $amount))
     }
 }
