@@ -27,13 +27,13 @@ struct SearchBarView: View {
                         Text("Search")
                     }
                     TextField("", text: $searchText, onEditingChanged: { isEditing in
-                        self.showCancelButton = true
+                        showCancelButton = true
 //                        print("Isediting: \(isEditing)")
                     }, onCommit: onCommit).foregroundColor(.primary)
                 }
                 // Clear button
                 Button(action: {
-                    self.searchText = ""
+                    searchText = ""
                 }) {
                     Image(systemName: "xmark.circle.fill").opacity(searchText == "" ? 0 : 1)
                 }
@@ -47,8 +47,8 @@ struct SearchBarView: View {
                 // Cancel button
                 Button("Cancel") {
                     UIApplication.shared.endEditing(true) // this must be placed before the other commands here
-                    self.searchText = ""
-                    self.showCancelButton = false
+                    searchText = ""
+                    showCancelButton = false
                 }
                 .foregroundColor(Color(.systemBlue))
             }

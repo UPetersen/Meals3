@@ -49,19 +49,19 @@ struct MealDetailView: View {
     var body: some View {
         
         let date = Binding<Date>(
-            get: {self.meal.dateOfCreation ?? Date()},
+            get: {meal.dateOfCreation ?? Date()},
             set: {
-                self.meal.dateOfCreation = $0
-                self.meal.dateOfLastModification = Date()
-                HealthManager.synchronize(self.meal, withSynchronisationMode: .update)
+                meal.dateOfCreation = $0
+                meal.dateOfLastModification = Date()
+                HealthManager.synchronize(meal, withSynchronisationMode: .update)
         })
         
-        return VStack {
+         VStack {
             Form {
                 Section(header: Text("Datum und Kommentar"),
                         footer: HStack {
                             Spacer()
-                            Text("Letzte Änderung am \(self.dateString(date: self.meal.dateOfLastModification))")
+                            Text("Letzte Änderung am \(dateString(date: meal.dateOfLastModification))")
                     }) { DatePicker("Datum:", selection: date) }
                 
                 Section {
@@ -83,8 +83,8 @@ struct MealDetailView: View {
         .navigationBarItems(trailing: EditButton().padding())
         .onDisappear(){
             print("MealDetailView disappeared.")
-            if self.viewContext.hasChanges {
-                try? self.meal.managedObjectContext?.save()
+            if viewContext.hasChanges {
+                try? meal.managedObjectContext?.save()
             }
             // current meal might have changed, since the date of the meal could have changed. Thus update it.
             // Do not compare to this meal, since it could have been deleted and the core data would crash.

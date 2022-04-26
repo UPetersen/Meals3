@@ -27,7 +27,6 @@ fileprivate let numberFormatter: NumberFormatter =  {() -> NumberFormatter in
 /// ` "Kuhmilch 3,5% Fett"`
 ///
 /// `"65 kcal, 4,7 g KH, 3,4 g P, 3,6 g F, 0 g Fr., 0 g Gl."`
-
 struct FoodNutrientsRowView: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var food: Food
@@ -36,7 +35,6 @@ struct FoodNutrientsRowView: View {
     var body: some View {
         
         VStack(alignment: .leading) {
-//            Text(food.name ?? "")            
             if let brandName = food.brand?.name {
                 Text("\(food.name ?? "") von \(brandName)")
             } else{

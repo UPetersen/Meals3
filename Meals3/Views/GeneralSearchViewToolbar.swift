@@ -26,13 +26,13 @@ struct GeneralSearchViewToolbar: View {
 
             Spacer()
 
-            Button(action: { self.toggleSearchFilter() }) {
+            Button(action: { toggleSearchFilter() }) {
                 Text(search.filter == SearchFilter.contains ? "'   ...   '" : "'...      '").fontWeight(.bold)
             }
 
             Spacer()
 
-            Button(action: { self.showingSortRules.toggle() }) {
+            Button(action: { showingSortRules.toggle() }) {
                 Text(search.sortRule.rawValue)
             }
             .actionSheet(isPresented: $showingSortRules) { sortRuleActionSheet() }
@@ -46,13 +46,13 @@ struct GeneralSearchViewToolbar: View {
     
     func sortRuleActionSheet() -> ActionSheet {
         ActionSheet(title: Text("Wonach soll sortiert werden?"), message: nil, buttons: [
-            .default(Text(FoodListSortRule.nameAscending.rawValue)){ self.search.sortRule = .nameAscending },
-            .default(Text(FoodListSortRule.totalEnergyCalsDescending.rawValue)){ self.search.sortRule = .totalEnergyCalsDescending },
-            .default(Text(FoodListSortRule.totalCarbDescending.rawValue)){ self.search.sortRule = .totalCarbDescending },
-            .default(Text(FoodListSortRule.totalProteinDescending.rawValue)){ self.search.sortRule = .totalProteinDescending },
-            .default(Text(FoodListSortRule.totalFatDescending.rawValue)){ self.search.sortRule = .totalFatDescending },
-            .default(Text(FoodListSortRule.fattyAcidCholesterolDescending.rawValue)){ self.search.sortRule = .fattyAcidCholesterolDescending },
-            .default(Text(FoodListSortRule.groupThenSubGroupThenNameAscending.rawValue)){ self.search.sortRule = .groupThenSubGroupThenNameAscending },
+            .default(Text(FoodListSortRule.nameAscending.rawValue)                    ){ search.sortRule = .nameAscending },
+            .default(Text(FoodListSortRule.totalEnergyCalsDescending.rawValue)         ){ search.sortRule = .totalEnergyCalsDescending },
+            .default(Text(FoodListSortRule.totalCarbDescending.rawValue)               ){ search.sortRule = .totalCarbDescending },
+            .default(Text(FoodListSortRule.totalProteinDescending.rawValue)            ){ search.sortRule = .totalProteinDescending },
+            .default(Text(FoodListSortRule.totalFatDescending.rawValue)                ){ search.sortRule = .totalFatDescending },
+            .default(Text(FoodListSortRule.fattyAcidCholesterolDescending.rawValue)    ){ search.sortRule = .fattyAcidCholesterolDescending },
+            .default(Text(FoodListSortRule.groupThenSubGroupThenNameAscending.rawValue)){ search.sortRule = .groupThenSubGroupThenNameAscending },
             .cancel(Text("Zurück"))
             ]
         )
@@ -60,14 +60,14 @@ struct GeneralSearchViewToolbar: View {
     
     func selectionActionSheet() -> ActionSheet {
         ActionSheet(title: Text("Welche Lebensmittel sollen genutzt werden?"), message: nil, buttons: [
-            .default(Text(FoodListSelection.favorites.rawValue)){ self.search.selection = .favorites },
-            .default(Text(FoodListSelection.recipes.rawValue)){ self.search.selection = .recipes },
-            .default(Text(FoodListSelection.lastWeek.rawValue)){ self.search.selection = .lastWeek },
-            .default(Text(FoodListSelection.ownEntries.rawValue)){ self.search.selection = .ownEntries },
-            .default(Text(FoodListSelection.mealIngredients.rawValue)){ self.search.selection = .mealIngredients },
-            .default(Text(FoodListSelection.bls.rawValue)){ self.search.selection = .bls },
-            .default(Text(FoodListSelection.openFoodFacts.rawValue)){ self.search.selection = .openFoodFacts },
-            .default(Text(FoodListSelection.all.rawValue)){ self.search.selection = .all },
+            .default(Text(FoodListSelection.favorites.rawValue)      ){ search.selection = .favorites },
+            .default(Text(FoodListSelection.recipes.rawValue)        ){ search.selection = .recipes },
+            .default(Text(FoodListSelection.lastWeek.rawValue)       ){ search.selection = .lastWeek },
+            .default(Text(FoodListSelection.ownEntries.rawValue)     ){ search.selection = .ownEntries },
+            .default(Text(FoodListSelection.mealIngredients.rawValue)){ search.selection = .mealIngredients },
+            .default(Text(FoodListSelection.bls.rawValue)            ){ search.selection = .bls },
+            .default(Text(FoodListSelection.openFoodFacts.rawValue)  ){ search.selection = .openFoodFacts },
+            .default(Text(FoodListSelection.all.rawValue)            ){ search.selection = .all },
             .cancel(Text("Zurück"))
             ]
         )

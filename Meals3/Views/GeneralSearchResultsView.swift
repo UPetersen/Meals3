@@ -68,31 +68,31 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
                 // TODO: remove the invisible header and footer text row and move the test into the ForEach and test every single cell when it appears if it is the first or the last cell and then page up or down. See also https://stackoverflow.com/questions/56893240/is-there-any-way-to-make-a-paged-scrollview-in-swiftui , and there the last post.
                 // But maybe this post https://stackoverflow.com/questions/57258846/how-to-make-a-swiftui-list-scroll-automatically/58708206#58708206 is more close to what is needed.
                 Text("").frame(width: 0, height: 0)  //.hidden()
-                    .onAppear(){ self.shouldLoadPreviousPage()
-                        self.headerAppeared = true
-                        self.headerDisAppeared = false
+                    .onAppear(){ shouldLoadPreviousPage()
+                        headerAppeared = true
+                        headerDisAppeared = false
                 }.onDisappear() {
-                    self.didScrollDown = true
+                    didScrollDown = true
                     
-                    self.headerAppeared = false
-                    self.headerDisAppeared = true
+                    headerAppeared = false
+                    headerDisAppeared = true
                 }
                 
                 ForEach(foods) { (food: Food) in
-                    NavigationLink(destination: LazyView(self.foodDetailView(food: food)) ) {
+                    NavigationLink(destination: LazyView(foodDetailView(food: food)) ) {
                              FoodNutrientsRowView(food: food)
                     }
                 }
                 
                 Text("").frame(width: 0, height: 0)
                     .onAppear(){
-                        self.shouldLoadNextPage()
+                        shouldLoadNextPage()
                         
-                        self.footerAppeared = true
-                        self.footerDisAppeared = false
+                        footerAppeared = true
+                        footerDisAppeared = false
                 }.onDisappear() {
-                    self.footerAppeared = false
-                    self.footerDisAppeared = true
+                    footerAppeared = false
+                    footerDisAppeared = true
                 }
             }
                 .environment(\.defaultMinListRowHeight, 1) // for invisible header and footer, which keep this space unfortunately

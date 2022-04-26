@@ -21,7 +21,7 @@ struct GeneralSearchView<T>: View where T: IngredientCollection  {
          VStack {
             SearchBarView(searchText: $search.text)
 
-            GeneralSearchResultsView(search: search, ingredientCollection: self.ingredientCollection)
+            GeneralSearchResultsView(search: search, ingredientCollection: ingredientCollection)
 
             // Bottom tool bar
             GeneralSearchViewToolbar(search: search)

@@ -20,11 +20,11 @@ private let dateFormatter: DateFormatter = {
 }()
 
 struct ContentView: View {
-    @ObservedObject var search: SearchViewModel 
+    @ObservedObject var search: SearchViewModel
     
     var body: some View {
         
-        return NavigationView {
+        NavigationView {
             VStack{
                 SearchBarView(searchText: self.$search.text)
                     .padding(.top, topMargin)
@@ -34,10 +34,10 @@ struct ContentView: View {
                 MealsViewToolbar()
             }
             .navigationViewStyle(StackNavigationViewStyle())
-                //            .navigationViewStyle(DoubleColumnNavigationViewStyle())
-                .navigationBarTitle(Text("Mahlzeiten"), displayMode: .inline)
-                .navigationBarItems(trailing: EditButton())
-        }.navigationViewStyle(StackNavigationViewStyle())
+            .navigationBarTitle(Text("Mahlzeiten"), displayMode: .inline)
+            .navigationBarItems(trailing: EditButton())
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

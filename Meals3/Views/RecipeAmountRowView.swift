@@ -17,11 +17,11 @@ struct RecipeAmountRowView: View {
     var body: some View {
         
         let value: Binding<NSNumber?> = Binding(
-            get: {self.recipe.amount ?? nil},
+            get: {recipe.amount ?? nil},
             set: {
 //                print(self.recipe.amount)
 //                print(self.recipe.amountOfAllIngredients)
-                self.recipe.food?.updateNutrients(amount: .asInputByUser(amount: $0?.doubleValue), managedObjectContext: self.viewContext)
+                recipe.food?.updateNutrients(amount: .asInputByUser(amount: $0?.doubleValue), managedObjectContext: viewContext)
 //                print(self.recipe.amount)
 //                print(self.recipe.amountOfAllIngredients)
 //                self.recipe.food?.updateNutrients(managedObjectContext: self.viewContext)

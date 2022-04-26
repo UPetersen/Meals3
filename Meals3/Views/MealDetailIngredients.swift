@@ -22,7 +22,7 @@ struct MealDetailIngredients: View {
                     MealIngredientCellView(mealIngredient: mealIngredient)
                 }
                 .onDelete() {
-                    self.deleteMealIngredients(indexSet: $0)
+                    deleteMealIngredients(indexSet: $0)
                 }
             }
         }
@@ -31,9 +31,9 @@ struct MealDetailIngredients: View {
     func deleteMealIngredients (indexSet: IndexSet) -> () {
         print("Deleting meal ingredient from food.")
         for index in indexSet {
-            viewContext.delete(self.meal.filteredAndSortedMealIngredients()![index])
+            viewContext.delete(meal.filteredAndSortedMealIngredients()![index])
         }
-        HealthManager.synchronize(self.meal, withSynchronisationMode: .update)
+        HealthManager.synchronize(meal, withSynchronisationMode: .update)
         try? viewContext.save()
     }
 }

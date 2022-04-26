@@ -47,8 +47,6 @@
 		C62BB6D023B0A603000132F0 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6CF23B0A603000132F0 /* SearchViewModel.swift */; };
 		C62BB6D223B0A6D0000132F0 /* FoodListSortRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6D123B0A6D0000132F0 /* FoodListSortRule.swift */; };
 		C62BB6D423B0AC2E000132F0 /* GeneralSearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62BB6D323B0AC2E000132F0 /* GeneralSearchResultsView.swift */; };
-		C62E11732440478600F637AC /* ListScrollingProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62E11722440478600F637AC /* ListScrollingProxy.swift */; };
-		C62E11752440485500F637AC /* ListScrollingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62E11742440485500F637AC /* ListScrollingHelper.swift */; };
 		C648803D23B7E44400294EFD /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C648803C23B7E44400294EFD /* LazyView.swift */; };
 		C648803F23B8593C00294EFD /* MealDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C648803E23B8593C00294EFD /* MealDetailView.swift */; };
 		C648804123B90EA700294EFD /* MealDetailViewToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C648804023B90EA700294EFD /* MealDetailViewToolbar.swift */; };
@@ -182,8 +180,6 @@
 		C62BB6CF23B0A603000132F0 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewModel.swift; path = Meals3/Views/SearchViewModel.swift; sourceTree = SOURCE_ROOT; };
 		C62BB6D123B0A6D0000132F0 /* FoodListSortRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodListSortRule.swift; sourceTree = "<group>"; };
 		C62BB6D323B0AC2E000132F0 /* GeneralSearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSearchResultsView.swift; sourceTree = "<group>"; };
-		C62E11722440478600F637AC /* ListScrollingProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListScrollingProxy.swift; sourceTree = "<group>"; };
-		C62E11742440485500F637AC /* ListScrollingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListScrollingHelper.swift; sourceTree = "<group>"; };
 		C648803C23B7E44400294EFD /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		C648803E23B8593C00294EFD /* MealDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailView.swift; sourceTree = "<group>"; };
 		C648804023B90EA700294EFD /* MealDetailViewToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailViewToolbar.swift; sourceTree = "<group>"; };
@@ -342,11 +338,9 @@
 		C648804223B912AA00294EFD /* HelperViews */ = {
 			isa = PBXGroup;
 			children = (
-				C62E11722440478600F637AC /* ListScrollingProxy.swift */,
 				C648803C23B7E44400294EFD /* LazyView.swift */,
 				C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */,
 				C65768432376B94800D6CB98 /* SearchBarView.swift */,
-				C62E11742440485500F637AC /* ListScrollingHelper.swift */,
 				C60258412814791C00E538BC /* IPodStyleRotationWheel.swift */,
 			);
 			path = HelperViews;
@@ -692,7 +686,6 @@
 				C61526A423BE58D6001A4D69 /* CurrentMeal.swift in Sources */,
 				C6FE88BC236B5A3100881ACB /* Meals3.xcdatamodeld in Sources */,
 				C65E5CED23C34ED2006845FA /* RecipeAmountRowView.swift in Sources */,
-				C62E11752440485500F637AC /* ListScrollingHelper.swift in Sources */,
 				C60A870726BD6A010062944E /* BrandExtension.swift in Sources */,
 				C61526A723BE5C9E001A4D69 /* AddOrChangeTask.swift in Sources */,
 				C607D03323809C51009BA48C /* FoodNutritionStringView.swift in Sources */,
@@ -731,7 +724,6 @@
 				C6F45B9B236B65AD00C4FAC3 /* ReferenceWeight+CoreDataProperties.swift in Sources */,
 				C6F45B94236B65AD00C4FAC3 /* RecipeIngredient+CoreDataClass.swift in Sources */,
 				C6F45B8F236B65AD00C4FAC3 /* Food+CoreDataProperties.swift in Sources */,
-				C62E11732440478600F637AC /* ListScrollingProxy.swift in Sources */,
 				C6F45BA5236B65AD00C4FAC3 /* Dealer+CoreDataProperties.swift in Sources */,
 				C62592EF26BAD847009F1CFB /* OFFManager.swift in Sources */,
 				C6F45B9F236B65AD00C4FAC3 /* ServingSize+CoreDataProperties.swift in Sources */,

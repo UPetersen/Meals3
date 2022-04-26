@@ -27,8 +27,8 @@ struct AddOrChangeAmountOfIngredientView: View {
     
     private var amountBinding: Binding<String> {
         Binding<String> (
-            get: { self.amount.map{ numberFormatter.string(from: $0) ?? "" } ?? "" },
-            set: { self.amount = numberFormatter.number(from: $0) }
+            get: { amount.map{ numberFormatter.string(from: $0) ?? "" } ?? "" },
+            set: { amount = numberFormatter.number(from: $0) }
         )
     }
 
@@ -41,13 +41,13 @@ struct AddOrChangeAmountOfIngredientView: View {
                 
                 Form {
                     Section() {
-                        Text(self.food.name ?? " ")
+                        Text(food.name ?? " ")
                     }
                     
                     Section(header: Text("Menge in der Mahlzeit"), footer: Text(" ")) {
                         HStack {
                             Spacer()
-                            TextField("g", text: self.amountBinding)
+                            TextField("g", text: amountBinding)
                                 .keyboardType(.decimalPad)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .scaledToFit()
@@ -60,28 +60,28 @@ struct AddOrChangeAmountOfIngredientView: View {
                         ZStack {
                             IPodStyleRotationWheel(amount: $amount)
                                 .frame(width: geometry.size.width * 0.8, height: geometry.size.width * 0.8)
-                                .onTapGesture { self.save() } // Tapping anywhere saves.
+                                .onTapGesture { save() } // Tapping anywhere saves.
                             
-                            Button("Speichern", action:{ self.save() })
+                            Button("Speichern", action:{ save() })
                                 .padding()
                                 .foregroundColor(Color(.systemBlue))
                         }
                     }
                 }
             }
-            .navigationBarTitle(Text(self.title), displayMode: .inline)
+            .navigationBarTitle(Text(title), displayMode: .inline)
             .navigationBarItems(leading:
-                                    Button("Abbrechen") { self.isPresented = false }.padding(),
+                                    Button("Abbrechen") { isPresented = false }.padding(),
                                 trailing:
-                                    Button("Speichern") { self.save() }.padding()
+                                    Button("Speichern") { save() }.padding()
             )
 
         }
         .onAppear() {
-            switch self.task {
+            switch task {
             case .changeAmountOfIngredient(let ingredient):
-                self.amount = ingredient.amount
-                self.title = "Menge ändern"
+                amount = ingredient.amount
+                title = "Menge ändern"
                 print("AddOrChangeamountOfIngredientView: in onAppear")
             default: break
             }
@@ -99,31 +99,31 @@ struct AddOrChangeAmountOfIngredientView: View {
     
     
     func save() {
-        if let amount = self.amount {
+        if let amount = amount {
             switch task {
             case .addAmountOfFoodToIngredientCollection(let ingredientCollection):
-                    ingredientCollection.addIngredient(food: self.food, amount: amount, managedObjectContext: self.viewContext)
+                    ingredientCollection.addIngredient(food: food, amount: amount, managedObjectContext: viewContext)
                     if let meal = ingredientCollection as? Meal {
                         meal.objectWillChange.send()
                         meal.dateOfLastModification = Date()
-                        try? self.viewContext.save()
+                        try? viewContext.save()
                         HealthManager.synchronize(meal, withSynchronisationMode: .update)
                         self.isPresented = false // dismiss self
                         self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
                     } else if let recipe = ingredientCollection as? Recipe {
                         recipe.objectWillChange.send()
                         recipe.dateOfLastModification = Date()
-                        recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: self.viewContext)
+                        recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
 
-                        try? self.viewContext.save()
-                        self.isPresented = false // dismiss self
-                        self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
+                        try? viewContext.save()
+                        isPresented = false // dismiss self
+                        $presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
 //                        print("Recipestuff")
 //                        print(recipe.amount ?? "")
 //                        print(recipe.amountOfAllIngredients)
                     }
             case .changeAmountOfIngredient(var ingredient):
-                ingredient.amount = self.amount
+                ingredient.amount = amount
                 if let meal = (ingredient as? MealIngredient)?.meal {
                     meal.dateOfLastModification = Date()
                     HealthManager.synchronize(meal, withSynchronisationMode: .update)

@@ -100,11 +100,11 @@ struct rotationalDragGesture: Gesture {
             }
             .onChanged { value in
                 
-                switch self.dragState {
+                switch dragState {
                 case .inactive:
                     break
                 case .began:
-                    self.oldLocation = value.location
+                    oldLocation = value.location
                 case .isDragging:
                     // Translation vector from the previous drag location point to the current drag location point
                     let translationIncrementVector = CGVector(from: oldLocation, to: value.location)
@@ -112,13 +112,13 @@ struct rotationalDragGesture: Gesture {
                     let translationIncrementMagnitude = translationIncrementVector.magnitude
                     if translationIncrementMagnitude >= minimumTranslationIncrement {
                         // Absolute angle of the old location with respect to the center of the roation
-                        let absoluteAngle = -Angle(radians: Double(atan2(self.oldLocation.y - 150.0, self.oldLocation.x - 150.0)))
+                        let absoluteAngle = -Angle(radians: Double(atan2(oldLocation.y - 150.0, oldLocation.x - 150.0)))
                         // TranslationVector transformed into the coordinate system of the vector from the center of the rotation to the old location
                         // If the dy-value (its y-coordinate) is positive, we have a positive incrementation (i.e. the numerical value will increase)
                         let rotatedTranslationVector = translationIncrementVector.rotated(by: absoluteAngle.radians)
                         
                         let amountDelta = scalingFactor * ( rotatedTranslationVector.dy >= 0 ? Double(translationIncrementMagnitude) : Double(-translationIncrementMagnitude) )
-                        let nonNilAmount = max(0.0, (self.amount?.doubleValue ?? 0.0) +  amountDelta ).rounded()
+                        let nonNilAmount = max(0.0, (amount?.doubleValue ?? 0.0) +  amountDelta ).rounded()
                         self.amount = nonNilAmount <= 0.0000001 ? nil : NSNumber(value: nonNilAmount) // if amount is zero -> make it nil to show the placeholder (and do not allow to store the value)
                         
                         self.oldLocation = value.location

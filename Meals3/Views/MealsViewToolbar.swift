@@ -26,20 +26,20 @@ struct MealsViewToolbar: View {
         
     var body: some View {
         HStack {
-            Button(action: { self.showingMenu.toggle()} ,
+            Button(action: { showingMenu.toggle()} ,
                    label: { Image(systemName: "ellipsis.circle").padding(.horizontal) })
                 .actionSheet(isPresented: $showingMenu) { menuActionSheet() }  // Menu Action Sheet
-                .alert(isPresented: $isPresentingHealthAuthorizationConfirmationAlert, content: self.authorizeHealthAlert)
+                .alert(isPresented: $isPresentingHealthAuthorizationConfirmationAlert, content: authorizeHealthAlert)
 
             Spacer()
 
-            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.currentMeal.meal).environment(\.managedObjectContext, viewContext)) {
+            NavigationLink(destination: GeneralSearchView(ingredientCollection: currentMeal.meal).environment(\.managedObjectContext, viewContext)) {
                 Image(systemName: "magnifyingglass").padding(.horizontal)
             }
             
             Spacer()
             
-            Button(action: { self.isPresentingScanner = true }) {
+            Button(action: { isPresentingScanner = true }) {
                 Image(systemName: "barcode.viewfinder").padding(.horizontal)
             }
             .sheet(isPresented: $isPresentingScanner) {
@@ -48,7 +48,7 @@ struct MealsViewToolbar: View {
             
             Spacer()
             
-            Button(action: { withAnimation {self.createNewMeal()} },
+            Button(action: { withAnimation {createNewMeal()} },
                    label: { Image(systemName: "plus").padding(.horizontal) })
         }
         .padding()
@@ -56,11 +56,11 @@ struct MealsViewToolbar: View {
     
     func menuActionSheet() -> ActionSheet {
         ActionSheet(title: Text("Es ist angerichtet."), message: nil, buttons: [
-            .default(Text("Neues Lebensmittel"))         { self.createNewFood() },
-            .default(Text("Neues Rezept"))               { self.createNewRecipe() },
-            .default(Text("Neue Mahlzeit"))              { self.createNewMeal() },
-            .default(Text("Authorisiere Healthkit"))     { self.authorizeHealthKit() },
-//            .default(Text("Copy all meals to HealthKit")){ self.copyMealsToHealthKit() },
+            .default(Text("Neues Lebensmittel"))         { createNewFood() },
+            .default(Text("Neues Rezept"))               { createNewRecipe() },
+            .default(Text("Neue Mahlzeit"))              { createNewMeal() },
+            .default(Text("Authorisiere Healthkit"))     { authorizeHealthKit() },
+//            .default(Text("Copy all meals to HealthKit")){ copyMealsToHealthKit() },
             .cancel(Text("Zurück"))
             ]
         )
@@ -76,16 +76,16 @@ struct MealsViewToolbar: View {
         HealthManager.authorizeHealthKit {(authorized, error) -> Void in
             if authorized {
                 print("HealthKit authorization received.")
-                self.healthKitIsAuthorized = true
+                healthKitIsAuthorized = true
             } else {
                 print("HealthKit authorization denied!")
                 if error != nil {
                     print("\(String(describing: error))")
                 }
-                self.healthKitIsAuthorized = false
+                healthKitIsAuthorized = false
             }
         }
-        self.isPresentingHealthAuthorizationConfirmationAlert = true
+        isPresentingHealthAuthorizationConfirmationAlert = true
     }
 
 //    func copyMealsToHealthKit() {
@@ -96,17 +96,17 @@ struct MealsViewToolbar: View {
 
 
     func createNewFood() {
-        try? self.viewContext.save()
+        try? viewContext.save()
         newFood = Food(context: viewContext)
         isPresentingNewFood = true
     }
 
     func createNewRecipe() {
-        let recipe = Recipe(context: self.viewContext)
-        recipe.food = Food.fromRecipe(recipe, inManagedObjectContext: self.viewContext)
+        let recipe = Recipe(context: viewContext)
+        recipe.food = Food.fromRecipe(recipe, inManagedObjectContext: viewContext)
         newFood = recipe.food
         isPresentingNewFood = true
-        try? self.viewContext.save()
+        try? viewContext.save()
     }
     
     func createNewMeal() {

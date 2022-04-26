@@ -46,8 +46,8 @@ struct NSNumberTextField : View {
         }, set: {
             newValue in
 //            print("set value")
-            self.displayedText = newValue
-            self.value = self.formatter.number(from: newValue)
+            displayedText = newValue
+            value = self.formatter.number(from: newValue)
         })
     }
     

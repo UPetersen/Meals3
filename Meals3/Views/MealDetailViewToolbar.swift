@@ -21,26 +21,26 @@ struct MealDetailViewToolbar: View {
     
     var body: some View {
         HStack {
-            Button(action: { withAnimation {self.isShowingDeleteAlert = true} },
+            Button(action: { withAnimation {isShowingDeleteAlert = true} },
                    label: { Image(systemName: "trash").padding(.horizontal)
             })
                 .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
 
             Spacer()
 
-            Button(action: { withAnimation{ self.createRecipeFromMeal() } },
+            Button(action: { withAnimation{ createRecipeFromMeal() } },
                    label: { VStack { Text("Rezept"); Text("hieraus") }.font(.caption)
             })
 
             Spacer()
 
-            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.meal).environment(\.managedObjectContext, viewContext)) {
+            NavigationLink(destination: GeneralSearchView(ingredientCollection: meal).environment(\.managedObjectContext, viewContext)) {
                 Image(systemName: "magnifyingglass").padding(.horizontal)
             }
 
             Spacer()
             
-            Button(action: { withAnimation{ self.copyMeal() } },
+            Button(action: { withAnimation{ copyMeal() } },
                    label: { Image(systemName: "doc.on.doc").padding(.horizontal)
             })
 
@@ -52,11 +52,11 @@ struct MealDetailViewToolbar: View {
         print("delete the meal with confirmation")
         return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
                      primaryButton: .destructive(Text("Delete")) {
-            HealthManager.synchronize(self.meal, withSynchronisationMode: .delete)
-            self.viewContext.delete(self.meal)
+            HealthManager.synchronize(meal, withSynchronisationMode: .delete)
+            viewContext.delete(meal)
             currentMeal.updateToNewestMeal(viewContext: viewContext)
-            try? self.viewContext.save()
-            self.presentationMode.wrappedValue.dismiss()
+            try? viewContext.save()
+            presentationMode.wrappedValue.dismiss()
         },
                      secondaryButton: .cancel())
     }

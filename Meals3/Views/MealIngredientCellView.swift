@@ -31,7 +31,7 @@ struct MealIngredientCellView: View, Equatable {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode> // This is a dummy, unfortunately I do not know a better way
 
     var body: some View {
-
+        
         HStack {
             VStack (alignment: .leading) {
                 if let brandName = mealIngredient.food?.brand?.name {
@@ -49,14 +49,15 @@ struct MealIngredientCellView: View, Equatable {
                 .onTapGesture {
                     print("tapped")
                     self.showingAddOrChangeAmountOfFoodView = true
-            }
+                }
         }
         // TODO: hier geht's weiter: optionals rausmachen
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
-             AddOrChangeAmountOfIngredientView(food: self.mealIngredient.food!,
-                                               task: .changeAmountOfIngredient(self.mealIngredient as Ingredient),
-                                         isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
-                .environment(\.managedObjectContext, self.viewContext)
+            AddOrChangeAmountOfIngredientView(food: mealIngredient.food!,
+                                              task: .changeAmountOfIngredient(mealIngredient as Ingredient),
+                                              isPresented: $showingAddOrChangeAmountOfFoodView,
+                                              presentationModeOfParentView: presentationMode)
+            .environment(\.managedObjectContext, self.viewContext)
         })
     }
     
@@ -68,11 +69,7 @@ struct MealIngredientCellView: View, Equatable {
             lhs.mealIngredient.meal?.dateOfLastModification == rhs.mealIngredient.meal?.dateOfLastModification
     }
     
-//    func stringForNumber (_ number: NSNumber, formatter: NumberFormatter, divisor: Double) -> String {
-//        return (formatter.string(from: NSNumber(value: number.doubleValue / divisor)) ?? "nan")
-//    }
     
-    // TODO: put formatter into environment or pass it along as parameter
     /// Returns a String like "44 kcal, 10 g, KH, ..."
     func contentFor(mealIngredient: MealIngredient) -> String {
 //        print("MealIngredientCellView func contentFor(MealIngredient:): \(mealIngredient.description)")

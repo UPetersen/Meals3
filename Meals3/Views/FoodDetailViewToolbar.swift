@@ -24,8 +24,8 @@ struct FoodDetailViewToolbar<T>: View where T: IngredientCollection {
         HStack {
             
             Button(action: {
-                self.copyFood()
-                self.showingCopyFoodConfirmationAlert = true
+                copyFood()
+                showingCopyFoodConfirmationAlert = true
             }) {
                 Image(systemName: "doc.on.doc").padding()
             }
@@ -33,7 +33,7 @@ struct FoodDetailViewToolbar<T>: View where T: IngredientCollection {
             Spacer()
             
             Button(action: {
-                self.toggleFavoriteBookmark()
+                toggleFavoriteBookmark()
             }) {
                 Image(systemName: food.favoriteListItem != nil ? "bookmark.fill" : "bookmark").padding()
             }
@@ -42,7 +42,7 @@ struct FoodDetailViewToolbar<T>: View where T: IngredientCollection {
             
             Button(action: {
                 print("Plus button was tapped")
-                self.showingAddOrChangeAmountOfFoodView = true
+                showingAddOrChangeAmountOfFoodView = true
             }) { Image(systemName: "plus").padding() }
         }
     }

@@ -32,24 +32,24 @@ struct RecipeDetailView: View {
     var body: some View {
     
         let name = Binding<String>(
-            get: {self.recipe.food?.name ?? ""},
+            get: {recipe.food?.name ?? ""},
             set: {
-                self.recipe.food?.name = $0
-                self.recipe.dateOfCreation = Date()
-                self.recipe.dateOfLastModification = Date()
+                recipe.food?.name = $0
+                recipe.dateOfCreation = Date()
+                recipe.dateOfLastModification = Date()
         })
         let comment = Binding<String>(
-            get: {self.recipe.food?.comment ?? ""},
+            get: {recipe.food?.comment ?? ""},
             set: {
-                self.recipe.food?.comment = $0
-                self.recipe.dateOfCreation = Date()
-                self.recipe.dateOfLastModification = Date()
+                recipe.food?.comment = $0
+                recipe.dateOfCreation = Date()
+                recipe.dateOfLastModification = Date()
         })
         
         return VStack {
             
             Form {
-                Section(header: Text("Name und Kommentar"), footer: Text("Letzte Änderung am \(self.dateString(date: self.recipe.dateOfLastModification))")) {
+                Section(header: Text("Name und Kommentar"), footer: Text("Letzte Änderung am \(dateString(date: recipe.dateOfLastModification))")) {
                     TextField("Name des erzeugten Rezepts bzw. Lebensmittels", text: name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     ZStack { // lets the texteditor grow when entering text.
@@ -62,7 +62,6 @@ struct RecipeDetailView: View {
                     // TODO: make this a multiline TextField, there are various solutions on stackoverflow
                     RecipeAmountRowView(recipe: recipe)
                     Text("Amount is \(recipe.amount ?? NSNumber(value: -999))")
-//                    TextField(<#T##title: StringProtocol##StringProtocol#>, value: <#T##Binding<T>#>, formatter: <#T##Formatter#>, onEditingChanged: <#T##(Bool) -> Void#>, onCommit: <#T##() -> Void#>)
                 }
 
                 Section(header: headerView(), footer: footerView()) {

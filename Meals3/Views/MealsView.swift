@@ -21,8 +21,6 @@ struct MealsView: View {
 
     @FetchRequest var meals: FetchedResults<Meal>
     
-//    private let scrollingProxy = ListScrollingProxy() // proxy helper
-//    @State private var scrollingProxy: ListScrollingProxy = ListScrollingProxy() // proxy helper
     private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
         
     init(search: SearchViewModel) {
@@ -46,8 +44,6 @@ struct MealsView: View {
         self._meals = FetchRequest(fetchRequest: request)
         
         self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(search.text)
-//        self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(search.debouncedText)
-
     }
     
     var body: some View {

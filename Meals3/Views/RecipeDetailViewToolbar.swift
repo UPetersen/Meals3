@@ -19,22 +19,22 @@ struct RecipeDetailViewToolbar: View {
     
     var body: some View {
         HStack {
-            Button(action: { withAnimation{ self.copyRecipe() } },
+            Button(action: { withAnimation{ copyRecipe() } },
                    label: { Image(systemName: "doc.on.doc").padding(.horizontal)
             })
 
             Spacer()
             
-            NavigationLink(destination: GeneralSearchView(ingredientCollection: self.recipe).environment(\.managedObjectContext, viewContext)) {
+            NavigationLink(destination: GeneralSearchView(ingredientCollection: recipe).environment(\.managedObjectContext, viewContext)) {
                 Image(systemName: "magnifyingglass").padding(.horizontal)
             }
 
             Spacer()
             
-            Button(action: { withAnimation {self.isShowingDeleteAlert = true} },
+            Button(action: { withAnimation {isShowingDeleteAlert = true} },
                    label: { Image(systemName: "trash").padding(.horizontal)
             })
-                .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
+                .alert(isPresented: $isShowingDeleteAlert){ deleteAlert() }
         }
         .padding()
     }
@@ -45,11 +45,11 @@ struct RecipeDetailViewToolbar: View {
     
     func deleteAlert() -> Alert {
         print("delete the Recipe with confirmation")
-        return Alert(title: Text("Rezept wirklich löschen?"), message: Text(self.recipe.food?.deletionConfirmation() ?? ""),
+        return Alert(title: Text("Rezept wirklich löschen?"), message: Text(recipe.food?.deletionConfirmation() ?? ""),
               primaryButton: .destructive(Text("Delete")) {
-                self.presentationMode.wrappedValue.dismiss()
-                self.viewContext.delete(self.recipe)
-                try? self.viewContext.save()
+                presentationMode.wrappedValue.dismiss()
+                viewContext.delete(recipe)
+                try? viewContext.save()
             },
               secondaryButton: .cancel())
     }

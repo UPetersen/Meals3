@@ -41,8 +41,8 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
     
     @FetchRequest(entity: Meals3.Group.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Meals3.Group.key, ascending: true)]) var groups: FetchedResults<Meals3.Group>
     private var selectedGroup: Binding<Meals3.Group?> { Binding<Meals3.Group?> (
-            get: { self.food.group },
-            set: { newValue in self.food.group = newValue
+            get: { food.group },
+            set: { newValue in food.group = newValue
             })
     }
 
@@ -54,8 +54,8 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
         return fetchedSubGroups
     }
     private var selectedSubGroup: Binding<SubGroup?> {
-        Binding<SubGroup?> ( get: { self.food.subGroup },
-                             set: { newValue in self.food.subGroup = newValue })
+        Binding<SubGroup?> ( get: { food.subGroup },
+                             set: { newValue in food.subGroup = newValue })
     }
 
     var fetchedDetails: [Detail]? {
@@ -66,8 +66,8 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
         return fetchedSubDetails
     }
     private var selectedDetail: Binding<Detail?> {
-        Binding<Detail?> ( get: { self.food.detail },
-                          set: { newValue in self.food.detail = newValue })
+        Binding<Detail?> ( get: { food.detail },
+                          set: { newValue in food.detail = newValue })
     }
 //    @FetchRequest(entity: Detail.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Detail.key, ascending: true)]) var details: FetchedResults<Detail>
 
@@ -80,14 +80,14 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
         return fetchedPreparations
     }
     private var selectedPreparation: Binding<Preparation?> {
-        Binding<Preparation?> ( get: { self.food.preparation },
-                          set: { newValue in self.food.preparation = newValue })
+        Binding<Preparation?> ( get: { food.preparation },
+                          set: { newValue in food.preparation = newValue })
     }
 
     @FetchRequest(entity: ReferenceWeight.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \ReferenceWeight.key, ascending: true)]) var referenceWeight: FetchedResults<ReferenceWeight>
     private var selectedReferenceWeight: Binding<ReferenceWeight?> {
-        Binding<ReferenceWeight?> ( get: { self.food.referenceWeight },
-                          set: { newValue in self.food.referenceWeight = newValue })
+        Binding<ReferenceWeight?> ( get: { food.referenceWeight },
+                          set: { newValue in food.referenceWeight = newValue })
     }
 
     
@@ -112,7 +112,7 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                 // Section "Grundnährwerte je 100g"
                 Section(header: Text(nutrientSections[0].header)) {
                     ForEach(nutrientSections[0].keys, id: \.self) { (key: String) in
-                        return FoodNumberTextFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: numberFormatter)
+                        return FoodNumberTextFieldWithKey(editingDisabled: $editingDisabled, food: food, key: key, numberFormatter: numberFormatter)
                     }
                 }
                 
@@ -203,9 +203,6 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                                 Spacer()
                                 Text(food.key ?? "")
                             }
-//                            Text(food.source?.name == "world.openfoodfacts.org" ? "EAN-Code" : "Key")
-//                            Spacer()
-//                            Text(food.key ?? "")
                         }
                     }
                 }.lineLimit(nil)
@@ -214,7 +211,7 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                 if !showingAllIngredients {
                     HStack {
                         Spacer()
-                        Button("Alle Nährwertdaten anzeigen") { self.showingAllIngredients = true }.padding()
+                        Button("Alle Nährwertdaten anzeigen") { showingAllIngredients = true }.padding()
                         Spacer()
                     }
                 }
@@ -223,70 +220,65 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                         //          ForEach(nutrientSections.dropFirst(), id: \.self) {nutrientSection in
                         Section(header: Text(nutrientSection.header)) {
                             ForEach(nutrientSection.keys, id: \.self) { (key: String) in
-                                return FoodNumberTextFieldWithKey(editingDisabled: self.$editingDisabled, food: self.food, key: key, numberFormatter: numberFormatter)
+                                return FoodNumberTextFieldWithKey(editingDisabled: $editingDisabled, food: food, key: key, numberFormatter: numberFormatter)
                             }
                         }
                     }
                 }
             } // Form
-                .onTapGesture(count: 2) {
-                    self.showingAddOrChangeAmountOfFoodView = true
+            .onTapGesture(count: 2) {
+                showingAddOrChangeAmountOfFoodView = true
             }
             .environment(\.defaultMinListRowHeight, 1)
-
+            
             FoodDetailViewToolbar(food: food, ingredientCollection: ingredientCollection, showingAddOrChangeAmountOfFoodView: $showingAddOrChangeAmountOfFoodView)
             
             // Hidden NavigationLink with EmptyView() as label to move to FoodDetalsView with newly created Food, must be in if clause!
             if showingRecipeDetail && food.recipe != nil {
-                NavigationLink(destination: RecipeDetailView(recipe: self.food.recipe!), isActive: self.$showingRecipeDetail, label: { EmptyView() })
-                        .hidden()
+                NavigationLink(destination: RecipeDetailView(recipe: food.recipe!), isActive: $showingRecipeDetail, label: { EmptyView() })
+                    .hidden()
             }
 
             
         } // VStack
-//            .onAppear() {
-//                print(self.food.detail ?? "detail")
-//                print(self.food.group ?? "group")
-//                print(self.food.subGroup ?? "subGroup")
-//                print(self.food.referenceWeight ?? "referenceWeight")
-//                print(self.food.preparation ?? "preparation")
-//        }
-            
+
+        
         .onDisappear() {
             print("foodDetail disappears")
-            if self.viewContext.hasChanges {
-                try? self.viewContext.save()            
+            if viewContext.hasChanges {
+                try? viewContext.save()
             }
         }
         .navigationBarHidden(false)
         .navigationBarItems(trailing:
-            HStack {
-                Button(action: {
-                    self.showingDeleteFoodConfirmationAlert = true
-                }) {
-                    Image(systemName: "trash").padding(.horizontal)
-                }
-                .alert(isPresented: $showingDeleteFoodConfirmationAlert){ deleteFoodConfirmationAlert() }
-
-                Button(editingDisabled ? "Edit" : "Done") {
-                    if self.food.recipe != nil {
-                        self.showingRecipeDetail = true
-                    } else {
-                        self.editingDisabled.toggle()  // edit food data
-                        self.food.dateOfLastModification = Date()
-                    }
-                }.padding()
+                                HStack {
+            Button(action: {
+                showingDeleteFoodConfirmationAlert = true
+            }) {
+                Image(systemName: "trash").padding(.horizontal)
             }
-                // TODO: Presentationmode of parent view not needed any more -> remove with next refactoring
-        .sheet(isPresented: $showingAddOrChangeAmountOfFoodView,
-               onDismiss: { self.presentationMode.wrappedValue.dismiss() },
-               content:{ AddOrChangeAmountOfIngredientView(food: self.food,
-                                        task: .addAmountOfFoodToIngredientCollection(self.ingredientCollection),
-                                        isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
-                .environment(\.managedObjectContext, self.viewContext)}
-            )
+            .alert(isPresented: $showingDeleteFoodConfirmationAlert){ deleteFoodConfirmationAlert() }
+            
+            Button(editingDisabled ? "Edit" : "Done") {
+                if food.recipe != nil {
+                    showingRecipeDetail = true
+                } else {
+                    editingDisabled.toggle()  // edit food data
+                    food.dateOfLastModification = Date()
+                }
+            }.padding()
+        }
+                            // TODO: Presentationmode of parent view not needed any more -> remove with next refactoring
+            .sheet(isPresented: $showingAddOrChangeAmountOfFoodView,
+                   onDismiss: { presentationMode.wrappedValue.dismiss() },
+                   content:{ AddOrChangeAmountOfIngredientView(food: food,
+                                                               task: .addAmountOfFoodToIngredientCollection(ingredientCollection),
+                                                               isPresented: $showingAddOrChangeAmountOfFoodView,
+                                                               presentationModeOfParentView: presentationMode)
+            .environment(\.managedObjectContext, viewContext)}
+                  )
         )
-            .navigationBarTitle(food.recipe == nil ? "Lebensmittel" : "Rezept")
+        .navigationBarTitle(food.recipe == nil ? "Lebensmittel" : "Rezept")
 //            .resignKeyboardOnDragGesture()
         
     } // body
@@ -295,7 +287,7 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
     func deleteFoodConfirmationAlert() -> Alert {
         return Alert(title: Text("Lebensmittel löschen?"), message: Text(food.deletionConfirmation()),
                      primaryButton: .destructive(Text("Löschen")) {
-                        self.deleteFood()
+                        deleteFood()
             },
                      secondaryButton: .cancel())
     }
@@ -342,7 +334,7 @@ struct FoodDetail_Previews: PreviewProvider {
             return nutrient
         }()
         
-        return SwiftUI.Group {
+        SwiftUI.Group {
             SwiftUI.Group {
                 NavigationView {
                     FoodDetailView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)

@@ -28,20 +28,20 @@ struct RecipeIngredientRowView: View {
                     .foregroundColor(Color(.systemBlue))
                     .onTapGesture {
                         print("tapped")
-                        self.task = .changeAmountOfIngredient(self.ingredient as Ingredient)
-                        self.showingAddOrChangeAmountOfFoodView = true
+                        task = .changeAmountOfIngredient(ingredient as Ingredient)
+                        showingAddOrChangeAmountOfFoodView = true
                 }
             }
-            Text(self.contentFor(ingredient: ingredient))
+            Text(contentFor(ingredient: ingredient))
                 .lineLimit(1)
                 .font(.footnote)
         }
             // TODO: hier geht's weiter: optionals rausmachen
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
-            AddOrChangeAmountOfIngredientView(food: self.ingredient.food!,
-                                              task: .changeAmountOfIngredient(self.ingredient as Ingredient),
-                                        isPresented: self.$showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: self.presentationMode)
-                .environment(\.managedObjectContext, self.viewContext)
+            AddOrChangeAmountOfIngredientView(food: ingredient.food!,
+                                              task: .changeAmountOfIngredient(ingredient as Ingredient),
+                                        isPresented: $showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: presentationMode)
+                .environment(\.managedObjectContext, viewContext)
         })
     }
     

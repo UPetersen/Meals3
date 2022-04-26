@@ -23,14 +23,14 @@ struct RecipeDetailIngredientsView: View {
                 .onDelete() { IndexSet in
                     print("Deleting recipe ingredient from food.")
                     for index in IndexSet {
-                        print (self.recipe.filteredAndSortedIngredients()![index].description)
-                        self.viewContext.delete(self.recipe.filteredAndSortedIngredients()![index])
+                        print (recipe.filteredAndSortedIngredients()![index].description)
+                        viewContext.delete(recipe.filteredAndSortedIngredients()![index])
                     }
-                    self.viewContext.processPendingChanges() // Needed. Otherwhise the deleted ingredient might be counted. Save would work, too.
-                    self.recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: self.viewContext)
-                    self.recipe.dateOfLastModification = Date()
-                    if self.viewContext.hasChanges {
-                        try? self.viewContext.save()
+                    viewContext.processPendingChanges() // Needed. Otherwhise the deleted ingredient might be counted. Save would work, too.
+                    recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
+                    recipe.dateOfLastModification = Date()
+                    if viewContext.hasChanges {
+                        try? viewContext.save()
                     }
                 }
             }

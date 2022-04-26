@@ -17,11 +17,11 @@ struct FoodNutritionStringView: View {
     var body: some View {
         
         let valueAsString = Binding<String> (
-            get: { self.value ?? "no name" },
-            set: { self.value = $0 }
+            get: { value ?? "no name" },
+            set: { value = $0 }
         )
         
-        return HStack {
+        HStack {
             Text(text)
             Spacer()
             
