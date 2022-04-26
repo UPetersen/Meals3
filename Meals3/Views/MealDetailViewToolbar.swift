@@ -16,21 +16,14 @@ struct MealDetailViewToolbar: View {
     @EnvironmentObject var currentMeal: CurrentMeal
 
     @State private var isShowingGeneralSearchView = false
-    @State private var isShowingDeleteAlert = false
     @State private var isPresentingScanner: Bool = false
     
     var body: some View {
         HStack {
-            Button(action: { withAnimation {isShowingDeleteAlert = true} },
-                   label: { Image(systemName: "trash").padding(.horizontal)
-            })
-                .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
-
-            Spacer()
-
             Button(action: { withAnimation{ createRecipeFromMeal() } },
                    label: { VStack { Text("Rezept"); Text("hieraus") }.font(.caption)
             })
+            .padding(.leading)
 
             Spacer()
 
@@ -57,19 +50,6 @@ struct MealDetailViewToolbar: View {
         .padding(.bottom, 10)
     }
 
-    func deleteAlert() -> Alert {
-        print("delete the meal with confirmation")
-        return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
-                     primaryButton: .destructive(Text("Delete")) {
-            HealthManager.synchronize(meal, withSynchronisationMode: .delete)
-            viewContext.delete(meal)
-            currentMeal.updateToNewestMeal(viewContext: viewContext)
-            try? viewContext.save()
-            presentationMode.wrappedValue.dismiss()
-        },
-                     secondaryButton: .cancel())
-    }
-    
     /// Create copy of this meal an dismiss the view
     func copyMeal() {
         debugPrint("Will copy the meal \(meal) and make it the new current meal")

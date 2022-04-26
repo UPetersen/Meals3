@@ -45,6 +45,9 @@ struct MealDetailView: View {
     
     @EnvironmentObject var currentMeal: CurrentMeal
     @Environment(\.managedObjectContext) var viewContext
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    @State private var isShowingDeleteAlert = false
     
     var body: some View {
         
@@ -80,14 +83,19 @@ struct MealDetailView: View {
             MealDetailViewToolbar(meal: meal)
         }
         .navigationBarTitle("Mahlzeit-Details")
-        .navigationBarItems(trailing: EditButton().padding())
+        .navigationBarItems(trailing: HStack {
+            Button(action: { withAnimation {isShowingDeleteAlert = true} }, label: { Image(systemName: "trash").padding(.horizontal)})
+                .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
+            Spacer()
+            EditButton().padding()
+        })
         .onDisappear(){
             print("MealDetailView disappeared.")
             if viewContext.hasChanges {
                 try? meal.managedObjectContext?.save()
             }
             // current meal might have changed, since the date of the meal could have changed. Thus update it.
-            // Do not compare to this meal, since it could have been deleted and the core data would crash.
+            // Do not compare to this meal, since it could have been deleted and the core data would crash
             currentMeal.updateToNewestMeal(viewContext: viewContext)
         }
         .onAppear() {
@@ -144,6 +152,19 @@ struct MealDetailView: View {
     func dateString(date: Date?) -> String {
         guard let date = date else { return "no date avaiable" }        
         return dateFormatter.string(from: date)
+    }
+    
+    func deleteAlert() -> Alert {
+        print("delete the meal with confirmation")
+        return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
+                     primaryButton: .destructive(Text("Delete")) {
+            HealthManager.synchronize(meal, withSynchronisationMode: .delete)
+            viewContext.delete(meal)
+            currentMeal.updateToNewestMeal(viewContext: viewContext)
+            try? viewContext.save()
+            presentationMode.wrappedValue.dismiss()
+        },
+                     secondaryButton: .cancel())
     }
 }
 
