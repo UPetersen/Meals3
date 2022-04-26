@@ -20,9 +20,9 @@ struct MealDetailViewToolbar: View {
     
     var body: some View {
         HStack {
-            Button(action: { withAnimation{ createRecipeFromMeal() } },
-                   label: { VStack { Text("Rezept"); Text("hieraus") }.font(.caption)
-            })
+            Button(action: { withAnimation{ createRecipeFromMeal() } }) {
+                VStack { Text("Rezept"); Text("hieraus") }.font(.caption)
+            }
             .padding(.leading)
 
             Spacer()

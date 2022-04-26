@@ -37,12 +37,11 @@ struct RecipeIngredientRowView: View {
                 .font(.footnote)
         }
             // TODO: hier geht's weiter: optionals rausmachen
-        .sheet(isPresented: $showingAddOrChangeAmountOfFoodView, content:{
+        .sheet(isPresented: $showingAddOrChangeAmountOfFoodView) {
             AddOrChangeAmountOfIngredientView(food: ingredient.food!,
                                               task: .changeAmountOfIngredient(ingredient as Ingredient),
                                         isPresented: $showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: presentationMode)
-                .environment(\.managedObjectContext, viewContext)
-        })
+        }
     }
     
     func stringForNumber (_ number: NSNumber, formatter: NumberFormatter, divisor: Double) -> String {

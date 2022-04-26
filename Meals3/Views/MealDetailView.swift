@@ -83,12 +83,16 @@ struct MealDetailView: View {
             MealDetailViewToolbar(meal: meal)
         }
         .navigationBarTitle("Mahlzeit-Details")
-        .navigationBarItems(trailing: HStack {
-            Button(action: { withAnimation {isShowingDeleteAlert = true} }, label: { Image(systemName: "trash").padding(.horizontal)})
+        .toolbar() {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button(action: { withAnimation {isShowingDeleteAlert = true} }) {
+                    Image(systemName: "trash").padding(.horizontal)
+                }
                 .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
-            Spacer()
-            EditButton().padding()
-        })
+ 
+                EditButton().padding()
+            }
+        }
         .onDisappear(){
             print("MealDetailView disappeared.")
             if viewContext.hasChanges {

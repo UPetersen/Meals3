@@ -238,11 +238,8 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                 NavigationLink(destination: RecipeDetailView(recipe: food.recipe!), isActive: $showingRecipeDetail, label: { EmptyView() })
                     .hidden()
             }
-
-            
         } // VStack
 
-        
         .onDisappear() {
             print("foodDetail disappears")
             if viewContext.hasChanges {
@@ -250,37 +247,31 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
             }
         }
         .navigationBarHidden(false)
-        .navigationBarItems(trailing:
-                                HStack {
-            Button(action: {
-                showingDeleteFoodConfirmationAlert = true
-            }) {
-                Image(systemName: "trash").padding(.horizontal)
-            }
-            .alert(isPresented: $showingDeleteFoodConfirmationAlert){ deleteFoodConfirmationAlert() }
-            
-            Button(editingDisabled ? "Edit" : "Done") {
-                if food.recipe != nil {
-                    showingRecipeDetail = true
-                } else {
-                    editingDisabled.toggle()  // edit food data
-                    food.dateOfLastModification = Date()
-                }
-            }.padding()
-        }
-                            // TODO: Presentationmode of parent view not needed any more -> remove with next refactoring
-            .sheet(isPresented: $showingAddOrChangeAmountOfFoodView,
-                   onDismiss: { presentationMode.wrappedValue.dismiss() },
-                   content:{ AddOrChangeAmountOfIngredientView(food: food,
-                                                               task: .addAmountOfFoodToIngredientCollection(ingredientCollection),
-                                                               isPresented: $showingAddOrChangeAmountOfFoodView,
-                                                               presentationModeOfParentView: presentationMode)
-            .environment(\.managedObjectContext, viewContext)}
-                  )
-        )
         .navigationBarTitle(food.recipe == nil ? "Lebensmittel" : "Rezept")
-//            .resignKeyboardOnDragGesture()
-        
+        .toolbar() {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button(action: { showingDeleteFoodConfirmationAlert = true }) {
+                    Image(systemName: "trash").padding(.horizontal)
+                }
+                .alert(isPresented: $showingDeleteFoodConfirmationAlert){ deleteFoodConfirmationAlert() }
+                
+                Button(editingDisabled ? "Edit" : "Done") {
+                    if food.recipe != nil {
+                        showingRecipeDetail = true
+                    } else {
+                        editingDisabled.toggle()  // edit food data
+                        food.dateOfLastModification = Date()
+                    }
+                }.padding()
+            }
+        }
+        .sheet(isPresented: $showingAddOrChangeAmountOfFoodView,
+               onDismiss: { presentationMode.wrappedValue.dismiss() }) {
+            AddOrChangeAmountOfIngredientView(food: food,
+                                              task: .addAmountOfFoodToIngredientCollection(ingredientCollection),
+                                              isPresented: $showingAddOrChangeAmountOfFoodView,
+                                              presentationModeOfParentView: presentationMode)
+        }
     } // body
     
     
