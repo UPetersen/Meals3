@@ -70,7 +70,6 @@ struct MealsNutrientsView: View, Equatable {
     
     /// Create copy of this meal an dismiss the view
     func copyMeal() {
-        debugPrint("Will copy the meal \(meal) and make it the new current meal")
         if let newMeal = Meal.fromMeal(meal, inManagedObjectContext: viewContext) {
             HealthManager.synchronize(newMeal, withSynchronisationMode: .store)
             currentMeal.updateByComparisonTo(newMeal, viewContext: viewContext)

@@ -29,7 +29,7 @@ struct MealDetailIngredients: View {
     }
 
     func deleteMealIngredients (indexSet: IndexSet) -> () {
-        print("Deleting meal ingredient from food.")
+//        print("Deleting meal ingredient from food.")
         for index in indexSet {
             viewContext.delete(meal.filteredAndSortedMealIngredients()![index])
         }

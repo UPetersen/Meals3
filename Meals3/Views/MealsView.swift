@@ -102,7 +102,6 @@ struct MealsView: View {
     }
 
     func deleteIngredients(atIndexSet indexSet: IndexSet, fromMeal meal: Meal) {
-        print("Deleting meal ingredient from food.")
         for index in indexSet {
             if let ingredients = meal.filteredAndSortedMealIngredients() {
                 viewContext.delete(ingredients[index])

@@ -98,9 +98,9 @@ extension Meal {
         do {
             let meals = try context.fetch(request)
 //            print("Wir haben inzwischen \(meals.count) Mahlzeiten.")
-            print("Letztes")
+//            print("Letztes")
 //            print(meals.last?.description)
-            print("Letztes")
+//            print("Letztes")
             return meals.first
         } catch {
             print("Error fetching newest meal: \(error)")

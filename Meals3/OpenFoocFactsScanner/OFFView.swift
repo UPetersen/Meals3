@@ -13,7 +13,6 @@ struct OFFView: View {
 
     @StateObject private var offManager = OFFManager()
     @Environment(\.managedObjectContext) var viewContext
-//    @EnvironmentObject var currentMeal: CurrentMeal
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {

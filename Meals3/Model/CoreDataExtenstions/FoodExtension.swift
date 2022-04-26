@@ -311,7 +311,7 @@ extension Food {
         let sources =  Source.fetchSourcesForName("world.openfoodfacts.org", managedObjectContext: context)
         if let source = sources?.first {
             self.source = source
-            sources?.forEach{ print("Source name: \($0.name ?? "Source has no name")") }
+//            sources?.forEach{ print("Source name: \($0.name ?? "Source has no name")") }
         } else {
             self.source = Source.createSourceWithName("world.openfoodfacts.org", inManagedObjectContext: context)
         }
@@ -321,7 +321,7 @@ extension Food {
             let brands =  Brand.fetchBrandsForName(brand, managedObjectContext: context)
             if let brand = brands?.first {
                 self.brand = brand
-                brands?.forEach{ print("Brand name: \($0.name ?? "Brand has no name")") }
+//                brands?.forEach{ print("Brand name: \($0.name ?? "Brand has no name")") }
             } else {
                 self.brand = Brand.createBrandWithName(brand, inManagedObjectContext: context)
             }
@@ -347,14 +347,14 @@ extension Food {
             let request: NSFetchRequest<Food> = Food.fetchRequest()
             request.predicate = NSPredicate(format: "key = '\(key)'")
             
-            print("Request: \(request.description)")
+//            print("Request: \(request.description)")
                     
             do {
                 let foods = try context.fetch(request)
-                print("Erstes Food: \(String(describing: foods.first))")
+//                print("Erstes Food: \(String(describing: foods.first))")
                 return foods.first
             } catch {
-                print("Error fetching foods for key '\(key)': \(error)")
+//                print("Error fetching foods for key '\(key)': \(error)")
             }
         }
         return nil

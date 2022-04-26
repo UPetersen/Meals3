@@ -47,7 +47,6 @@ struct MealIngredientCellView: View, Equatable {
             Text("\(mealIngredient.amount ?? NSNumber(-999), formatter: numberFormatter) g")
                 .foregroundColor(Color(.systemBlue))
                 .onTapGesture {
-                    print("tapped")
                     self.showingAddOrChangeAmountOfFoodView = true
                 }
         }

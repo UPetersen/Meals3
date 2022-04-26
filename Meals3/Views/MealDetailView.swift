@@ -94,16 +94,13 @@ struct MealDetailView: View {
             }
         }
         .onDisappear(){
-            print("MealDetailView disappeared.")
+//            print("MealDetailView disappeared.")
             if viewContext.hasChanges {
                 try? meal.managedObjectContext?.save()
             }
             // current meal might have changed, since the date of the meal could have changed. Thus update it.
             // Do not compare to this meal, since it could have been deleted and the core data would crash
             currentMeal.updateToNewestMeal(viewContext: viewContext)
-        }
-        .onAppear() {
-            print("MealDetaliView appeared.")
         }
     }
     
@@ -126,7 +123,7 @@ struct MealDetailView: View {
     }
     
     func reducedNutrientString(meal: Meal?) -> String {
-        print("In reducedNutrientString in MealsDetailView: \(String(describing: meal?.description))")
+//        print("In reducedNutrientString in MealsDetailView: \(String(describing: meal?.description))")
         if let meal = meal {
             let totalCarb    = Nutrient.dispStringForNutrientWithKey("totalCarb",    value: meal.doubleForKey("totalCarb"),    formatter: zeroMaxDigitsNumberFormatter, inManagedObjectContext: viewContext) ?? ""
             var fpu = 0.0
@@ -159,16 +156,17 @@ struct MealDetailView: View {
     }
     
     func deleteAlert() -> Alert {
-        print("delete the meal with confirmation")
-        return Alert(title: Text("Mahlzeit wirklich löschen?"), message: Text(""),
-                     primaryButton: .destructive(Text("Delete")) {
-            HealthManager.synchronize(meal, withSynchronisationMode: .delete)
-            viewContext.delete(meal)
-            currentMeal.updateToNewestMeal(viewContext: viewContext)
-            try? viewContext.save()
-            presentationMode.wrappedValue.dismiss()
-        },
-                     secondaryButton: .cancel())
+//        print("delete the meal with confirmation")
+        Alert(title: Text("Mahlzeit wirklich löschen?"),
+              message: Text(""),
+              primaryButton: .destructive(Text("Delete")) {
+                HealthManager.synchronize(meal, withSynchronisationMode: .delete)
+                viewContext.delete(meal)
+                currentMeal.updateToNewestMeal(viewContext: viewContext)
+                try? viewContext.save()
+                presentationMode.wrappedValue.dismiss()
+              },
+              secondaryButton: .cancel())
     }
 }
 

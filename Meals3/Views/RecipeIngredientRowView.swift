@@ -27,7 +27,6 @@ struct RecipeIngredientRowView: View {
                 Text("\(ingredient.amount ?? NSNumber(-999), formatter: NumberFormatter()) g")
                     .foregroundColor(Color(.systemBlue))
                     .onTapGesture {
-                        print("tapped")
                         task = .changeAmountOfIngredient(ingredient as Ingredient)
                         showingAddOrChangeAmountOfFoodView = true
                 }
@@ -36,11 +35,12 @@ struct RecipeIngredientRowView: View {
                 .lineLimit(1)
                 .font(.footnote)
         }
-            // TODO: hier geht's weiter: optionals rausmachen
+        // TODO: hier geht's weiter: optionals rausmachen
         .sheet(isPresented: $showingAddOrChangeAmountOfFoodView) {
             AddOrChangeAmountOfIngredientView(food: ingredient.food!,
                                               task: .changeAmountOfIngredient(ingredient as Ingredient),
-                                        isPresented: $showingAddOrChangeAmountOfFoodView, presentationModeOfParentView: presentationMode)
+                                              isPresented: $showingAddOrChangeAmountOfFoodView,
+                                              presentationModeOfParentView: presentationMode)
         }
     }
     

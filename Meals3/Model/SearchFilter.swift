@@ -32,7 +32,7 @@ enum SearchFilter: String {
         case .contains:
             // Search for foods where the name contains the words given in the search bar text field
             let words = searchText.split(separator: " ")
-            print("The words in the search text: \(words)")
+//            print("The words in the search text: \(words)")
             
             // Loop over the components, build predicate for each one (word), functional way of creating an arry of predicates
             let subPredicates = words.map({word -> NSPredicate in NSPredicate(format: "name contains[c] %@", word as CVarArg)})
@@ -52,7 +52,7 @@ enum SearchFilter: String {
         case .contains:
             // Search for foods where the name contains the words given in the search bar text field
             let words = searchText.split(separator: " ")
-            print("The words in the search text: \(words)")
+//            print("The words in the search text: \(words)")
             
             // Loop over the components, build predicate for each one (word), functional way of creating an arry of predicates
             let subPredicates = words.map({word -> NSPredicate in NSPredicate(format: "food.name contains[c] %@", word as CVarArg)})
@@ -110,7 +110,7 @@ enum SearchFilter: String {
         case .contains:
             // Search for foods where the name contains the words given in the search bar text field
             let words = searchText.split(separator: " ")
-            print("The words in the search text: \(words)")
+//            print("The words in the search text: \(words)")
             
             // Loop over the components, build predicate for each one (word), functional way of creating an arry of predicates
             let subPredicates = words.map({word -> NSPredicate in NSPredicate(format: "food.name CONTAINS[c] %@", word as CVarArg)})

@@ -241,7 +241,7 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
         } // VStack
 
         .onDisappear() {
-            print("foodDetail disappears")
+//            print("foodDetail disappears")
             if viewContext.hasChanges {
                 try? viewContext.save()
             }

@@ -44,13 +44,13 @@ struct RecipeDetailViewToolbar: View {
     }
     
     func deleteAlert() -> Alert {
-        print("delete the Recipe with confirmation")
-        return Alert(title: Text("Rezept wirklich löschen?"), message: Text(recipe.food?.deletionConfirmation() ?? ""),
+        Alert(title: Text("Rezept wirklich löschen?"),
+              message: Text(recipe.food?.deletionConfirmation() ?? ""),
               primaryButton: .destructive(Text("Delete")) {
                 presentationMode.wrappedValue.dismiss()
                 viewContext.delete(recipe)
                 try? viewContext.save()
-            },
+              },
               secondaryButton: .cancel())
     }
 }

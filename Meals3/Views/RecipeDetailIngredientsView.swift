@@ -21,9 +21,8 @@ struct RecipeDetailIngredientsView: View {
                     RecipeIngredientRowView(ingredient: recipeIngredient)
                 }
                 .onDelete() { IndexSet in
-                    print("Deleting recipe ingredient from food.")
                     for index in IndexSet {
-                        print (recipe.filteredAndSortedIngredients()![index].description)
+//                        print (recipe.filteredAndSortedIngredients()![index].description)
                         viewContext.delete(recipe.filteredAndSortedIngredients()![index])
                     }
                     viewContext.processPendingChanges() // Needed. Otherwhise the deleted ingredient might be counted. Save would work, too.

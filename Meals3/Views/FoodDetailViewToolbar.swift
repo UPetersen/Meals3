@@ -41,7 +41,6 @@ struct FoodDetailViewToolbar<T>: View where T: IngredientCollection {
             Spacer()
             
             Button(action: {
-                print("Plus button was tapped")
                 showingAddOrChangeAmountOfFoodView = true
             }) { Image(systemName: "plus").padding() }
         }
