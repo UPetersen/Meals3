@@ -20,16 +20,16 @@ private let dateFormatter: DateFormatter = {
 }()
 
 struct ContentView: View {
-    @ObservedObject var search: SearchViewModel
+    @ObservedObject var searchViewModel: SearchViewModel
     
     var body: some View {
         
         NavigationView {
             VStack{
-                SearchBarView(searchText: self.$search.text)
+                SearchBarView(searchText: $searchViewModel.text)
                     .padding(.top, topMargin)
                 
-                MealsView(search: self.search)
+                MealsView(searchViewModel: searchViewModel)
                 
                 MealsViewToolbar()
             }
@@ -51,7 +51,7 @@ let topMargin: CGFloat = 9
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let search = SearchViewModel()
-        return ContentView(search: search).environment(\.managedObjectContext, context)
+        let searchViewModel = SearchViewModel()
+        return ContentView(searchViewModel: searchViewModel).environment(\.managedObjectContext, context)
     }
 }

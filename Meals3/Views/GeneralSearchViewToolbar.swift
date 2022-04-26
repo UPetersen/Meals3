@@ -11,7 +11,7 @@ import SwiftUI
 struct GeneralSearchViewToolbar: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.managedObjectContext) var viewContext
-    @ObservedObject var search: SearchViewModel
+    @ObservedObject var searchViewModel: SearchViewModel
     
     @State private var showingSelection = false
     @State private var showingSortRules = false
@@ -19,7 +19,7 @@ struct GeneralSearchViewToolbar: View {
     var body: some View {
         HStack {
             Button(action: { self.showingSelection.toggle() }) {
-                Text(search.selection.rawValue)
+                Text(searchViewModel.selection.rawValue)
                 
             }
             .actionSheet(isPresented: $showingSelection) { selectionActionSheet() }
@@ -27,13 +27,13 @@ struct GeneralSearchViewToolbar: View {
             Spacer()
 
             Button(action: { toggleSearchFilter() }) {
-                Text(search.filter == SearchFilter.contains ? "'   ...   '" : "'...      '").fontWeight(.bold)
+                Text(searchViewModel.filter == SearchFilter.contains ? "'   ...   '" : "'...      '").fontWeight(.bold)
             }
 
             Spacer()
 
             Button(action: { showingSortRules.toggle() }) {
-                Text(search.sortRule.rawValue)
+                Text(searchViewModel.sortRule.rawValue)
             }
             .actionSheet(isPresented: $showingSortRules) { sortRuleActionSheet() }
         }
@@ -41,18 +41,18 @@ struct GeneralSearchViewToolbar: View {
     }
     
     func toggleSearchFilter() {
-        search.filter = search.filter == .contains ? .beginsWith : .contains
+        searchViewModel.filter = searchViewModel.filter == .contains ? .beginsWith : .contains
     }
     
     func sortRuleActionSheet() -> ActionSheet {
         ActionSheet(title: Text("Wonach soll sortiert werden?"), message: nil, buttons: [
-            .default(Text(FoodListSortRule.nameAscending.rawValue)                    ){ search.sortRule = .nameAscending },
-            .default(Text(FoodListSortRule.totalEnergyCalsDescending.rawValue)         ){ search.sortRule = .totalEnergyCalsDescending },
-            .default(Text(FoodListSortRule.totalCarbDescending.rawValue)               ){ search.sortRule = .totalCarbDescending },
-            .default(Text(FoodListSortRule.totalProteinDescending.rawValue)            ){ search.sortRule = .totalProteinDescending },
-            .default(Text(FoodListSortRule.totalFatDescending.rawValue)                ){ search.sortRule = .totalFatDescending },
-            .default(Text(FoodListSortRule.fattyAcidCholesterolDescending.rawValue)    ){ search.sortRule = .fattyAcidCholesterolDescending },
-            .default(Text(FoodListSortRule.groupThenSubGroupThenNameAscending.rawValue)){ search.sortRule = .groupThenSubGroupThenNameAscending },
+            .default(Text(FoodListSortRule.nameAscending.rawValue)                    ){ searchViewModel.sortRule = .nameAscending },
+            .default(Text(FoodListSortRule.totalEnergyCalsDescending.rawValue)         ){ searchViewModel.sortRule = .totalEnergyCalsDescending },
+            .default(Text(FoodListSortRule.totalCarbDescending.rawValue)               ){ searchViewModel.sortRule = .totalCarbDescending },
+            .default(Text(FoodListSortRule.totalProteinDescending.rawValue)            ){ searchViewModel.sortRule = .totalProteinDescending },
+            .default(Text(FoodListSortRule.totalFatDescending.rawValue)                ){ searchViewModel.sortRule = .totalFatDescending },
+            .default(Text(FoodListSortRule.fattyAcidCholesterolDescending.rawValue)    ){ searchViewModel.sortRule = .fattyAcidCholesterolDescending },
+            .default(Text(FoodListSortRule.groupThenSubGroupThenNameAscending.rawValue)){ searchViewModel.sortRule = .groupThenSubGroupThenNameAscending },
             .cancel(Text("Zurück"))
             ]
         )
@@ -60,14 +60,14 @@ struct GeneralSearchViewToolbar: View {
     
     func selectionActionSheet() -> ActionSheet {
         ActionSheet(title: Text("Welche Lebensmittel sollen genutzt werden?"), message: nil, buttons: [
-            .default(Text(FoodListSelection.favorites.rawValue)      ){ search.selection = .favorites },
-            .default(Text(FoodListSelection.recipes.rawValue)        ){ search.selection = .recipes },
-            .default(Text(FoodListSelection.lastWeek.rawValue)       ){ search.selection = .lastWeek },
-            .default(Text(FoodListSelection.ownEntries.rawValue)     ){ search.selection = .ownEntries },
-            .default(Text(FoodListSelection.mealIngredients.rawValue)){ search.selection = .mealIngredients },
-            .default(Text(FoodListSelection.bls.rawValue)            ){ search.selection = .bls },
-            .default(Text(FoodListSelection.openFoodFacts.rawValue)  ){ search.selection = .openFoodFacts },
-            .default(Text(FoodListSelection.all.rawValue)            ){ search.selection = .all },
+            .default(Text(FoodListSelection.favorites.rawValue)      ){ searchViewModel.selection = .favorites },
+            .default(Text(FoodListSelection.recipes.rawValue)        ){ searchViewModel.selection = .recipes },
+            .default(Text(FoodListSelection.lastWeek.rawValue)       ){ searchViewModel.selection = .lastWeek },
+            .default(Text(FoodListSelection.ownEntries.rawValue)     ){ searchViewModel.selection = .ownEntries },
+            .default(Text(FoodListSelection.mealIngredients.rawValue)){ searchViewModel.selection = .mealIngredients },
+            .default(Text(FoodListSelection.bls.rawValue)            ){ searchViewModel.selection = .bls },
+            .default(Text(FoodListSelection.openFoodFacts.rawValue)  ){ searchViewModel.selection = .openFoodFacts },
+            .default(Text(FoodListSelection.all.rawValue)            ){ searchViewModel.selection = .all },
             .cancel(Text("Zurück"))
             ]
         )
@@ -79,7 +79,7 @@ struct GeneralSearchToolbar_Previews: PreviewProvider {
         NavigationView {
             VStack {
                 Spacer()
-                GeneralSearchViewToolbar(search: SearchViewModel())
+                GeneralSearchViewToolbar(searchViewModel: SearchViewModel())
             }
         }
         .navigationBarTitle("Lebensmittel")

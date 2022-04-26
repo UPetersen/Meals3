@@ -18,30 +18,13 @@ class SearchViewModel: ObservableObject {
     @Published var filter: SearchFilter = .contains
     @Published var sortRule: FoodListSortRule = .nameAscending
     @Published var selection: FoodListSelection = .mealIngredients
-//    @Published var selection: FoodListSelection = .All
-//    @Published var selection: FoodListSelection = .LastWeek
     var fetchLimit: Int = 25
     @Published var fetchOffset: Int = 0
     
-//    @Published var debouncedText: String = "" {
-//        didSet {
-//            print("The debounced text: \(debouncedText)")
-//        }
-//    }
-//    
-//    private var cancellable = Set<AnyCancellable>()
-//    init() {
-////        $text.throttle(for: .seconds(0.4), scheduler: RunLoop.main, latest: true)
-//        $text.debounce(for: .seconds(0.1), scheduler: RunLoop.main)
-////            .filter{$0.count != 1}
-////            .assign(to: \.debouncedText, on: self)
-//            .sink { [weak self] (newString) in
-//                if newString.count != 1 {
-//                    self?.debouncedText = newString
-//                }
-//        }
-//        .store(in: &cancellable)
-//    }
+    init() {
+        
+    }
+
     
     
     /// Returns a NSFetchRequest for foods that matches the search.
@@ -49,6 +32,7 @@ class SearchViewModel: ObservableObject {
     /// Batch size, offset, limit and other properties are chosen such to achieve speed performance when scrolling the resulting list with SwiftUI.
     /// - Returns: NSFetchRequest
     func foodsFetchRequest() -> NSFetchRequest<Food> {
+        
         let predicates = [selection.predicate, filter.predicateForSearchText(text)].compactMap{$0}
         
         let request = NSFetchRequest<Food>(entityName: "Food")
@@ -61,6 +45,26 @@ class SearchViewModel: ObservableObject {
         request.fetchOffset = fetchOffset // needed for paging through results
         request.fetchLimit = fetchLimit   // Speeds up a lot, especially inital loading of this view controller, but needs care
         request.propertiesToFetch = ["name", "totalEnergyCals", "totalCarb", "totalProtein", "totalFat", "carbFructose", "carbGlucose"]   // read only certain properties (others are fetched automatically on demand)
+        return request
+    }
+    
+    func mealsViewFetchRequest() -> NSFetchRequest<Meal> {
+        
+        let predicate = filter.predicateForMealsWithIngredientsWithSearchText(text)
+        
+        let request = NSFetchRequest<Meal>(entityName: "Meal")
+//        request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(search.text)
+        request.predicate = predicate
+        request.fetchBatchSize = 25
+        request.fetchLimit = 25  // Speeds up a lot, especially inital loading of this view controller, but needs care
+        request.fetchBatchSize = 20
+        request.fetchLimit = 20  // Speeds up a lot, especially inital loading of this view controller, but needs care
+        // TODO: double check whether request.returnsObjectsAsFaults = true really speeds up in our case. 2021-12-05: Seems no difference
+//        request.returnsObjectsAsFaults = true   // objects are only loaded, when needed/used -> faster but more frequent disk reads
+        request.includesPropertyValues = true   // usefull only, when only relevant properties are read
+//        request.propertiesToFetch = ["dateOfCreation", "dateOfLastModification"] // read only certain properties (others are fetched automatically on demand (and that is the problem for entities with only frew properties like Meal, so do not use on meal!!!!)
+        request.relationshipKeyPathsForPrefetching = ["ingredients", "food"]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Meal.dateOfCreation, ascending: false)]
         return request
     }
 

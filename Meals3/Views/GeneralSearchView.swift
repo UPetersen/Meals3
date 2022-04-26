@@ -14,17 +14,17 @@ struct GeneralSearchView<T>: View where T: IngredientCollection  {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
 
-    @ObservedObject var search = SearchViewModel()
+    @ObservedObject var searchViewModel = SearchViewModel()
 
     var body: some View {
         
          VStack {
-            SearchBarView(searchText: $search.text)
+            SearchBarView(searchText: $searchViewModel.text)
 
-            GeneralSearchResultsView(search: search, ingredientCollection: ingredientCollection)
+            GeneralSearchResultsView(searchViewModel: searchViewModel, ingredientCollection: ingredientCollection)
 
             // Bottom tool bar
-            GeneralSearchViewToolbar(search: search)
+            GeneralSearchViewToolbar(searchViewModel: searchViewModel)
          }
          .onAppear() {
         }

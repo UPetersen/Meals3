@@ -14,7 +14,7 @@ import CoreData
 struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T
-    @ObservedObject var search: SearchViewModel
+    @ObservedObject var searchViewModel: SearchViewModel
         
     private var nsFetchRequest: NSFetchRequest<Food> // used to derive the number of fetched foods without actually fetching any
     @FetchRequest var foods: FetchedResults<Food>    // result of the fetch
@@ -36,13 +36,13 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
     @State private var footerAppeared = false
     @State private var footerDisAppeared = false
 
-    init(search: SearchViewModel, ingredientCollection: T) {
+    init(searchViewModel: SearchViewModel, ingredientCollection: T) {
         print("initialization of search results")
         
-        self.search = search
+        self.searchViewModel = searchViewModel
         self.ingredientCollection = ingredientCollection
         
-        let request = search.foodsFetchRequest()
+        let request = searchViewModel.foodsFetchRequest()
         _foods = FetchRequest(fetchRequest: request)
         // Alternatively
         //        self.fetchRequest = FetchRequest(fetchRequest: request) // request for displaying foods
@@ -115,7 +115,7 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
     }
     
     func pagingText() -> Text {
-        Text("\(search.fetchOffset) bis \(search.fetchOffset + foods.endIndex-1) von \(totalFoodsCount), h: \(headerAppeared.description)|\(headerDisAppeared.description), f: \(footerAppeared.description)| \(footerDisAppeared.description)")
+        Text("\(searchViewModel.fetchOffset) bis \(searchViewModel.fetchOffset + foods.endIndex-1) von \(totalFoodsCount), h: \(headerAppeared.description)|\(headerDisAppeared.description), f: \(footerAppeared.description)| \(footerDisAppeared.description)")
     }
         
     @ViewBuilder func foodDetailView(food: Food) -> some View {
@@ -124,18 +124,18 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
     
     func shouldLoadNextPage() {
 //        print("should load next page")
-        let newOffset = max ( 0, min(search.fetchOffset + 30, totalFoodsCount - search.fetchLimit) )
-        if search.fetchOffset != newOffset {
-            search.fetchOffset = newOffset
+        let newOffset = max ( 0, min(searchViewModel.fetchOffset + 30, totalFoodsCount - searchViewModel.fetchLimit) )
+        if searchViewModel.fetchOffset != newOffset {
+            searchViewModel.fetchOffset = newOffset
         }
     }
         
     func shouldLoadPreviousPage() {
 //        print("should load previous page")
-        guard search.fetchOffset > 0 && didScrollDown else {
+        guard searchViewModel.fetchOffset > 0 && didScrollDown else {
             return
         }
-        search.fetchOffset = max(0, search.fetchOffset - foods.count)
+        searchViewModel.fetchOffset = max(0, searchViewModel.fetchOffset - foods.count)
     }
 }
 

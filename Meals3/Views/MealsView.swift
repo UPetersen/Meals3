@@ -12,7 +12,7 @@ import CoreData
 struct MealsView: View {
     
     @Environment(\.managedObjectContext) var viewContext
-    @ObservedObject var search: SearchViewModel
+    @ObservedObject var searchViewModel: SearchViewModel
     private var ingredientsPredicate: NSPredicate?
         
     @State private var showingDeleteConfirmation = false
@@ -23,27 +23,14 @@ struct MealsView: View {
     
     private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
         
-    init(search: SearchViewModel) {
+    init(searchViewModel: SearchViewModel) {
         print("Init of meals view")
-        self.search = search
+        self.searchViewModel = searchViewModel
+
+        self._meals = FetchRequest(fetchRequest: searchViewModel.mealsViewFetchRequest())
+        
         let searchFilter = SearchFilter.contains
-        
-        let request = NSFetchRequest<Meal>(entityName: "Meal")
-        request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(search.text)
-//        request.predicate = searchFilter.predicateForMealsWithIngredientsWithSearchText(searchText.wrappedValue)
-        request.fetchBatchSize = 25
-        request.fetchLimit = 25  // Speeds up a lot, especially inital loading of this view controller, but needs care
-        request.fetchBatchSize = 20
-        request.fetchLimit = 20  // Speeds up a lot, especially inital loading of this view controller, but needs care
-        // TODO: double check whether request.returnsObjectsAsFaults = true really speeds up in our case. 2021-12-05: Seems no difference
-//        request.returnsObjectsAsFaults = true   // objects are only loaded, when needed/used -> faster but more frequent disk reads
-        request.includesPropertyValues = true   // usefull only, when only relevant properties are read
-//        request.propertiesToFetch = ["dateOfCreation", "dateOfLastModification"] // read only certain properties (others are fetched automatically on demand (and that is the problem for entities with only frew properties like Meal, so do not use on meal!!!!)
-        request.relationshipKeyPathsForPrefetching = ["ingredients", "food"]
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Meal.dateOfCreation, ascending: false)]
-        self._meals = FetchRequest(fetchRequest: request)
-        
-        self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(search.text)
+        self.ingredientsPredicate = searchFilter.shortPredicateForMealsWithIngredientsWithSearchText(searchViewModel.text)
     }
     
     var body: some View {
@@ -51,12 +38,9 @@ struct MealsView: View {
         ScrollViewReader { proxy in
             List {
                 ForEach(meals) { meal in
-                    Section(header:
-                                NavigationLink(destination: MealDetailView(meal: meal)
-                                ) {
+                    Section(header: NavigationLink(destination: MealDetailView(meal: meal) ) {
                         LazyView( MealsNutrientsView(meal: meal) )
-                    })
-                    {
+                    }) {
                         ForEach(meal.filteredAndSortedMealIngredients(predicate: ingredientsPredicate)!) {  mealIngredient in
                             NavigationLink(destination: lazyFoodDetail(food: mealIngredient.food!)) {
                                 MealIngredientCellView(mealIngredient: mealIngredient) // .equatable()
@@ -65,13 +49,13 @@ struct MealsView: View {
                         .onDelete() { indexSet in
                             deleteIngredients(atIndexSet: indexSet, fromMeal: meal)
                         }
-                        .foregroundColor(meal == currentMeal.meal ? Color(.label) : Color(.secondaryLabel))
+                        .foregroundColor(meal == currentMeal.meal ? Color(.label) : Color(.secondaryLabel)) // Different color for current meal
                     }
                     .id(meal) // needed for scrolling to top
                 }
                 .onMove(perform: move)
             }
-            .onChange(of: search.text, perform: {_ in proxy.scrollTo(meals.first, anchor: .top)}) // scroll to top, when editing search field (incl. cancel)
+            .onChange(of: searchViewModel.text, perform: {_ in proxy.scrollTo(meals.first, anchor: .top)}) // scroll to top, when editing search field (incl. cancel)
             .onChange(of: currentMeal.meal) { meal in proxy.scrollTo(meal, anchor: .top) } // scroll to current meal if current meal changes
             
         }
