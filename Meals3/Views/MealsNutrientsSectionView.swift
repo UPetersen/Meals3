@@ -35,7 +35,7 @@ fileprivate let numberFormatter: NumberFormatter = {
 /// `"35 g KH  und 2 FPE"`
 
 
-struct MealsNutrientsView: View, Equatable {
+struct MealsNutrientsSectionView: View, Equatable {
 //struct MealsNutrients: View {
     @ObservedObject var meal: Meal
     
@@ -57,7 +57,7 @@ struct MealsNutrientsView: View, Equatable {
         }
     }
     
-    static func == (lhs: MealsNutrientsView, rhs: MealsNutrientsView) -> Bool {
+    static func == (lhs: MealsNutrientsSectionView, rhs: MealsNutrientsSectionView) -> Bool {
 //        print("Using equatable on MealNutriensView")
         return lhs.meal.dateOfCreation == rhs.meal.dateOfCreation && lhs.meal.dateOfLastModification == rhs.meal.dateOfLastModification
     }
@@ -88,7 +88,7 @@ struct MealNutrientsView_Previews: PreviewProvider {
     static var previews: some View {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
             
-        return MealsNutrientsView(meal: Meal(context: context)).environment(\.managedObjectContext, context)
+        return MealsNutrientsSectionView(meal: Meal(context: context)).environment(\.managedObjectContext, context)
 
     }
 }

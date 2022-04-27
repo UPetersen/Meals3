@@ -39,11 +39,11 @@ struct MealsView: View {
             List {
                 ForEach(meals) { meal in
                     Section(header: NavigationLink(destination: MealDetailView(meal: meal) ) {
-                        LazyView( MealsNutrientsView(meal: meal) )
+                        LazyView( MealsNutrientsSectionView(meal: meal) )
                     }) {
                         ForEach(meal.filteredAndSortedMealIngredients(predicate: ingredientsPredicate)!) {  mealIngredient in
-                            NavigationLink(destination: lazyFoodDetail(food: mealIngredient.food!)) {
-                                MealIngredientCellView(mealIngredient: mealIngredient) // .equatable()
+                            NavigationLink(destination: lazyFoodDetailView(food: mealIngredient.food!)) {
+                                MealIngredientRowView(mealIngredient: mealIngredient) // .equatable()
                             }
                         }
                         .onDelete() { indexSet in
@@ -80,7 +80,7 @@ struct MealsView: View {
         }
     }
     
-    @ViewBuilder func lazyFoodDetail(food: Food) -> some View {
+    @ViewBuilder func lazyFoodDetailView(food: Food) -> some View {
         LazyView( FoodDetailView(ingredientCollection: currentMeal.meal, food: food))
 //        FoodDetailView(ingredientCollection: self.currentMeal.meal, food: food)
     }

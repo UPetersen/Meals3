@@ -24,7 +24,7 @@ fileprivate let numberFormatter: NumberFormatter = {
 /// `"156 kcal, 11g KH, 8 g Prot, 9 g Fett, 0 g Fruct., 0 g Gluc."`
 
 //struct MealIngredientCellView: View {
-struct MealIngredientCellView: View, Equatable {
+struct MealIngredientRowView: View, Equatable {
     @Environment(\.managedObjectContext) var viewContext
     var mealIngredient: MealIngredient
     @State private var showingAddOrChangeAmountOfFoodView = false
@@ -60,7 +60,7 @@ struct MealIngredientCellView: View, Equatable {
     }
     
     // FIXME: equatable is probably not correct here, if this view is also used, within a search where only the ingredients are displayed that match the search term.
-    static func == (lhs: MealIngredientCellView, rhs: MealIngredientCellView) -> Bool {
+    static func == (lhs: MealIngredientRowView, rhs: MealIngredientRowView) -> Bool {
 //        print("Using equatable on MealIngredientCellView")
         return lhs.mealIngredient.food?.name == rhs.mealIngredient.food?.name &&
             lhs.mealIngredient.amount == rhs.mealIngredient.amount &&

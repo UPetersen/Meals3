@@ -19,7 +19,9 @@ struct MealDetailIngredients: View {
                 Text("Leere Mahlzeit").foregroundColor(Color(.placeholderText))
             } else {
                 ForEach(meal.filteredAndSortedMealIngredients()!) { (mealIngredient: MealIngredient) in
-                    MealIngredientCellView(mealIngredient: mealIngredient)
+                    NavigationLink(destination: FoodDetailView(ingredientCollection: meal, food: mealIngredient.food!)) {
+                        MealIngredientRowView(mealIngredient: mealIngredient) // .equatable()
+                    }
                 }
                 .onDelete() {
                     deleteMealIngredients(indexSet: $0)

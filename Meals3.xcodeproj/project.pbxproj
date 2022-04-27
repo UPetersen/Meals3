@@ -64,9 +64,9 @@
 		C68AE91D23C1DFCE00A1348B /* RecipeDetailIngredientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AE91C23C1DFCE00A1348B /* RecipeDetailIngredientsView.swift */; };
 		C68AE91F23C1E3CB00A1348B /* RecipeIngredientRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AE91E23C1E3CB00A1348B /* RecipeIngredientRowView.swift */; };
 		C68AE92123C2147500A1348B /* RecipeDetailViewToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68AE92023C2147500A1348B /* RecipeDetailViewToolbar.swift */; };
-		C690BA9423A80CE400581E88 /* MealIngredientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C690BA9323A80CE400581E88 /* MealIngredientCellView.swift */; };
+		C690BA9423A80CE400581E88 /* MealIngredientRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C690BA9323A80CE400581E88 /* MealIngredientRowView.swift */; };
 		C692116823A4FCDF000AC4A2 /* AddOrChangeAmountOfIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C692116723A4FCDF000AC4A2 /* AddOrChangeAmountOfIngredientView.swift */; };
-		C69779C02378097100B3C72C /* MealsNutrientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69779BF2378097100B3C72C /* MealsNutrientsView.swift */; };
+		C69779C02378097100B3C72C /* MealsNutrientsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69779BF2378097100B3C72C /* MealsNutrientsSectionView.swift */; };
 		C6AD65F4236B5D750021D5A6 /* Event+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AD65F2236B5D750021D5A6 /* Event+CoreDataClass.swift */; };
 		C6AD65F5236B5D750021D5A6 /* Event+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AD65F3236B5D750021D5A6 /* Event+CoreDataProperties.swift */; };
 		C6C61F17238EE87F009E2F98 /* NSNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */; };
@@ -199,9 +199,9 @@
 		C68AE91C23C1DFCE00A1348B /* RecipeDetailIngredientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailIngredientsView.swift; sourceTree = "<group>"; };
 		C68AE91E23C1E3CB00A1348B /* RecipeIngredientRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeIngredientRowView.swift; sourceTree = "<group>"; };
 		C68AE92023C2147500A1348B /* RecipeDetailViewToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewToolbar.swift; sourceTree = "<group>"; };
-		C690BA9323A80CE400581E88 /* MealIngredientCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealIngredientCellView.swift; sourceTree = "<group>"; };
+		C690BA9323A80CE400581E88 /* MealIngredientRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealIngredientRowView.swift; sourceTree = "<group>"; };
 		C692116723A4FCDF000AC4A2 /* AddOrChangeAmountOfIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrChangeAmountOfIngredientView.swift; sourceTree = "<group>"; };
-		C69779BF2378097100B3C72C /* MealsNutrientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsNutrientsView.swift; sourceTree = "<group>"; };
+		C69779BF2378097100B3C72C /* MealsNutrientsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsNutrientsSectionView.swift; sourceTree = "<group>"; };
 		C6AD65F2236B5D750021D5A6 /* Event+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C6AD65F3236B5D750021D5A6 /* Event+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNumberTextField.swift; sourceTree = "<group>"; };
@@ -370,9 +370,9 @@
 				C64BE8FF23B9F50000E41CE2 /* MealDetailIngredients.swift */,
 				C648804023B90EA700294EFD /* MealDetailViewToolbar.swift */,
 				C648803E23B8593C00294EFD /* MealDetailView.swift */,
-				C690BA9323A80CE400581E88 /* MealIngredientCellView.swift */,
+				C690BA9323A80CE400581E88 /* MealIngredientRowView.swift */,
 				C60F510123A166AB009F2CDA /* MealsView.swift */,
-				C69779BF2378097100B3C72C /* MealsNutrientsView.swift */,
+				C69779BF2378097100B3C72C /* MealsNutrientsSectionView.swift */,
 				C62BB6CB23B003D0000132F0 /* MealsViewToolbar.swift */,
 				C65E5CEC23C34ED2006845FA /* RecipeAmountRowView.swift */,
 				C61B3B0B23C1C8B200CCDD90 /* RecipeDetailView.swift */,
@@ -735,8 +735,8 @@
 				C604B2BB236C24E5006BFE9E /* Result.swift in Sources */,
 				C60F510223A166AB009F2CDA /* MealsView.swift in Sources */,
 				C6FB71F726B99BA6006009BD /* OFFResponse.swift in Sources */,
-				C69779C02378097100B3C72C /* MealsNutrientsView.swift in Sources */,
-				C690BA9423A80CE400581E88 /* MealIngredientCellView.swift in Sources */,
+				C69779C02378097100B3C72C /* MealsNutrientsSectionView.swift in Sources */,
+				C690BA9423A80CE400581E88 /* MealIngredientRowView.swift in Sources */,
 				C61B3B0C23C1C8B200CCDD90 /* RecipeDetailView.swift in Sources */,
 				C62AF91A259A0E340005F044 /* CodeScannerView.swift in Sources */,
 				C625776423C0F8CF0040CBE1 /* FoodListSelection.swift in Sources */,
