@@ -20,7 +20,7 @@ struct MealDetailIngredients: View {
             } else {
                 ForEach(meal.filteredAndSortedMealIngredients()!) { (mealIngredient: MealIngredient) in
                     NavigationLink(destination: FoodDetailView(ingredientCollection: meal, food: mealIngredient.food!)) {
-                        MealIngredientRowView(mealIngredient: mealIngredient) // .equatable()
+                        MealIngredientRowView(mealIngredient: mealIngredient) 
                     }
                 }
                 .onDelete() {

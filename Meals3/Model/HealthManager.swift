@@ -180,7 +180,7 @@ final class HealthManager {
         // 2. Save the food correlation in the HealthKit store
         do {
             try await healthKitStore.save(foodCorrelation)
-            print("Saved the food correlation for the meal with mealID (yes, a date is used as mealID): \(meal.mealID!)  successfully in HealthKit store!")
+//            print("Saved the food correlation for the meal with mealID (yes, a date is used as mealID): \(meal.mealID!)  successfully in HealthKit store!")
         } catch {
             print("Error saving food correlation for the meal with mealID (yes, a date is used as mealID): \(meal.mealID!) in HealthKit store: \(error.localizedDescription)")
         }
@@ -232,7 +232,7 @@ final class HealthManager {
     /// - Parameter meal: the meal for which the food correlation is stored in HealthKit
     /// - Returns: food correlations in HealthKit for the meal
     private class func getFoodCorrelationsForMealID(_ mealID: String) async -> [HKCorrelation]? {
-        print("About to query the food correlation for the meal with mealID (yes, a date is used as mealID): \(mealID)  successfully in HealthKit store!")
+//        print("About to query the food correlation for the meal with mealID (yes, a date is used as mealID): \(mealID)  successfully in HealthKit store!")
 
         let predicate = HKQuery.predicateForObjects(withMetadataKey: "mealID", allowedValues: [mealID])
         
@@ -254,12 +254,12 @@ final class HealthManager {
                         print ("no food correlations")
                         fatalError("*** Invalid State: This can only fail if there was an error. ***")
                     }
-                    print("1. Successfully queried the food correlation for the meal with mealID (yes, a date is used as mealID): \(mealID)  successfully in HealthKit store!")
+//                    print("1. Successfully queried the food correlation for the meal with mealID (yes, a date is used as mealID): \(mealID)  successfully in HealthKit store!")
                     continuation.resume(returning: foodCorrelations)
                 }
             )
         }
-        print("2. Successfully queried the food correlation for the meal with mealID (yes, a date is used as mealID): \(mealID)  successfully in HealthKit store!")
+//        print("2. Successfully queried the food correlation for the meal with mealID (yes, a date is used as mealID): \(mealID)  successfully in HealthKit store!")
         return foodCorrelations
     }
     
@@ -287,7 +287,7 @@ final class HealthManager {
                     print("After delete food correlations")
                 }
             }
-            print("Deleted the food correlation for the meal with mealID (yes, a date is used as mealID): \(mealID)  successfully in HealthKit store!")
+//            print("Deleted the food correlation for the meal with mealID (yes, a date is used as mealID): \(mealID)  successfully in HealthKit store!")
 
         } catch {
             print("An error occured trying to delete or update the meal with mealID (yes, a date is used as mealID): \(mealID)  successfully in HealthKit store!")
