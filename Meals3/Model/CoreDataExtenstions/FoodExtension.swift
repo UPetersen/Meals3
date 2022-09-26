@@ -359,5 +359,48 @@ extension Food {
         }
         return nil
     }
+}
+
+extension Food {
+    /// Returns an array with some dummy foods for testing purposes.
+    /// - Parameter context: the context for core data.
+    /// - Returns: An array of foods, where the name contains the date such that they can be found and deleted easily.
+    class func dummyFoods(context: NSManagedObjectContext) -> [Food] {
+        let dummyFood1: Food = {
+            let food = Food(context: context)
+            food.name = "Dummy Food 1, Leckerer Donut" + Date().formatted(date: .abbreviated, time: .shortened) + Date().ISO8601Format()
+            food.comment = "Ein unnötiger Kommentar"
+            food.totalCarb = 12.0
+            food.totalFat = 23.0
+            food.totalProtein = 14.0
+            food.totalEnergyCals = 200.0
+            food.totalAlcohol = 4.0
+            food.totalWater = 55.0
+            food.totalDietaryFiber = 32.0
+            food.totalOrganicAcids = 0.4
+            food.totalSalt = 0.3
+            food.dateOfLastModification = Date()
+            food.carbGlucose = 12.0
+            return food
+        }()
         
+        let dummyFood2: Food = {
+            let food = Food(context: context)
+            food.name = "Dummy Food 2, Leckere Papricka" + Date().formatted(date: .abbreviated, time: .shortened) + Date().ISO8601Format()
+            food.comment = "Ein Kommentar"
+            food.totalCarb = 22.0
+            food.totalFat = 23.0
+            food.totalProtein = 44.0
+            food.totalEnergyCals = 100.0
+            food.totalAlcohol = 3.0
+            food.totalWater = 45.0
+            food.totalDietaryFiber = 38.0
+            food.totalOrganicAcids = 0.3
+            food.totalSalt = 0.2
+            food.dateOfLastModification = Date()
+            food.carbGlucose = 12.7
+            return food
+        }()
+        return [dummyFood1, dummyFood2]
+    }
 }

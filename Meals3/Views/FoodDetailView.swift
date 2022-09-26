@@ -293,69 +293,69 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
 
 
 
-struct FoodDetail_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
-        let food: Food = {
-            let food = Food(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
-            food.name = "leckerer Donut"
-            food.comment = "Ein unnötiger Kommentar"
-            food.totalCarb = 12.0
-            food.totalFat = 23.0
-            food.totalProtein = 14.0
-            food.totalEnergyCals = 200.0
-            food.totalAlcohol = 4.0
-            food.totalWater = 55.0
-            food.totalDietaryFiber = 32.0
-            food.totalOrganicAcids = 0.4
-            food.totalSalt = 0.3
-            food.dateOfLastModification = Date()
-            food.carbGlucose = 12.0
-            
-            return food
-        }()
-        let _: Nutrient? = { // Store a nutrient in core data
-            let nutrient = Nutrient(context: context)
-            nutrient.dispUnit = "g"
-            nutrient.key = "totalEnergyCals"
-            nutrient.name = "Energie (Teststring)"
-            //            try? context.save()
-            return nutrient
-        }()
-        
-        SwiftUI.Group {
-            SwiftUI.Group {
-                NavigationView {
-                    FoodDetailView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
-                        .environment(\.managedObjectContext, context)
-                        .navigationBarTitle(food.name ?? "Lebensmittel")
-                }
-                .previewDevice(PreviewDevice(rawValue: "iPhone 6S Plus"))
-                .previewDisplayName("iPhone 6S Plus")
-            }
-            
-            SwiftUI.Group {
-                NavigationView {
-                    FoodDetailView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
-                        .environment(\.managedObjectContext, context)
-                        .navigationBarTitle(food.name ?? "Lebensmittel")
-                }
-                .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro"))
-                .previewDisplayName("iPhone 13 Pro")
-            }
-
-            SwiftUI.Group {
-                NavigationView {
-                    FoodDetailView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
-                        .environment(\.managedObjectContext, context)
-                        .navigationBarTitle(food.name ?? "Lebensmittel")
-                }
-                .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro Max"))
-                .previewDisplayName("iPhone 13 Pro Max")
-            }
-        }
-        .previewInterfaceOrientation(.portrait)
-    }
-}
+//struct FoodDetail_Previews: PreviewProvider {
+//    
+//    static var previews: some View {
+//        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//        
+//        let food: Food = {
+//            let food = Food(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+//            food.name = "leckerer Donut"
+//            food.comment = "Ein unnötiger Kommentar"
+//            food.totalCarb = 12.0
+//            food.totalFat = 23.0
+//            food.totalProtein = 14.0
+//            food.totalEnergyCals = 200.0
+//            food.totalAlcohol = 4.0
+//            food.totalWater = 55.0
+//            food.totalDietaryFiber = 32.0
+//            food.totalOrganicAcids = 0.4
+//            food.totalSalt = 0.3
+//            food.dateOfLastModification = Date()
+//            food.carbGlucose = 12.0
+//            
+//            return food
+//        }()
+//        let _: Nutrient? = { // Store a nutrient in core data
+//            let nutrient = Nutrient(context: context)
+//            nutrient.dispUnit = "g"
+//            nutrient.key = "totalEnergyCals"
+//            nutrient.name = "Energie (Teststring)"
+//            //            try? context.save()
+//            return nutrient
+//        }()
+//        
+//        SwiftUI.Group {
+//            SwiftUI.Group {
+//                NavigationView {
+//                    FoodDetailView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
+//                        .environment(\.managedObjectContext, context)
+//                        .navigationBarTitle(food.name ?? "Lebensmittel")
+//                }
+//                .previewDevice(PreviewDevice(rawValue: "iPhone 6S Plus"))
+//                .previewDisplayName("iPhone 6S Plus")
+//            }
+//            
+//            SwiftUI.Group {
+//                NavigationView {
+//                    FoodDetailView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
+//                        .environment(\.managedObjectContext, context)
+//                        .navigationBarTitle(food.name ?? "Lebensmittel")
+//                }
+//                .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro"))
+//                .previewDisplayName("iPhone 13 Pro")
+//            }
+//
+//            SwiftUI.Group {
+//                NavigationView {
+//                    FoodDetailView(ingredientCollection: Meal.newestMeal(managedObjectContext: context), food: food)
+//                        .environment(\.managedObjectContext, context)
+//                        .navigationBarTitle(food.name ?? "Lebensmittel")
+//                }
+//                .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro Max"))
+//                .previewDisplayName("iPhone 13 Pro Max")
+//            }
+//        }
+//        .previewInterfaceOrientation(.portrait)
+//    }
+//}

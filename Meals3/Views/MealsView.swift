@@ -37,6 +37,7 @@ struct MealsView: View {
 
         ScrollViewReader { proxy in
             List {
+//                ForEach(meals, id: \.mealID) { meal in
                 ForEach(meals) { meal in
                     Section(header: NavigationLink(destination: MealDetailView(meal: meal) ) {
                         LazyView( MealsNutrientsSectionView(meal: meal) )
@@ -51,13 +52,20 @@ struct MealsView: View {
                         }
                         .foregroundColor(meal == currentMeal.meal ? Color(.label) : Color(.secondaryLabel)) // Different color for current meal
                     }
+                    /// Todo: throws an error as of iOS 16 when the first meal does not contain any ingredients
                     .id(meal) // needed for scrolling to top
                 }
                 .onMove(perform: move)
             }
             .onChange(of: searchViewModel.text, perform: {_ in proxy.scrollTo(meals.first, anchor: .top)}) // scroll to top, when editing search field (incl. cancel)
-            .onChange(of: currentMeal.meal) { meal in proxy.scrollTo(meal, anchor: .top) } // scroll to current meal if current meal changes
-            
+            /// Todo: throws an error as of iOS 16 when the first meal does not contain any ingredients
+//            .onChange(of: currentMeal.meal) { meal in proxy.scrollTo(meal.mealID, anchor: .top) } // scroll to current meal if current meal changes
+            .onChange(of: currentMeal.meal) { meal in
+                guard let ingredients = meal.ingredients, ingredients.count >= 1 else {return}
+                print("meal changed: ingredients count ist \(ingredients.count)")
+                proxy.scrollTo(meal, anchor: .top)
+            } // scroll to current meal if current meal changes
+
         }
         .onReceive(didSave) { _ in
 //            print("Received self.didSave")

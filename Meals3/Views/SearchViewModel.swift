@@ -18,7 +18,7 @@ class SearchViewModel: ObservableObject {
     @Published var filter: SearchFilter = .contains
     @Published var sortRule: FoodListSortRule = .nameAscending
     @Published var selection: FoodListSelection = .mealIngredients
-    var fetchLimit: Int = 25
+    var fetchLimit: Int = 500 // 500 ... iPhone 14, formerly: 25
     @Published var fetchOffset: Int = 0
     
     init() {
@@ -29,7 +29,7 @@ class SearchViewModel: ObservableObject {
     
     /// Returns a NSFetchRequest for foods that matches the search.
     ///
-    /// Batch size, offset, limit and other properties are chosen such to achieve speed performance when scrolling the resulting list with SwiftUI.
+    /// Batch size, offset, limit and other properties are chosen such to achieve speed performance when scrolling the resulting list with SwiftUI. Which was especially important on an iPhone 6S Plus in time where there was already an iPhone 13 available.
     /// - Returns: NSFetchRequest
     func foodsFetchRequest() -> NSFetchRequest<Food> {
         
@@ -42,6 +42,7 @@ class SearchViewModel: ObservableObject {
         request.includesPropertyValues = true   // usefull only, when only relevant properties are read
         
         request.fetchBatchSize = 50
+        request.fetchBatchSize = 500
         request.fetchOffset = fetchOffset // needed for paging through results
         request.fetchLimit = fetchLimit   // Speeds up a lot, especially inital loading of this view controller, but needs care
         request.propertiesToFetch = ["name", "totalEnergyCals", "totalCarb", "totalProtein", "totalFat", "carbFructose", "carbGlucose"]   // read only certain properties (others are fetched automatically on demand)
@@ -57,8 +58,8 @@ class SearchViewModel: ObservableObject {
         request.predicate = predicate
         request.fetchBatchSize = 25
         request.fetchLimit = 25  // Speeds up a lot, especially inital loading of this view controller, but needs care
-        request.fetchBatchSize = 20
-        request.fetchLimit = 20  // Speeds up a lot, especially inital loading of this view controller, but needs care
+        request.fetchBatchSize = 500
+        request.fetchLimit = 500  // iPhone 14: 500 is easy.
         // TODO: double check whether request.returnsObjectsAsFaults = true really speeds up in our case. 2021-12-05: Seems no difference
 //        request.returnsObjectsAsFaults = true   // objects are only loaded, when needed/used -> faster but more frequent disk reads
         request.includesPropertyValues = true   // usefull only, when only relevant properties are read

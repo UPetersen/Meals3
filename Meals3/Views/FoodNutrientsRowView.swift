@@ -52,24 +52,7 @@ struct FoodNutrientsView_Previews: PreviewProvider {
 
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
-        let food: Food = {
-            let food = Food(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
-            food.name = "leckerer Donut"
-            food.comment = "Ein unnötiger Kommentar"
-            food.totalCarb = 12.0
-            food.totalFat = 23.0
-            food.totalProtein = 14.0
-            food.totalEnergyCals = 200.0
-            food.totalAlcohol = 4.0
-            food.totalWater = 55.0
-            food.totalDietaryFiber = 32.0
-            food.totalOrganicAcids = 0.4
-            food.totalSalt = 0.3
-            food.dateOfLastModification = Date()
-            food.carbGlucose = 12.0
-            
-            return food
-        }()
+        let food: Food = Food.dummyFoods(context: context).first!
         
         return NavigationView {
             List {

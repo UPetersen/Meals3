@@ -9,7 +9,8 @@
 import SwiftUI
 
 
-struct GeneralSearchView<T>: View where T: IngredientCollection  {
+//struct GeneralSearchView<T>: View where T: IngredientCollection  {
+struct GeneralSearchView<T: IngredientCollection>: View  {   // Uwe 2022-06-11: WWDC-Video explains that this notation is also possible and shorter.s
 //struct GeneralSearchView: View  {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject var ingredientCollection: T

@@ -124,7 +124,8 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
     
     func shouldLoadNextPage() {
 //        print("should load next page")
-        let newOffset = max ( 0, min(searchViewModel.fetchOffset + 30, totalFoodsCount - searchViewModel.fetchLimit) )
+//        let newOffset = max ( 0, min(searchViewModel.fetchOffset + 30, totalFoodsCount - searchViewModel.fetchLimit) )
+        let newOffset = max ( 0, min(searchViewModel.fetchOffset + 500, totalFoodsCount - searchViewModel.fetchLimit) )
         if searchViewModel.fetchOffset != newOffset {
             searchViewModel.fetchOffset = newOffset
         }
