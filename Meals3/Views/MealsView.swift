@@ -52,19 +52,15 @@ struct MealsView: View {
                         }
                         .foregroundColor(meal == currentMeal.meal ? Color(.label) : Color(.secondaryLabel)) // Different color for current meal
                     }
-                    /// Todo: throws an error as of iOS 16 when the first meal does not contain any ingredients
-                    .id(meal) // needed for scrolling to top
                 }
                 .onMove(perform: move)
             }
-            .onChange(of: searchViewModel.text, perform: {_ in proxy.scrollTo(meals.first, anchor: .top)}) // scroll to top, when editing search field (incl. cancel)
-            /// Todo: throws an error as of iOS 16 when the first meal does not contain any ingredients
+            .id("ListID") // Workaround for iOS 16: jump to always to top (which is valid since the newest meal is always the topmost and when searching you also want the top of the list)
+            .onChange(of: searchViewModel.text, perform: {_ in proxy.scrollTo("ListID", anchor: .top)}) // scroll to top of the list, when editing search field (incl.
+            
+//            .onChange(of: searchViewModel.text, perform: {_ in proxy.scrollTo(meals.first, anchor: .top)}) // scroll to top, when editing search field (incl. cancel)
 //            .onChange(of: currentMeal.meal) { meal in proxy.scrollTo(meal.mealID, anchor: .top) } // scroll to current meal if current meal changes
-            .onChange(of: currentMeal.meal) { meal in
-                guard let ingredients = meal.ingredients, ingredients.count >= 1 else {return}
-                print("meal changed: ingredients count ist \(ingredients.count)")
-                proxy.scrollTo(meal, anchor: .top)
-            } // scroll to current meal if current meal changes
+            
 
         }
         .onReceive(didSave) { _ in
