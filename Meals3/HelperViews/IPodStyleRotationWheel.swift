@@ -118,8 +118,11 @@ struct rotationalDragGesture: Gesture {
                         let rotatedTranslationVector = translationIncrementVector.rotated(by: absoluteAngle.radians)
                         
                         let amountDelta = scalingFactor * ( rotatedTranslationVector.dy >= 0 ? Double(translationIncrementMagnitude) : Double(-translationIncrementMagnitude) )
-                        let nonNilAmount = max(0.0, (amount?.doubleValue ?? 0.0) +  amountDelta ).rounded()
-                        self.amount = nonNilAmount <= 0.0000001 ? nil : NSNumber(value: nonNilAmount) // if amount is zero -> make it nil to show the placeholder (and do not allow to store the value)
+                        // Smallest number is zero (i.e. no negativ numbers)
+                        self.amount = NSNumber(value: max(0.0, (amount?.doubleValue ?? 0.0) +  amountDelta ).rounded())
+                        
+//                        let nonNilAmount = max(0.0, (amount?.doubleValue ?? 0.0) +  amountDelta ).rounded()
+//                        self.amount = nonNilAmount <= 0.0000001 ? nil : NSNumber(value: nonNilAmount) // if amount is zero -> make it nil to show the placeholder (and do not allow to store the value)
                         
                         self.oldLocation = value.location
                     }
