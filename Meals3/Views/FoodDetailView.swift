@@ -178,7 +178,7 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                             Text("Rezept")
                             Spacer()
                             if food.recipe?.dateOfCreation != nil {
-                                Text("ja (\(food.recipe!.dateOfCreation!, formatter: dateFormatter))")
+                                Text("ja")
                             } else {
                                 Text("nein")
                             }
