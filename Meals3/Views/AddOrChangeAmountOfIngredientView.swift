@@ -18,7 +18,7 @@ fileprivate let numberFormatter: NumberFormatter = {
 
 struct AddOrChangeAmountOfIngredientView: View {
     @Environment(\.managedObjectContext) var viewContext
-    var food: Food
+    @ObservedObject var food: Food
     var task: AddOrChangeTask
     @Binding var isPresented: Bool
     @Binding var presentationModeOfParentView: PresentationMode
@@ -104,14 +104,14 @@ struct AddOrChangeAmountOfIngredientView: View {
             case .addAmountOfFoodToIngredientCollection(let ingredientCollection):
                     ingredientCollection.addIngredient(food: food, amount: amount, managedObjectContext: viewContext)
                     if let meal = ingredientCollection as? Meal {
-                        meal.objectWillChange.send()
+//                        meal.objectWillChange.send()
                         meal.dateOfLastModification = Date()
                         try? viewContext.save()
                         HealthManager.synchronize(meal, withSynchronisationMode: .update)
                         self.isPresented = false // dismiss self
                         self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
                     } else if let recipe = ingredientCollection as? Recipe {
-                        recipe.objectWillChange.send()
+//                        recipe.objectWillChange.send()
                         recipe.dateOfLastModification = Date()
                         recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
 
@@ -128,7 +128,7 @@ struct AddOrChangeAmountOfIngredientView: View {
                     meal.dateOfLastModification = Date()
                     HealthManager.synchronize(meal, withSynchronisationMode: .update)
                 } else if let recipe = (ingredient as? RecipeIngredient)?.recipe {
-                    recipe.objectWillChange.send()
+//                    recipe.objectWillChange.send()
                     recipe.dateOfLastModification = Date()
                     recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
 

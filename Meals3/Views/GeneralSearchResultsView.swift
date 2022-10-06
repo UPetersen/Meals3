@@ -95,7 +95,8 @@ struct GeneralSearchResultsView<T>: View where T: IngredientCollection  {
                     footerDisAppeared = true
                 }
             }
-                .environment(\.defaultMinListRowHeight, 1) // for invisible header and footer, which keep this space unfortunately
+            .scrollDismissesKeyboard(.immediately)
+            .environment(\.defaultMinListRowHeight, 1) // for invisible header and footer, which keep this space unfortunately
 
 //                .onTapGesture(count: 2) {
 //                    print("double tap")

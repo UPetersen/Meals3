@@ -26,7 +26,7 @@ fileprivate let numberFormatter: NumberFormatter = {
 //struct MealIngredientCellView: View {
 struct MealIngredientRowView: View, Equatable {
     @Environment(\.managedObjectContext) var viewContext
-    var mealIngredient: MealIngredient
+    @ObservedObject var mealIngredient: MealIngredient
     @State private var showingAddOrChangeAmountOfFoodView = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode> // This is a dummy, unfortunately I do not know a better way
 

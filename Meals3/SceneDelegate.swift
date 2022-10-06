@@ -19,8 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
-        // Resign keyboard on drag gesture, new version from https://stackoverflow.com/a/64536489/3687284 that has no side effects on the back button (as head the previous one)
-        UIScrollView.appearance().keyboardDismissMode = .onDrag
+//        // Resign keyboard on drag gesture, new version from https://stackoverflow.com/a/64536489/3687284 that has no side effects on the back button (as head the previous one)
+//        UIScrollView.appearance().keyboardDismissMode = .onDrag // not needed any more as of iOS 16
         
         // Get the managed object context from the shared persistent container
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
