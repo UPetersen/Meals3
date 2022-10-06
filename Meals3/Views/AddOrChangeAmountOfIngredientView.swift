@@ -102,23 +102,15 @@ struct AddOrChangeAmountOfIngredientView: View {
         if let amount = amount {
             switch task {
             case .addAmountOfFoodToIngredientCollection(let ingredientCollection):
-                    ingredientCollection.addIngredient(food: food, amount: amount, managedObjectContext: viewContext)
-                    if let meal = ingredientCollection as? Meal {
-                        meal.dateOfLastModification = Date()
-                        HealthManager.synchronize(meal, withSynchronisationMode: .update)
-
-                        self.isPresented = false // dismiss self
-                        self.$presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
-                    } else if let recipe = ingredientCollection as? Recipe {
-                        recipe.dateOfLastModification = Date()
-                        recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
-
-                        isPresented = false // dismiss self
-                        $presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
-//                        print("Recipestuff")
-//                        print(recipe.amount ?? "")
-//                        print(recipe.amountOfAllIngredients)
-                    }
+                ingredientCollection.addIngredient(food: food, amount: amount, managedObjectContext: viewContext)
+                ingredientCollection.dateOfLastModification = Date()
+                if let meal = ingredientCollection as? Meal {
+                    HealthManager.synchronize(meal, withSynchronisationMode: .update)
+                } else if let recipe = ingredientCollection as? Recipe {
+                    recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
+                }
+                isPresented = false // dismiss self
+                $presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
             case .changeAmountOfIngredient(var ingredient):
                 ingredient.amount = amount
                 if let meal = (ingredient as? MealIngredient)?.meal {
@@ -127,10 +119,7 @@ struct AddOrChangeAmountOfIngredientView: View {
                 } else if let recipe = (ingredient as? RecipeIngredient)?.recipe {
                     recipe.dateOfLastModification = Date()
                     recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
-
-//                    print("Recipestuff")
-//                    print(recipe.amount ?? "")
-//                    print(recipe.amountOfAllIngredients)
+                    print(recipe.amountOfAllIngredients)
                 }
                 isPresented = false // dismiss self
             }
