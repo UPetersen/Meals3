@@ -41,8 +41,6 @@ protocol IngredientCollection: NSManagedObject {
     var dateOfCreation: Date?  {get set}
     var dateOfLastModification: Date?  {get set}
     var ingredients: NSSet?  {get set}
-    // Since a protocol cannot state conformance to ObservableObject (Error ist "Protocol 'NutrientCollection' can only be used as a generic constraint because it has Self or associated type requirements", but meal and recipe already conform to ObservableObject, I have added the property 'objectWillChange'. Thus one can publish when a change of the NutrientCollection (aka Meal or Recipe) occured and achieve similar behavior.
-//    var objectWillChange: ObservableObjectPublisher { get } // Needed to iniate update to view with fetched meals.
 
     func addIngredient(food: Food, amount: NSNumber, managedObjectContext: NSManagedObjectContext)
 }

@@ -21,8 +21,6 @@ struct MealsView: View {
 
     @FetchRequest var meals: FetchedResults<Meal>
     
-    private var didSave =  NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
-        
     init(searchViewModel: SearchViewModel) {
         print("Init of meals view")
         self.searchViewModel = searchViewModel
@@ -64,11 +62,6 @@ struct MealsView: View {
             
 
         }
-//        .onReceive(didSave) { _ in
-////            print("Received self.didSave")
-//            // FIXME: This could be the cause of crashes when entering text into the search field.
-//            currentMeal.objectWillChange.send() // update this ui
-//         }
             
         .alert(isPresented: self.$showingDeleteConfirmation){
             return Alert(
