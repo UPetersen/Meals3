@@ -103,7 +103,7 @@ struct AddOrChangeAmountOfIngredientView: View {
             switch task {
             case .addAmountOfFoodToIngredientCollection(let ingredientCollection):
                 ingredientCollection.addIngredient(food: food, amount: amount, managedObjectContext: viewContext)
-                ingredientCollection.dateOfLastModification = Date()
+//                ingredientCollection.dateOfLastModification = Date()
                 if let meal = ingredientCollection as? Meal {
                     HealthManager.synchronize(meal, withSynchronisationMode: .update)
                 } else if let recipe = ingredientCollection as? Recipe {
