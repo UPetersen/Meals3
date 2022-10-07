@@ -173,35 +173,35 @@ extension Meal {
 
 extension Meal: HasNutrients {
     
-        /// Overall amount of all meal ingredients in gram
-        var amount: NSNumber? {
-            let aDouble:Double = ingredients?.allObjects
-                .filter{$0 is MealIngredient}
-                .map {$0 as! MealIngredient}
-                .map {$0.amount!.doubleValue}
-                .reduce(0.0, +) ?? 0
-            return NSNumber(value: aDouble)
-        }
-
+    /// Overall amount of all meal ingredients in gram
+    var amount: NSNumber? {
+        let aDouble:Double = ingredients?.allObjects
+            .filter{$0 is MealIngredient}
+            .map {$0 as! MealIngredient}
+            .map {$0.amount!.doubleValue}
+            .reduce(0.0, +) ?? 0
+        return NSNumber(value: aDouble)
+    }
     
     
-        // FIXME: hier mit weak und unowned experimentieren, für die $0
-        /// sum of the content of one nutrient (e.g. "totalCarb") in a meal. Thus one has to sum over all (meal) ingredients
-        /// Example: (sum [totalCarb content of each ingredient] / 100)
-        func doubleForKey(_ key: String) -> Double? {
-
-            guard let ingredients = ingredients else {return nil}
-            let quantities = ingredients.compactMap{$0 as? MealIngredient}
+    
+    // FIXME: hier mit weak und unowned experimentieren, für die $0
+    /// sum of the content of one nutrient (e.g. "totalCarb") in a meal. Thus one has to sum over all (meal) ingredients
+    /// Example: (sum [totalCarb content of each ingredient] / 100)
+    func doubleForKey(_ key: String) -> Double? {
+        
+        guard let ingredients = ingredients else {return nil}
+        let quantities = ingredients.compactMap{$0 as? MealIngredient}
             .filter {$0.food?.value(forKeyPath: key) is NSNumber}             // valueForKeyPath returns AnyObject, thus check if it is of type NSNumber, and use only these
             .map   {($0.food?.value(forKeyPath: key) as! NSNumber).doubleValue / 100.0 * ($0.amount?.doubleValue)!} // Convert to NSNumber and then Double and multiply with amount of this ingredient
-            
-            // sum up the values of all meal ingredients or return nil if no ingredients values where availabel (i.e. all foods had no entry for this nutrient)
-            if quantities.isEmpty {
-                return nil
-            } else {
-                return quantities.reduce(0.0, +)
-            }
+        
+        // sum up the values of all meal ingredients or return nil if no ingredients values where availabel (i.e. all foods had no entry for this nutrient)
+        if quantities.isEmpty {
+            return nil
+        } else {
+            return quantities.reduce(0.0, +)
         }
+    }
 }
 
 extension Meal: IngredientCollection {
@@ -217,4 +217,52 @@ extension Meal: IngredientCollection {
 //            // Save and sync to HealthKit
 //             saveContextAndsyncToHealthKit(self)
     }
+}
+
+extension Meal  {
+
+    func nutrientDistributionData() -> [StackedBarNutriendData]? {
+
+        guard let amount = amount?.doubleValue, amount > 0.001 else {
+            return nil
+        }
+        
+        let carb          = (self.doubleForKey("totalCarb") ?? 0)         / 1000 // amount
+        let fat           = (self.doubleForKey("totalFat") ?? 0)          / 1000 // amount
+        let protein       = (self.doubleForKey("totalProtein") ?? 0)      / 1000 // amount
+        let dietaryfiber  = (self.doubleForKey("totalDietaryFiber") ?? 0) / 1000 // amount
+        let water         = (self.doubleForKey("totalWater") ?? 0)        / 1000 // amount
+        let other = amount - (carb + fat + protein + dietaryfiber + water)
+        
+        print("amount \(amount)")
+        print("carb \(carb)")
+        print("fat \(fat)")
+        print("protein \(protein)")
+        print("fiber \(dietaryfiber)")
+        print("water \(water)")
+        print("other \(other)")
+
+        let percentFactor = 100 / amount
+
+        var stackedBarNutrientData: [StackedBarNutriendData] = [
+            .init(category: "Kohlehydrate", value: carb * percentFactor),
+            .init(category: "Fett",         value: fat * percentFactor),
+            .init(category: "Protein",      value: protein * percentFactor),
+            .init(category: "Balastst.",    value: dietaryfiber * percentFactor),
+            .init(category: "Wasser",       value: water * percentFactor),
+            .init(category: "Sonst.",       value: other * percentFactor)
+        ]
+        
+//        var stackedBarNutrientData: [StackedBarNutriendData] = [
+//            .init(category: "Kohlehydrate", value: 50),
+//            .init(category: "Fett", value: 4),
+//            .init(category: "Protein", value: 10),
+//            .init(category: "Balastst.", value: 20),
+//            .init(category: "Wasser", value: 10),
+//            .init(category: "Sonst.", value: 6)
+//        ]
+        return stackedBarNutrientData
+    }
+
+    
 }

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Charts
 
 fileprivate let dateFormatter: DateFormatter = {
     let dateFormatter = DateFormatter()
@@ -59,13 +60,13 @@ struct MealDetailView: View {
                 HealthManager.synchronize(meal, withSynchronisationMode: .update)
         })
         
-         VStack {
+        VStack {
             Form {
                 Section(header: Text("Datum und Kommentar"),
                         footer: HStack {
-                            Spacer()
-                            Text("Letzte Änderung am \(dateString(date: meal.dateOfLastModification))")
-                    }) { DatePicker("Datum:", selection: date) }
+                    Spacer()
+                    Text("Letzte Änderung am \(dateString(date: meal.dateOfLastModification))")
+                }) { DatePicker("Datum:", selection: date) }
                 
                 Section {
                     HStack {
@@ -78,6 +79,12 @@ struct MealDetailView: View {
                 
                 Section(header: headerView(), footer: footerView()) {
                     MealDetailIngredients(meal: meal)
+                }
+                
+                Section() {
+                    if let stackedBarNutrientData = meal.nutrientDistributionData() {
+                        NutrientsDistributionBarChart(stackedBarNutrientData: stackedBarNutrientData)
+                    }
                 }
             }
             
@@ -95,7 +102,6 @@ struct MealDetailView: View {
             }
         }
         .onDisappear(){
-//            print("MealDetailView disappeared.")
             if viewContext.hasChanges {
                 try? meal.managedObjectContext?.save()
             }

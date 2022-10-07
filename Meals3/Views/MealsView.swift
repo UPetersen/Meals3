@@ -35,13 +35,12 @@ struct MealsView: View {
 
         ScrollViewReader { proxy in
             List {
-//                ForEach(meals, id: \.mealID) { meal in
                 ForEach(meals) { meal in
                     Section(header: NavigationLink(destination: MealDetailView(meal: meal) ) {
                         LazyView( MealsNutrientsSectionView(meal: meal) )
                     }) {
                         ForEach(meal.filteredAndSortedMealIngredients(predicate: ingredientsPredicate)!) {  mealIngredient in
-                            NavigationLink(destination: lazyFoodDetailView(food: mealIngredient.food!)) {
+                            NavigationLink(destination: FoodDetailView(ingredientCollection: currentMeal.meal, food: mealIngredient.food!)) {
                                 MealIngredientRowView(mealIngredient: mealIngredient) // .equatable()
                             }
                         }
@@ -78,10 +77,10 @@ struct MealsView: View {
         }
     }
     
-    @ViewBuilder func lazyFoodDetailView(food: Food) -> some View {
-        LazyView( FoodDetailView(ingredientCollection: currentMeal.meal, food: food))
-//        FoodDetailView(ingredientCollection: self.currentMeal.meal, food: food)
-    }
+//    @ViewBuilder func lazyFoodDetailView(food: Food) -> some View {
+//        LazyView( FoodDetailView(ingredientCollection: currentMeal.meal, food: food))
+////        FoodDetailView(ingredientCollection: self.currentMeal.meal, food: food)
+//    }
 
     func deleteIngredients(atIndexSet indexSet: IndexSet, fromMeal meal: Meal) {
         for index in indexSet {

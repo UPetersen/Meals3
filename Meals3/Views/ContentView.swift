@@ -24,7 +24,8 @@ struct ContentView: View {
     
     var body: some View {
         
-        NavigationView {
+        NavigationStack {
+//            NavigationView {
             VStack{
                 SearchBarView(searchText: $searchViewModel.text)
                     .padding(.top, topMargin)
@@ -33,7 +34,7 @@ struct ContentView: View {
                 
                 MealsViewToolbar()
             }
-            .navigationViewStyle(StackNavigationViewStyle())
+//            .navigationViewStyle(StackNavigationViewStyle())
             .navigationBarTitle(Text("Mahlzeiten"), displayMode: .inline)
             .navigationBarItems(trailing: EditButton())
         }

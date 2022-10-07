@@ -69,6 +69,7 @@
 		C69779C02378097100B3C72C /* MealsNutrientsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69779BF2378097100B3C72C /* MealsNutrientsSectionView.swift */; };
 		C6AD65F4236B5D750021D5A6 /* Event+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AD65F2236B5D750021D5A6 /* Event+CoreDataClass.swift */; };
 		C6AD65F5236B5D750021D5A6 /* Event+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AD65F3236B5D750021D5A6 /* Event+CoreDataProperties.swift */; };
+		C6B6097A28F0881A00735CE8 /* NutrientsDistributionBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B6097928F0881A00735CE8 /* NutrientsDistributionBarChart.swift */; };
 		C6C61F17238EE87F009E2F98 /* NSNumberTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */; };
 		C6D58A7523B7CB9A0037A589 /* FoodNutrientsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D58A7423B7CB9A0037A589 /* FoodNutrientsRowView.swift */; };
 		C6E20A2626BD45710021E1FB /* OffJsonSampleFile in Resources */ = {isa = PBXBuildFile; fileRef = C6E20A2526BD45710021E1FB /* OffJsonSampleFile */; };
@@ -204,6 +205,7 @@
 		C69779BF2378097100B3C72C /* MealsNutrientsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsNutrientsSectionView.swift; sourceTree = "<group>"; };
 		C6AD65F2236B5D750021D5A6 /* Event+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C6AD65F3236B5D750021D5A6 /* Event+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C6B6097928F0881A00735CE8 /* NutrientsDistributionBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutrientsDistributionBarChart.swift; sourceTree = "<group>"; };
 		C6C61F16238EE87F009E2F98 /* NSNumberTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNumberTextField.swift; sourceTree = "<group>"; };
 		C6D58A7423B7CB9A0037A589 /* FoodNutrientsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutrientsRowView.swift; sourceTree = "<group>"; };
 		C6E20A2526BD45710021E1FB /* OffJsonSampleFile */ = {isa = PBXFileReference; lastKnownFileType = text; path = OffJsonSampleFile; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				C68AE91C23C1DFCE00A1348B /* RecipeDetailIngredientsView.swift */,
 				C68AE92023C2147500A1348B /* RecipeDetailViewToolbar.swift */,
 				C68AE91E23C1E3CB00A1348B /* RecipeIngredientRowView.swift */,
+				C6B6097928F0881A00735CE8 /* NutrientsDistributionBarChart.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -755,6 +758,7 @@
 				C6F45B98236B65AD00C4FAC3 /* Preparation+CoreDataClass.swift in Sources */,
 				C6AD65F5236B5D750021D5A6 /* Event+CoreDataProperties.swift in Sources */,
 				C6F45B9A236B65AD00C4FAC3 /* ReferenceWeight+CoreDataClass.swift in Sources */,
+				C6B6097A28F0881A00735CE8 /* NutrientsDistributionBarChart.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
