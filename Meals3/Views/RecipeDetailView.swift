@@ -63,6 +63,12 @@ struct RecipeDetailView: View {
                     RecipeAmountRowView(recipe: recipe)
                     Text("Amount is \(recipe.amount ?? NSNumber(value: -999))")
                 }
+                
+                Section() {
+                    if let stackedBarNutrientData = recipe.nutrientDistributionData() {
+                        NutrientsDistributionBarChart(stackedBarNutrientData: stackedBarNutrientData)
+                    }
+                }
 
                 Section(header: headerView(), footer: footerView()) {
                     RecipeDetailIngredientsView(recipe: recipe)

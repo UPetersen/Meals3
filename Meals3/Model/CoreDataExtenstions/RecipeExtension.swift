@@ -104,9 +104,6 @@ extension Recipe: IngredientCollection {
         addToIngredients(recipeIngredient)
         dateOfLastModification = Date()
         try? managedObjectContext.save()
-        
-//            // Save and sync to HealthKit
-//             saveContextAndsyncToHealthKit(self)
     }
 }
 
