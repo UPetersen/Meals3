@@ -15,6 +15,7 @@ struct NutrientDistributionBarChartData: Identifiable {
     var id = UUID()
 }
 
+/// Data type used for nutrient categories (i.e. carb, fat, ...) displayed in nutrient distribution bar chart.
 enum NutrientDistributionBarChartDataCategory {
     case carb
     case fat
@@ -23,7 +24,7 @@ enum NutrientDistributionBarChartDataCategory {
     case water
     case other
     
-    // Key to get nutrient data from core data databse
+    /// Key to get nutrient data from core data databse
     var key: String {
         switch self {
         case .carb:    return "totalCarb"
@@ -34,18 +35,18 @@ enum NutrientDistributionBarChartDataCategory {
         case .other:   return ""
         }
     }
-    // String to be used in legend of bar chart
+    /// String to be used in legend of bar chart
     var name: String {
         switch self {
         case .carb:    return "Kohlehydrate"
         case .fat:     return "Fett"
         case .protein: return "Protein"
-        case .fiber:   return "Balastst."
+        case .fiber:   return "Balaststoffe"
         case .water:   return "Wasser"
-        case .other:   return "Sonst."
+        case .other:   return "Sonstige"
         }
     }
-    // Fill color for bar chart
+    /// Fill color for bar chart
     var color: Color {
         switch self {
         case .carb: return .orange
@@ -113,6 +114,8 @@ struct NutrientsDistributionBarChart_Previews: PreviewProvider {
 
 
 
+/// Protocol used for meal, recipe and food, to provice bar chart data from these types.
+/// Using a default implementation, the chart data is provided without any extra code in Meal, Recipe or Food.
 protocol NutrientDistributionBarChartDataProvider: HasNutrients {
     func nutrientDistributionBarChartData() -> [NutrientDistributionBarChartData]?
 }
