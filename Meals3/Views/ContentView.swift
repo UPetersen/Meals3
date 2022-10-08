@@ -24,8 +24,8 @@ struct ContentView: View {
     
     var body: some View {
         
-        NavigationStack {
-//            NavigationView {
+//        NavigationStack {  /// BEWARE: navigationStack broke the possibility of editing recipes.
+        NavigationView {
             VStack{
                 SearchBarView(searchText: $searchViewModel.text)
                     .padding(.top, topMargin)
