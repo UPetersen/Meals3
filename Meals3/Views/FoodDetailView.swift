@@ -109,6 +109,12 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                     Text("\(food.name ?? "überhaupt kein Name bekannt")")
                 }
 
+                Section() {
+                    if let stackedBarNutrientData = food.nutrientDistributionData() {
+                        NutrientsDistributionBarChart(stackedBarNutrientData: stackedBarNutrientData)
+                    }
+                }
+                
                 // Section "Grundnährwerte je 100g"
                 Section(header: Text(nutrientSections[0].header)) {
                     ForEach(nutrientSections[0].keys, id: \.self) { (key: String) in
@@ -239,13 +245,6 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                     .hidden()
             }
         } // VStack
-
-//        .onDisappear() {
-////            print("foodDetail disappears")
-//            if viewContext.hasChanges {
-//                try? viewContext.save()
-//            }
-//        }
         .navigationBarHidden(false)
         .navigationBarTitle(food.recipe == nil ? "Lebensmittel" : "Rezept")
         .toolbar() {

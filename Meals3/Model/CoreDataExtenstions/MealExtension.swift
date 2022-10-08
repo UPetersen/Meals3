@@ -227,11 +227,11 @@ extension Meal  {
             return nil
         }
         
-        let carb          = (self.doubleForKey("totalCarb") ?? 0)         / 1000 // amount
-        let fat           = (self.doubleForKey("totalFat") ?? 0)          / 1000 // amount
-        let protein       = (self.doubleForKey("totalProtein") ?? 0)      / 1000 // amount
-        let dietaryfiber  = (self.doubleForKey("totalDietaryFiber") ?? 0) / 1000 // amount
-        let water         = (self.doubleForKey("totalWater") ?? 0)        / 1000 // amount
+        let carb          = (self.doubleForKey("totalCarb") ?? 0)         / 1000
+        let fat           = (self.doubleForKey("totalFat") ?? 0)          / 1000
+        let protein       = (self.doubleForKey("totalProtein") ?? 0)      / 1000
+        let dietaryfiber  = (self.doubleForKey("totalDietaryFiber") ?? 0) / 1000
+        let water         = (self.doubleForKey("totalWater") ?? 0)        / 1000
         let other = amount - (carb + fat + protein + dietaryfiber + water)
         
         print("amount \(amount)")
@@ -242,27 +242,17 @@ extension Meal  {
         print("water \(water)")
         print("other \(other)")
 
-        let percentFactor = 100 / amount
+        let scaleToPercent = 99.8 / amount // Use 99.8 instead of 100 to be sure that the sums are below 100.000 in order to avoid silly plots because sum is slightly over 100.0
 
-        var stackedBarNutrientData: [StackedBarNutriendData] = [
-            .init(category: "Kohlehydrate", value: carb * percentFactor),
-            .init(category: "Fett",         value: fat * percentFactor),
-            .init(category: "Protein",      value: protein * percentFactor),
-            .init(category: "Balastst.",    value: dietaryfiber * percentFactor),
-            .init(category: "Wasser",       value: water * percentFactor),
-            .init(category: "Sonst.",       value: other * percentFactor)
+        let stackedBarNutrientData: [StackedBarNutriendData] = [
+            .init(category: "Kohlehydrate", value: carb * scaleToPercent),
+            .init(category: "Fett",         value: fat * scaleToPercent),
+            .init(category: "Protein",      value: protein * scaleToPercent),
+            .init(category: "Balastst.",    value: dietaryfiber * scaleToPercent),
+            .init(category: "Wasser",       value: water * scaleToPercent),
+            .init(category: "Sonst.",       value: other * scaleToPercent)
         ]
         
-//        var stackedBarNutrientData: [StackedBarNutriendData] = [
-//            .init(category: "Kohlehydrate", value: 50),
-//            .init(category: "Fett", value: 4),
-//            .init(category: "Protein", value: 10),
-//            .init(category: "Balastst.", value: 20),
-//            .init(category: "Wasser", value: 10),
-//            .init(category: "Sonst.", value: 6)
-//        ]
         return stackedBarNutrientData
-    }
-
-    
+    }    
 }
