@@ -65,8 +65,8 @@ struct RecipeDetailView: View {
                 }
                 
                 Section() {
-                    if let stackedBarNutrientData = recipe.nutrientDistributionData() {
-                        NutrientsDistributionBarChart(stackedBarNutrientData: stackedBarNutrientData)
+                    if let nutrientDistributionBarChartData = recipe.nutrientDistributionBarChartData() {
+                        NutrientsDistributionBarChart(stackedBarNutrientData: nutrientDistributionBarChartData)
                     }
                 }
 

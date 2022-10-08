@@ -110,8 +110,8 @@ struct FoodDetailView<T>: View where T: IngredientCollection {
                 }
 
                 Section() {
-                    if let stackedBarNutrientData = food.nutrientDistributionData() {
-                        NutrientsDistributionBarChart(stackedBarNutrientData: stackedBarNutrientData)
+                    if let nutrientDistributionBarChartData = food.nutrientDistributionBarChartData() {
+                        NutrientsDistributionBarChart(stackedBarNutrientData: nutrientDistributionBarChartData)
                     }
                 }
                 

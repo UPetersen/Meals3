@@ -219,40 +219,7 @@ extension Meal: IngredientCollection {
     }
 }
 
-extension Meal  {
 
-    func nutrientDistributionData() -> [StackedBarNutriendData]? {
-
-        guard let amount = amount?.doubleValue, amount > 0.001 else {
-            return nil
-        }
-        
-        let carb          = (self.doubleForKey("totalCarb") ?? 0)         / 1000
-        let fat           = (self.doubleForKey("totalFat") ?? 0)          / 1000
-        let protein       = (self.doubleForKey("totalProtein") ?? 0)      / 1000
-        let dietaryfiber  = (self.doubleForKey("totalDietaryFiber") ?? 0) / 1000
-        let water         = (self.doubleForKey("totalWater") ?? 0)        / 1000
-        let other = amount - (carb + fat + protein + dietaryfiber + water)
-        
-        print("amount \(amount)")
-        print("carb \(carb)")
-        print("fat \(fat)")
-        print("protein \(protein)")
-        print("fiber \(dietaryfiber)")
-        print("water \(water)")
-        print("other \(other)")
-
-        let scaleToPercent = 99.8 / amount // Use 99.8 instead of 100 to be sure that the sums are below 100.000 in order to avoid silly plots because sum is slightly over 100.0
-
-        let stackedBarNutrientData: [StackedBarNutriendData] = [
-            .init(category: "Kohlehydrate", value: carb * scaleToPercent),
-            .init(category: "Fett",         value: fat * scaleToPercent),
-            .init(category: "Protein",      value: protein * scaleToPercent),
-            .init(category: "Balastst.",    value: dietaryfiber * scaleToPercent),
-            .init(category: "Wasser",       value: water * scaleToPercent),
-            .init(category: "Sonst.",       value: other * scaleToPercent)
-        ]
-        
-        return stackedBarNutrientData
-    }    
+extension Meal: NutrientDistributionBarChartDataProvider {
+    
 }

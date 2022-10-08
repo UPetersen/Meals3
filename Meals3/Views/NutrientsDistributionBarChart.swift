@@ -9,13 +9,13 @@
 import SwiftUI
 import Charts
 
-struct StackedBarNutriendData: Identifiable {
-    var category: String
+struct NutrientDistributionBarChartData: Identifiable {
+    var category: NutrientDistributionBarChartDataCategory
     var value: Double
     var id = UUID()
 }
 
-enum NutrientDistributionDataTypes {
+enum NutrientDistributionBarChartDataCategory {
     case carb
     case fat
     case protein
@@ -23,31 +23,44 @@ enum NutrientDistributionDataTypes {
     case water
     case other
     
-    func key () -> String {
+    // Key to get nutrient data from core data databse
+    var key: String {
         switch self {
         case .carb:    return "totalCarb"
         case .fat:     return "totalFat"
         case .protein: return "totalProtein"
-        case .fiber:   return "dietaryFiber"
+        case .fiber:   return "totalDietaryFiber"
         case .water:   return "totalWater"
         case .other:   return ""
         }
     }
-    func name() -> String {
+    // String to be used in legend of bar chart
+    var name: String {
         switch self {
         case .carb:    return "Kohlehydrate"
         case .fat:     return "Fett"
         case .protein: return "Protein"
-        case .fiber:   return "Balaststoffe"
+        case .fiber:   return "Balastst."
         case .water:   return "Wasser"
-        case .other:   return "Sonstige"
+        case .other:   return "Sonst."
+        }
+    }
+    // Fill color for bar chart
+    var color: Color {
+        switch self {
+        case .carb: return .orange
+        case .fat: return .purple
+        case .protein: return .yellow
+        case .fiber: return Color(red: 114/255, green: 80/255, blue: 56/255)
+        case .water: return .cyan
+        case .other: return .gray
         }
     }
 }
     
 struct NutrientsDistributionBarChart: View {
     
-    var stackedBarNutrientData: [StackedBarNutriendData]
+    var stackedBarNutrientData: [NutrientDistributionBarChartData]
     
     var body: some View {
         
@@ -59,7 +72,7 @@ struct NutrientsDistributionBarChart: View {
                     x: .value("Total Count", shape.value)
                     //                        y: .value("Shape Type", shape.type)
                 )
-                .foregroundStyle(by: .value("Shape Color", shape.category))
+                .foregroundStyle(by: .value("Shape Color", shape.category.name))
                 .annotation(position: .overlay, alignment: .center) {
                     if shape.value >= 5 {
                         Text("\(shape.value, format: .number.precision(.fractionLength(0)))")
@@ -70,20 +83,25 @@ struct NutrientsDistributionBarChart: View {
             }
         }
         .chartForegroundStyleScale([
-            "Kohlehydrate": .orange, "Fett": .purple, "Protein": .yellow, "Balastst.": Color(red: 114/255, green: 80/255, blue: 56/255), "Wasser": .cyan, "Sonst.": .gray
+            NutrientDistributionBarChartDataCategory.carb.name:    NutrientDistributionBarChartDataCategory.carb.color,
+            NutrientDistributionBarChartDataCategory.fat.name:     NutrientDistributionBarChartDataCategory.fat.color,
+            NutrientDistributionBarChartDataCategory.protein.name: NutrientDistributionBarChartDataCategory.protein.color,
+            NutrientDistributionBarChartDataCategory.fiber.name:   NutrientDistributionBarChartDataCategory.fiber.color,
+            NutrientDistributionBarChartDataCategory.water.name:   NutrientDistributionBarChartDataCategory.water.color,
+            NutrientDistributionBarChartDataCategory.other.name:   NutrientDistributionBarChartDataCategory.other.color
         ])
     }
 }
 
 struct NutrientsDistributionBarChart_Previews: PreviewProvider {
 
-    static var stackedBarNutrientData: [StackedBarNutriendData] = [
-        .init(category: "Kohlehydrate", value: 50),
-        .init(category: "Fett", value: 4),
-        .init(category: "Protein", value: 10),
-        .init(category: "Balastst.", value: 20),
-        .init(category: "Wasser", value: 10),
-        .init(category: "Sonst.", value: 6)
+    static var stackedBarNutrientData: [NutrientDistributionBarChartData] = [
+        .init(category: .carb, value: 50),
+        .init(category: .fat, value: 4),
+        .init(category: .protein, value: 10),
+        .init(category: .fiber, value: 20),
+        .init(category: .water, value: 10),
+        .init(category: .other, value: 6)
     ]
 
     static var previews: some View {
@@ -92,3 +110,38 @@ struct NutrientsDistributionBarChart_Previews: PreviewProvider {
         }
     }
 }
+
+
+
+protocol NutrientDistributionBarChartDataProvider: HasNutrients {
+    func nutrientDistributionBarChartData() -> [NutrientDistributionBarChartData]?
+}
+
+extension NutrientDistributionBarChartDataProvider {
+    func nutrientDistributionBarChartData() -> [NutrientDistributionBarChartData]? {
+        guard let amount = amount?.doubleValue, amount > 0.001 else {
+            return nil
+        }
+                
+        let carb          = (self.doubleForKey(NutrientDistributionBarChartDataCategory.carb.key) ?? 0)    / 1000 // correct for micro grams
+        let fat           = (self.doubleForKey(NutrientDistributionBarChartDataCategory.fat.key) ?? 0)     / 1000 // correct for micro grams
+        let protein       = (self.doubleForKey(NutrientDistributionBarChartDataCategory.protein.key) ?? 0) / 1000 // correct for micro grams
+        let dietaryfiber  = (self.doubleForKey(NutrientDistributionBarChartDataCategory.fiber.key) ?? 0)   / 1000 // correct for micro grams
+        let water         = (self.doubleForKey(NutrientDistributionBarChartDataCategory.water.key) ?? 0)   / 1000 // correct for micro grams
+        let other = amount - (carb + fat + protein + dietaryfiber + water)
+
+        let scaleToPercent = 99.8 / amount // Use 99.8 instead of 100 to be sure that the sums are below 100.000 in order to avoid silly plots because sum is slightly over 100.0
+
+        let stackedBarNutrientData: [NutrientDistributionBarChartData] = [
+            .init(category: .carb, value: carb * scaleToPercent),
+            .init(category: .fat, value: fat * scaleToPercent),
+            .init(category: .protein, value: protein * scaleToPercent),
+            .init(category: .fiber, value: dietaryfiber * scaleToPercent),
+            .init(category: .water, value: water * scaleToPercent),
+            .init(category: .other, value: other * scaleToPercent)
+        ]
+
+        return stackedBarNutrientData
+    }
+}
+
