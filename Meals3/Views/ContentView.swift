@@ -34,11 +34,10 @@ struct ContentView: View {
                 
                 MealsViewToolbar()
             }
-//            .navigationViewStyle(StackNavigationViewStyle())
             .navigationBarTitle(Text("Mahlzeiten"), displayMode: .inline)
             .navigationBarItems(trailing: EditButton())
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .navigationViewStyle(.stack)
     }
 }
 

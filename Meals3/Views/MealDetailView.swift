@@ -75,16 +75,13 @@ struct MealDetailView: View {
                             .font(.headline)
                         Spacer()
                     }
+                    if let nutrientDistributionBarChartData = meal.nutrientDistributionBarChartData() {
+                        NutrientsDistributionBarChart(stackedBarNutrientData: nutrientDistributionBarChartData)
+                    }
                 }
                 
                 Section(header: headerView(), footer: footerView()) {
                     MealDetailIngredients(meal: meal)
-                }
-                
-                Section() {
-                    if let nutrientDistributionBarChartData = meal.nutrientDistributionBarChartData() {
-                        NutrientsDistributionBarChart(stackedBarNutrientData: nutrientDistributionBarChartData)
-                    }
                 }
             }
             

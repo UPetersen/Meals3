@@ -74,7 +74,7 @@ struct NutrientsDistributionBarChart: View {
                     //                        y: .value("Shape Type", shape.type)
                 )
                 .foregroundStyle(by: .value("Shape Color", shape.category.name))
-                .annotation(position: .overlay, alignment: .center) {
+                .annotation(position: .overlay, alignment: .center) { // Plot values into the bars 
                     if shape.value >= 5 {
                         Text("\(shape.value, format: .number.precision(.fractionLength(0)))")
                             .foregroundColor(.white)
