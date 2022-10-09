@@ -52,10 +52,8 @@ struct RecipeDetailView: View {
                 Section(header: Text("Name und Kommentar"), footer: Text("Letzte Änderung am \(dateString(date: recipe.dateOfLastModification))")) {
                     TextField("Name des erzeugten Rezepts bzw. Lebensmittels", text: name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                    ZStack { // lets the texteditor grow when entering text.
-                        TextEditor(text: comment).border(Color.gray)
-                        Text(recipe.food?.comment ?? "").opacity(0).padding(.all, 8) // <- This will solve the issue if it is in the same ZStack (from Stackoverflow)
-                    }
+                    TextField("Notizen ...", text: comment,  axis: .vertical)
+                        .lineLimit(3...10)
                 }
 
                 Section(footer: Text(explanationString)) {

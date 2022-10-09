@@ -21,6 +21,8 @@ struct MealsView: View {
 
     @FetchRequest var meals: FetchedResults<Meal>
     
+    @Environment(\.editMode) private var editMode
+
     init(searchViewModel: SearchViewModel) {
         print("Init of meals view")
         self.searchViewModel = searchViewModel
@@ -38,11 +40,12 @@ struct MealsView: View {
                 ForEach(meals) { meal in
                     Section(header: NavigationLink(destination: MealDetailView(meal: meal) ) {
                         LazyView( MealsNutrientsSectionView(meal: meal) )
-                    }) {
+                    }//.disabled(editMode?.wrappedValue == .active)
+                    ) {
                         ForEach(meal.filteredAndSortedMealIngredients(predicate: ingredientsPredicate)!) {  mealIngredient in
                             NavigationLink(destination: FoodDetailView(ingredientCollection: currentMeal.meal, food: mealIngredient.food!)) {
                                 MealIngredientRowView(mealIngredient: mealIngredient) // .equatable()
-                            }
+                            }.disabled(editMode?.wrappedValue == .active)
                         }
                         .onDelete() { indexSet in
                             deleteIngredients(atIndexSet: indexSet, fromMeal: meal)

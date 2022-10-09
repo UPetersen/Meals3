@@ -29,13 +29,12 @@ struct ContentView: View {
             VStack{
                 SearchBarView(searchText: $searchViewModel.text)
                     .padding(.top, topMargin)
-                
                 MealsView(searchViewModel: searchViewModel)
-                
                 MealsViewToolbar()
             }
             .navigationBarTitle(Text("Mahlzeiten"), displayMode: .inline)
-            .navigationBarItems(trailing: EditButton())
+            .toolbar(content: {EditButton()})
+//            .navigationBarItems(trailing: EditButton())
         }
         .navigationViewStyle(.stack)
     }

@@ -47,7 +47,9 @@ struct MealDetailView: View {
     @EnvironmentObject var currentMeal: CurrentMeal
     @Environment(\.managedObjectContext) var viewContext
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
+    @Environment(\.editMode) private var editMode
+
+
     @State private var isShowingDeleteAlert = false
     
     var body: some View {
@@ -62,17 +64,23 @@ struct MealDetailView: View {
         
         VStack {
             Form {
-                Section(header: Text("Datum und Kommentar"),
-                        footer: HStack {
-                    Spacer()
-                    Text("Letzte Änderung am \(dateString(date: meal.dateOfLastModification))")
-                }) { DatePicker("Datum:", selection: date) }
-                
+                // Date and time of the meal
+                Section() {
+                    DatePicker("Datum:", selection: date)
+                } header: {
+                    Text("Datum und Kommentar")
+                } footer: {
+                    HStack {
+                        Spacer()
+                        Text("Letzte Änderung am \(dateString(date: meal.dateOfLastModification))")
+                    }
+                }
+
+                // E.g. "48g KH und 5,2 FPE" and bar graph chart
                 Section {
                     HStack {
                         Spacer()
-                        Text("\(reducedNutrientString(meal: meal))")
-                            .font(.headline)
+                        Text("\(reducedNutrientString(meal: meal))").font(.headline)
                         Spacer()
                     }
                     if let nutrientDistributionBarChartData = meal.nutrientDistributionBarChartData() {
@@ -80,8 +88,13 @@ struct MealDetailView: View {
                     }
                 }
                 
-                Section(header: headerView(), footer: footerView()) {
+                // The list of ingredients
+                Section {
                     MealDetailIngredients(meal: meal)
+                } header: {
+                    headerView()
+                } footer: {
+                    footerView()
                 }
             }
             
@@ -90,11 +103,13 @@ struct MealDetailView: View {
         .navigationBarTitle("Mahlzeit-Details")
         .toolbar() {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Button(action: { withAnimation {isShowingDeleteAlert = true} }) {
+                Button {
+                    withAnimation {isShowingDeleteAlert = true}
+                }  label: {
                     Image(systemName: "trash").padding(.horizontal)
                 }
                 .alert(isPresented: $isShowingDeleteAlert){ self.deleteAlert() }
- 
+
                 EditButton().padding()
             }
         }

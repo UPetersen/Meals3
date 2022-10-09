@@ -109,6 +109,7 @@ struct AddOrChangeAmountOfIngredientView: View {
                 } else if let recipe = ingredientCollection as? Recipe {
                     recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
                 }
+//                try? viewContext.save() // Seems necessary here before dismissing the view
                 isPresented = false // dismiss self
                 $presentationModeOfParentView.wrappedValue.dismiss() // dismiss parent view (food details), too
             case .changeAmountOfIngredient(var ingredient):
@@ -121,10 +122,12 @@ struct AddOrChangeAmountOfIngredientView: View {
                     recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
                     print(recipe.amountOfAllIngredients)
                 }
+//                try? viewContext.save() // Seems necessary here before dismissing the view
                 isPresented = false // dismiss self
             }
-            try? viewContext.save()
         }
+        try? viewContext.save() // Seems necessary here before dismissing the view
+
     }
     
     // MARK: - Constants
