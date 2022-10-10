@@ -129,19 +129,32 @@ extension NutrientDistributionBarChartDataProvider {
         let carb          = (self.doubleForKey(NutrientDistributionBarChartDataCategory.carb.key) ?? 0)    / 1000 // correct for micro grams
         let fat           = (self.doubleForKey(NutrientDistributionBarChartDataCategory.fat.key) ?? 0)     / 1000 // correct for micro grams
         let protein       = (self.doubleForKey(NutrientDistributionBarChartDataCategory.protein.key) ?? 0) / 1000 // correct for micro grams
-        let dietaryfiber  = (self.doubleForKey(NutrientDistributionBarChartDataCategory.fiber.key) ?? 0)   / 1000 // correct for micro grams
-        let water         = (self.doubleForKey(NutrientDistributionBarChartDataCategory.water.key) ?? 0)   / 1000 // correct for micro grams
-        let other = amount - (carb + fat + protein + dietaryfiber + water)
+        let fiber         = (self.doubleForKey(NutrientDistributionBarChartDataCategory.fiber.key) ?? 0)   / 1000 // correct for micro grams
+        
+        var water         = (self.doubleForKey(NutrientDistributionBarChartDataCategory.water.key) ?? 0)   / 1000 // correct for micro grams
 
-        let scaleToPercent = 99.8 / amount // Use 99.8 instead of 100 to be sure that the sums are below 100.000 in order to avoid silly plots because sum is slightly over 100.0
+        // Water has to be treaded separately for Recipes, where the amount of water could have been reduced due to heating.
+        // This is known from the users entry of the weight of the Recipe after heating (as stored in 'amount').
+        if self is Recipe {
+            let waterLostFromHeating = (self as! Recipe).amountOfAllIngredients  - amount
+            water = water - waterLostFromHeating
+            
+            // By this calculaton, the amount of water in the recipe, technically could become negative. In real, this is not possible.
+            // For ingredients (e.g. from open food facts, that have not values for water entered) this substraction could also lead to negative values for water.
+            // In order to avoid such negative water values, these values are leveled up to zero. (As a consequence 'other' has to be reduced accordingly)
+            water = max(water, 0.0)
+        }
 
+        let other = amount - (carb + fat + protein + fiber + water)
+
+        let scaleToPercent = 99.8 / amount // Use 99.8 instead of 100 to be sure that the sums are below 100.000 in order to avoid silly plots because sum is slightly over 100.0 due to rounding errors.
         let stackedBarNutrientData: [NutrientDistributionBarChartData] = [
-            .init(category: .carb, value: carb * scaleToPercent),
-            .init(category: .fat, value: fat * scaleToPercent),
+            .init(category: .carb,    value: carb *    scaleToPercent),
+            .init(category: .fat,     value: fat *     scaleToPercent),
             .init(category: .protein, value: protein * scaleToPercent),
-            .init(category: .fiber, value: dietaryfiber * scaleToPercent),
-            .init(category: .water, value: water * scaleToPercent),
-            .init(category: .other, value: other * scaleToPercent)
+            .init(category: .fiber,   value: fiber *   scaleToPercent),
+            .init(category: .water,   value: water *   scaleToPercent),
+            .init(category: .other,   value: other *   scaleToPercent)
         ]
 
         return stackedBarNutrientData
