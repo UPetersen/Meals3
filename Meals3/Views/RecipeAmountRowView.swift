@@ -21,15 +21,17 @@ struct RecipeAmountRowView: View {
             set: {
 //                print(self.recipe.amount)
 //                print(self.recipe.amountOfAllIngredients)
-                recipe.food?.updateNutrients(amount: .asInputByUser(amount: $0?.doubleValue), managedObjectContext: viewContext)
+
+//                recipe.food?.updateNutrients(amount: .asInputByUser(amount: $0?.doubleValue), managedObjectContext: viewContext)
+                recipe.food?.updateNutrients(amount: $0?.doubleValue ?? 0, managedObjectContext: viewContext)
+
 //                print(self.recipe.amount)
 //                print(self.recipe.amountOfAllIngredients)
 //                self.recipe.food?.updateNutrients(managedObjectContext: self.viewContext)
 //                print(self.recipe.amount)
 //                print(self.recipe.amountOfAllIngredients)
 
-        }
-        )
+        })
         
         return HStack {
             Text("Gewicht nach Zubereitung:")

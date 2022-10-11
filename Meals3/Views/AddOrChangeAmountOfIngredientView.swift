@@ -107,7 +107,8 @@ struct AddOrChangeAmountOfIngredientView: View {
                 if let meal = ingredientCollection as? Meal {
                     HealthManager.synchronize(meal, withSynchronisationMode: .update)
                 } else if let recipe = ingredientCollection as? Recipe {
-                    recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
+//                    recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
+                    recipe.food?.updateNutrients(amount: recipe.amountOfAllIngredients, managedObjectContext: viewContext)
                 }
 //                try? viewContext.save() // Seems necessary here before dismissing the view
                 isPresented = false // dismiss self
@@ -119,7 +120,8 @@ struct AddOrChangeAmountOfIngredientView: View {
                     HealthManager.synchronize(meal, withSynchronisationMode: .update)
                 } else if let recipe = (ingredient as? RecipeIngredient)?.recipe {
                     recipe.dateOfLastModification = Date()
-                    recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
+//                    recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
+                    recipe.food?.updateNutrients(amount: recipe.amountOfAllIngredients, managedObjectContext: viewContext)
                     print(recipe.amountOfAllIngredients)
                 }
 //                try? viewContext.save() // Seems necessary here before dismissing the view

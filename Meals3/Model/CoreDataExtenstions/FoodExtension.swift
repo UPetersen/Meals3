@@ -106,7 +106,7 @@ extension Food {
 //        }
 //    }
     
-    private func updateNutrients(amount: Double, managedObjectContext context: NSManagedObjectContext) {
+     func updateNutrients(amount: Double, managedObjectContext context: NSManagedObjectContext) {
         if let recipe = recipe {
             recipe.amount = NSNumber(value: amount)
             if let nutrients = Nutrient.fetchAllNutrients(managedObjectContext: context) {
@@ -115,26 +115,39 @@ extension Food {
                         let valuePer100g = value / amount * 100.0
                         setValue(valuePer100g, forKey: nutrient.key!)
                     }
+                    if nutrient.key == "totalWater" {
+                        // Handle water: water has to be treaded separately for Recipes, where the amount of water could have been reduced due to heating.
+                        // This is known from the users entry of the weight of the Recipe after heating (as stored in 'amount').
+                        if var water = recipe.doubleForNutrient(nutrient) {
+                            let waterLostFromHeating = recipe.amountOfAllIngredients - amount
+                            water = water - waterLostFromHeating * 1000 // g to mg
+                            // By this calculaton, the amount of water in the recipe, technically could become negative. In real, this is not possible.
+                            // For ingredients (e.g. from open food facts, that have not values for water entered) this subtraction could also lead to negative values for water.
+                            // In order to avoid such negative water values, these values are leveled up to zero.
+                            water = max(water, 0.0)
+                            setValue(water / amount * 100.0, forKey: "totalWater") // set respective property of the food.
+                        }
+                    }
                 }
             }
         }
     }
     
-    func updateNutrients(amount: RecipeAmount, managedObjectContext context: NSManagedObjectContext) {
-        if let recipe = recipe {
-            switch amount {
-            case .sumOfAmountsOfRecipeIngredients: // use sum of ingredient amounts as overall amount (no weight loss  due to heating)
-                updateNutrients(amount: recipe.amountOfAllIngredients, managedObjectContext: context)
-            case .asInputByUser(let amount):
-                if let amount = amount, amount >= 0.1 {
-                    updateNutrients(amount: amount, managedObjectContext: context) // Reset all manual changes if non-valid value
-                } else {
-                    updateNutrients(amount: recipe.amountOfAllIngredients, managedObjectContext: context)
-                }
-            }
-            dateOfLastModification = Date()
-        }
-    }
+//    func updateNutrients(amount: RecipeAmount, managedObjectContext context: NSManagedObjectContext) {
+//        if let recipe = recipe {
+//            switch amount {
+//            case .sumOfAmountsOfRecipeIngredients: // use sum of ingredient amounts as overall amount (no weight loss  due to heating)
+//                updateNutrients(amount: recipe.amountOfAllIngredients, managedObjectContext: context)
+//            case .asInputByUser(let amount):
+//                if let amount = amount, amount >= 0.1 {
+//                    updateNutrients(amount: amount, managedObjectContext: context) // Reset all manual changes if non-valid value
+//                } else {
+//                    updateNutrients(amount: recipe.amountOfAllIngredients, managedObjectContext: context)
+//                }
+//            }
+//            dateOfLastModification = Date()
+//        }
+//    }
     
 
 //    class func fetchAllFoods(managedObjectContext context: NSManagedObjectContext) -> [Food]? {
@@ -335,6 +348,7 @@ extension Food {
         food.updateFromOffProduct(product: product, inManagedObjectContext: context)
         return food
     }
+    
         
     /// Returns the first food that has the key.
     ///
@@ -346,15 +360,11 @@ extension Food {
         if let key = key {
             let request: NSFetchRequest<Food> = Food.fetchRequest()
             request.predicate = NSPredicate(format: "key = '\(key)'")
-            
-//            print("Request: \(request.description)")
-                    
             do {
                 let foods = try context.fetch(request)
-//                print("Erstes Food: \(String(describing: foods.first))")
                 return foods.first
             } catch {
-//                print("Error fetching foods for key '\(key)': \(error)")
+                print("Error fetching foods for key '\(key)': \(error)")
             }
         }
         return nil

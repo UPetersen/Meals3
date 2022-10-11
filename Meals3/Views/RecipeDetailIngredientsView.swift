@@ -26,7 +26,8 @@ struct RecipeDetailIngredientsView: View {
                         viewContext.delete(recipe.filteredAndSortedIngredients()![index])
                     }
                     viewContext.processPendingChanges() // Needed. Otherwhise the deleted ingredient might be counted. Save would work, too.
-                    recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
+//                    recipe.food?.updateNutrients(amount: .sumOfAmountsOfRecipeIngredients, managedObjectContext: viewContext)
+                    recipe.food?.updateNutrients(amount: recipe.amountOfAllIngredients, managedObjectContext: viewContext)
                     recipe.dateOfLastModification = Date()
                     if viewContext.hasChanges {
                         try? viewContext.save()
